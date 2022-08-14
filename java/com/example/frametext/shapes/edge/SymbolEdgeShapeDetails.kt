@@ -13,7 +13,7 @@ class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeS
         private set
     override var centerY: Float = 0f
         private set
-    override var bottomAdjustment: Float = -height / 2.0f - centerY
+    override var bottomAdjustment: Float = 0f
         private set
     override var closestDistance: Int = 150
         private set
@@ -46,5 +46,6 @@ class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeS
         centerY = rectBounding.exactCenterY()
         width = rectBounding.width().toFloat()
         height = rectBounding.height().toFloat()
+        bottomAdjustment = -height / 2.0f - centerY
     }
 }
