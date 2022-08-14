@@ -1,0 +1,296 @@
+[
+    {
+        "id": 1,
+        "hpl": "Afrikaans",
+        "downLoaded": false,
+        "fileName": "hyph-af.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-af.tex"
+    },
+    {
+        "id": 2,
+        "hpl": "Assamese",
+        "downLoaded": false,
+        "fileName": "hyph-as.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-as.tex"
+    },
+    {
+        "id": 3,
+        "hpl": "Bengali",
+        "downLoaded": false,
+        "fileName": "hyph-bn.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-bn.tex"
+    },
+    {
+        "id": 4,
+        "hpl": "Bulgarian",
+        "downLoaded": false,
+        "fileName": "hyph-bg.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-bg.tex"
+    },
+    {
+        "id": 5,
+        "hpl": "Catalan",
+        "downLoaded": false,
+        "fileName": "hyph-ca.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-ca.tex"
+    },
+    {
+        "id": 6,
+        "hpl": "Croatian",
+        "downLoaded": false,
+        "fileName": "hyph-hr.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-hr.tex"
+    },
+    {
+        "id": 7,
+        "hpl": "Danish",
+        "downLoaded": false,
+        "fileName": "hyph-da.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-da.tex"
+    },
+    {
+        "id": 8,
+        "hpl": "Dutch",
+        "downLoaded": false,
+        "fileName": "hyph-nl.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-nl.tex"
+    },
+    {
+        "id": 9,
+        "hpl": "British English",
+        "downLoaded": false,
+        "fileName": "hyph-en-gb.tex",
+        "downloadLink": "https://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-en-gb.tex"
+    },
+    {
+        "id": 10,
+        "hpl": "US English",
+        "downLoaded": false,
+        "fileName": "hyph-en-us.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-en-us.tex"
+    },
+    {
+        "id": 11,
+        "hpl": "Estonian",
+        "downLoaded": false,
+        "fileName": "hyph-et.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-et.tex"
+    },
+    {
+        "id": 12,
+        "hpl": "Finnish",
+        "downLoaded": false,
+        "fileName": "hyph-fi.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-fi.tex"
+    },
+    {
+        "id": 13,
+        "hpl": "French",
+        "downLoaded": false,
+        "fileName": "hyph-fr.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-fr.tex"
+    },
+    {
+        "id": 14,
+        "hpl": "Galician",
+        "downLoaded": false,
+        "fileName": "hyph-gl.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-gl.tex"
+    },
+    {
+        "id": 15,
+        "hpl": "German",
+        "downLoaded": false,
+        "fileName": "hyph-de-1901.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-de-1901.tex"
+    },
+    {
+        "id": 16,
+        "hpl": "German (1996)",
+        "downLoaded": false,
+        "fileName": "hyph-de-1996.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-de-1996.tex"
+    },
+    {
+        "id": 17,
+        "hpl": "German (Swiss)",
+        "downLoaded": false,
+        "fileName": "hyph-de-ch-1901.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-de-ch-1901.tex"
+    },
+    {
+        "id": 18,
+        "hpl": "Greek (mono)",
+        "downLoaded": false,
+        "fileName": "hyph-el-monoton.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-el-monoton.tex"
+    },
+    {
+        "id": 19,
+        "hpl": "Greek (poly)",
+        "downLoaded": false,
+        "fileName": "hyph-el-polyton.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-el-polyton.tex"
+    },
+    {
+        "id": 20,
+        "hpl": "Icelandic",
+        "downLoaded": false,
+        "fileName": "hyph-is.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-is.tex"
+    },
+    {
+        "id": 21,
+        "hpl": "Italian",
+        "downLoaded": false,
+        "fileName": "hyph-it.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-it.tex"
+    },
+    {
+        "id": 22,
+        "hpl": "Kurmanji",
+        "downLoaded": false,
+        "fileName": "hyph-kmr.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-kmr.tex"
+    },
+    {
+        "id": 23,
+        "hpl": "Lithuanian",
+        "downLoaded": false,
+        "fileName": "hyph-lt.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-lt.tex"
+    },
+    {
+        "id": 24,
+        "hpl": "Mongolian",
+        "downLoaded": false,
+        "fileName": "hyph-mn-cyrl.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-mn-cyrl.tex"
+    },
+    {
+        "id": 25,
+        "hpl": "Norwegian",
+        "downLoaded": false,
+        "fileName": "hyph-nb.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-nb.tex"
+    },
+    {
+        "id": 26,
+        "hpl": "Norwegian (nynorsk)",
+        "downLoaded": false,
+        "fileName": "hyph-nn.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-nn.tex"
+    },
+    {
+        "id": 27,
+        "hpl": "Piedmontese",
+        "downLoaded": false,
+        "fileName": "hyph-pms.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-pms.tex"
+    },
+    {
+        "id": 28,
+        "hpl": "Polish",
+        "downLoaded": false,
+        "fileName": "hyph-pl.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-pl.tex"
+    },
+    {
+        "id": 29,
+        "hpl": "Portuguese",
+        "downLoaded": false,
+        "fileName": "hyph-pt.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-pt.tex"
+    },
+    {
+        "id": 30,
+        "hpl": "Romanian",
+        "downLoaded": false,
+        "fileName": "hyph-ro.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-ro.tex"
+    },
+    {
+        "id": 31,
+        "hpl": "Romansh",
+        "downLoaded": false,
+        "fileName": "hyph-rm.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-rm.tex"
+    },
+    {
+        "id": 32,
+        "hpl": "Russian",
+        "downLoaded": false,
+        "fileName": "hyph-ru.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-ru.tex"
+    },
+    {
+        "id": 33,
+        "hpl": "Sanskrit",
+        "downLoaded": false,
+        "fileName": "hyph-sa.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-sa.tex"
+    },
+    {
+        "id": 34,
+        "hpl": "Serbian",
+        "downLoaded": false,
+        "fileName": "hyph-sh-cyrl.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-sh-cyrl.tex"
+    },
+    {
+        "id": 35,
+        "hpl": "Slovenian",
+        "downLoaded": false,
+        "fileName": "hyph-sl.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-sl.tex"
+    },
+    {
+        "id": 36,
+        "hpl": "Spanish",
+        "downLoaded": false,
+        "fileName": "hyph-es.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-es.tex"
+    },
+    {
+        "id": 37,
+        "hpl": "Swedish",
+        "downLoaded": false,
+        "fileName": "hyph-sv.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-sv.tex"
+    },
+    {
+        "id": 38,
+        "hpl": "Thai",
+        "downLoaded": false,
+        "fileName": "hyph-th.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-th.tex"
+    },
+    {
+        "id": 39,
+        "hpl": "Turkish",
+        "downLoaded": false,
+        "fileName": "hyph-tr.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-tr.tex"
+    },
+    {
+        "id": 40,
+        "hpl": "Turkmen",
+        "downLoaded": false,
+        "fileName": "hyph-tk.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-tk.tex"
+    },
+    {
+        "id": 41,
+        "hpl": "Ukrainian",
+        "downLoaded": false,
+        "fileName": "hyph-uk.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-uk.tex"
+    },
+    {
+        "id": 42,
+        "hpl": "Welsh",
+        "downLoaded": false,
+        "fileName": "hyph-cy.tex",
+        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-cy.tex"
+    }
+]
