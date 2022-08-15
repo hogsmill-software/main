@@ -1,7 +1,9 @@
 package com.example.frametext.shapes.edge
 
-import android.R.attr
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.Typeface
 
 
 class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeShapeDetails {
@@ -15,7 +17,7 @@ class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeS
         private set
     override var bottomAdjustment: Float = 0f
         private set
-    override var closestDistance: Int = 150
+    override var closestDistance: Int = 0
         private set
 
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
@@ -47,5 +49,13 @@ class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeS
         width = rectBounding.width().toFloat()
         height = rectBounding.height().toFloat()
         bottomAdjustment = -height / 2.0f - centerY
+
+        closestDistance = when (symbol) {
+            "█" -> 250
+            "●" -> 200
+            "▬" -> 200
+            "★" -> 180
+            else -> 150
+        }
     }
 }
