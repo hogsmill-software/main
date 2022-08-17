@@ -2,6 +2,7 @@ package com.example.frametext.globalObjects
 
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.enums.SymbolShapeType
+import com.example.frametext.helpers.Constants.FF_NORMAL
 import com.example.frametext.shapes.edge.*
 
 class FrameTextParameters {
@@ -19,6 +20,7 @@ class FrameTextParameters {
     var symbolShapeType: SymbolShapeType = SymbolShapeType.Heart
     var mainShapeType: MainShapeType = MainShapeType.Heart
     var symbol: String? = "☻"
+    var fontFamily: String = FF_NORMAL
 
     fun setTxtSymbolsMargin(txtSymbolsMargin: Int) {
         if (txtSymbolsMargin <= maxTxtSymbolsMargin) this.txtSymbolsMargin = txtSymbolsMargin

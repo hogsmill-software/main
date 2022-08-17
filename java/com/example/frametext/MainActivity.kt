@@ -12,6 +12,7 @@ import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.globalObjects.FrameTextParameters
 import com.example.frametext.globalObjects.HyphenDetails
 import com.example.frametext.helpers.Constants
+import com.example.frametext.helpers.Utilities
 import com.example.frametext.viewModels.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     private var tabSetting: TabLayout.Tab? = null
     private var hplFileNameMap = HashMap<String, String>()
     private var fileNameHplMap = HashMap<String, String>()
+    private var userFriendlyFontFamilyFontFamilyMap = HashMap<String, String>()
+    private var fontFamilyUserFriendlyFontFamilyMap = HashMap<String, String>()
     private var ftp: FrameTextParameters = FrameTextParameters()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -176,6 +179,22 @@ class MainActivity : AppCompatActivity() {
         )
         fileNameHplMapViewModel.selectItem(fileNameHplMap)
         fileNameHplMapViewModel.getSelectedItem().observe(this) { }
+
+        // Font family maps - only need to initialize once...
+        userFriendlyFontFamilyFontFamilyMap = Utilities.userFriendlyFontFamilyToFontFamilyHashMap()
+        val userFriendlyFontFamilyFontFamilyMapViewModel: UserFriendlyFontFamilyFontFamilyMapViewModel = ViewModelProvider(this).get(
+            UserFriendlyFontFamilyFontFamilyMapViewModel::class.java
+        )
+        userFriendlyFontFamilyFontFamilyMapViewModel.selectItem(userFriendlyFontFamilyFontFamilyMap)
+        userFriendlyFontFamilyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
+
+        fontFamilyUserFriendlyFontFamilyMap = Utilities.fontFamilyToUserFriendlyFontFamilyHashMap()
+
+        val fontFamilyUserFriendlyFontFamilyMapViewModel: FontFamilyUserFriendlyFontFamilyMapViewModel = ViewModelProvider(this).get(
+            FontFamilyUserFriendlyFontFamilyMapViewModel::class.java
+        )
+        fontFamilyUserFriendlyFontFamilyMapViewModel.selectItem(fontFamilyUserFriendlyFontFamilyMap)
+        fontFamilyUserFriendlyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
     }
 
     private fun loadUserFile(): java.util.ArrayList<String> {
@@ -219,6 +238,7 @@ class MainActivity : AppCompatActivity() {
                     val mainShape = jsonObject[Constants.MAIN_SHAPE_TYPE] as String
                     ftp.mainShapeType = MainShapeType.valueOf(mainShape)
                     ftp.symbol = jsonObject[Constants.SYMBOL] as String
+                    ftp.fontFamily = jsonObject[Constants.FONT_FAMILY] as String
                 }
             }
         }
@@ -336,6 +356,8 @@ class MainActivity : AppCompatActivity() {
             jsonObject.put(Constants.SYMBOL_SHAPE_TYPE, hvp.symbolShapeType)
             jsonObject.put(Constants.MAIN_SHAPE_TYPE, hvp.mainShapeType)
             jsonObject.put(Constants.SYMBOL, hvp.symbol)
+            jsonObject.put(Constants.FONT_FAMILY, hvp.fontFamily)
+
             return jsonObject
         }
     }

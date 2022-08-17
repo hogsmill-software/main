@@ -14,7 +14,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 internal class DrawText(
-    private val g2d: Canvas,
+    private val canvas: Canvas,
     mainSizes: MainSizes,
     sd: EdgeShapeDetails,
     private val tfd: TextFormattingDetails,
@@ -458,7 +458,7 @@ internal class DrawText(
         try {
             // Uncomment for testing purpose
             //drawTextBoundingRectangles();
-            paint.color = tfd.txtColour
+            paint.color = tfd.txtColor
             for (txtRectDetails in rectLst!!) {
                 val txtBoundingRect: Rect = txtRectDetails.boundingRect
                 var txt: String? = txtRectDetails.text
@@ -521,7 +521,7 @@ internal class DrawText(
                             if (EmojiHelper.isCharEmojiAtPos(txt, idxInTxt)) {
                                 val emojiLen = EmojiHelper.emojiLengthAtPos(txt, idxInTxt)
                                 val str = txt.substring(idxInTxt, idxInTxt + emojiLen)
-                                g2d.drawText(
+                                canvas.drawText(
                                     str,
                                     (txtBoundingRect.left + offset.roundToInt()).toFloat(),
                                     txtBoundingRect.top.toFloat(),
@@ -530,7 +530,7 @@ internal class DrawText(
                                 idxInTxt += emojiLen
                             } else {
                                 chr[0] = txt[idxInTxt]
-                                g2d.drawText(
+                                canvas.drawText(
                                     chr[0].toString(),
                                     (txtBoundingRect.left + offset.roundToInt()).toFloat(),
                                     txtBoundingRect.top.toFloat(),
@@ -544,7 +544,7 @@ internal class DrawText(
                             }
                         }
                     } else {
-                        g2d.drawText(
+                        canvas.drawText(
                             txt,
                             txtBoundingRect.left.toFloat(),
                             txtBoundingRect.top.toFloat(),
@@ -641,7 +641,7 @@ internal class DrawText(
                 HyphenatorLangMap[tfd.hyphenPatternLan] = hyphenator
             }
         }
-        val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
+        val tf = Typeface.create(tfd.fontFamily, Typeface.NORMAL)
         paint = Paint()
         paint.typeface = tf
         paint.textSize = 150f

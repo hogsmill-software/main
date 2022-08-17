@@ -83,7 +83,7 @@ class TextInputFragment : Fragment() {
                 val strTextInput = editTextInput.text.toString()
                 val tfd = TextFormattingDetails(
                     strTextInput, ftp.optimizeSpacing, ftp.hyphenateText,
-                    ftp.hyphenFileName, 50, 170, ftp.getTxtSymbolsMargin(), ftp.textColor
+                    ftp.hyphenFileName, 50, 170, ftp.getTxtSymbolsMargin(), ftp.textColor, ftp.fontFamily
                 )
                 val edgeShapeDetails: EdgeShapeDetails? = ftp.getShapeDetails()
                 if (edgeShapeDetails != null) {

@@ -177,14 +177,8 @@ class SettingsFragment : Fragment() {
             )
         }
 
-        val textColorButton = view.findViewById<AppCompatButton>(R.id.textColorButton)
-        textColorButton.setBackgroundColor(ftp!!.textColor)
-        textColorButton.setOnClickListener { v: View? ->
-            onClickTextColorButton(
-                v,
-                textColorButton
-            )
-        }
+        val buttonNavToFontSettings = view.findViewById<View>(R.id.font_settings)
+        buttonNavToFontSettings.setOnClickListener { navigateToFontSettingsFragment() }
 
         val saveSettingsButton = view.findViewById<View>(R.id.saveSettings)
         saveSettingsButton.setOnClickListener { saveSettings() }
@@ -211,6 +205,16 @@ class SettingsFragment : Fragment() {
 
     private fun navigateToFrameShapeSettingsFragment() {
         val fragment: Fragment = FrameShapesFragment()
+        val fragmentManager = fragmentActivityContext!!.supportFragmentManager
+        fragmentManager.beginTransaction()
+            .replace(R.id.settings_frame, fragment)
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun navigateToFontSettingsFragment() {
+        val fragment: Fragment = FontSettingsFragment()
         val fragmentManager = fragmentActivityContext!!.supportFragmentManager
         fragmentManager.beginTransaction()
             .replace(R.id.settings_frame, fragment)

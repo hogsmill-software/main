@@ -62,7 +62,8 @@
     <string name="description_main_shapes">This feature allows you to have a main shape different from a heart.\nAt this time, a square and a circle are also possible as main shapes.</string>
     <string name="description_symbols_and_colours">Allows you to choose between an extra 31 other symbols instead of heart in frame.\nThis feature also enables you to change colour of symbol, so can have a pink heart for instance.</string>
     <string name="already_purchased_">Already purchased!</string>
-
+    <string name="font_settings">Font settings &#62;</string>
+    <string name="font_family">Font name</string>
     <string name="select">Select \u0026 close</string>
     <string name="standard">Standard color</string>
     <string name="custom">Custom color</string>

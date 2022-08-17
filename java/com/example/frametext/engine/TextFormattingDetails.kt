@@ -1,6 +1,5 @@
 package com.example.frametext.engine
 
-//import Hyphens.HyphenatePatternsLanguage;
 class TextFormattingDetails(
     val contentText: String,
     val optimizeSpacing: Boolean,
@@ -8,18 +7,14 @@ class TextFormattingDetails(
     val hyphenPatternLan: String?,
     val topTextMargin: Int,
     val lineHeight: Int, // The margin between heart frame and actual text. Can be 0.
-    var txtHeartsMargin: Int,
-    txtColor: Int
+    val txtHeartsMargin: Int,
+    val txtColor: Int,
+    val fontFamily: String
 ) {
-     var width = hyphenPatternLan
+    var hyphenateText = false
         private set
 
-    var hyphenateText = false
-    val txtColour: Int
-
     init {
-        txtHeartsMargin = txtHeartsMargin
-        txtColour = txtColor
         if (hyphenPatternLan == null) {
             this.hyphenateText = false
         } else {
