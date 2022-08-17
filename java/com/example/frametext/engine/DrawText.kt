@@ -641,7 +641,7 @@ internal class DrawText(
                 HyphenatorLangMap[tfd.hyphenPatternLan] = hyphenator
             }
         }
-        val tf = Typeface.create(tfd.fontFamily, Typeface.NORMAL)
+        val tf = Typeface.create(tfd.fontFamily, tfd.typeFace)
         paint = Paint()
         paint.typeface = tf
         paint.textSize = 150f

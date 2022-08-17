@@ -1,6 +1,7 @@
 package com.example.frametext.fragments
 
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import android.widget.Spinner
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.FragmentActivity
@@ -26,7 +28,9 @@ class FontSettingsFragment : Fragment() {
     private var ftp: FrameTextParameters? = null
     private var spinnerFontFamilies: Spinner? = null
     private var userFriendlyFontFamilyList: ArrayList<String> = Utilities.userFriendlyFontFamilyList()
-    
+    private var boldSwitch: androidx.appcompat.widget.SwitchCompat? = null
+    private var italicSwitch: androidx.appcompat.widget.SwitchCompat? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -89,7 +93,6 @@ class FontSettingsFragment : Fragment() {
         val pos = userFriendlyFontFamilyList.indexOf(userFriendlySelectedItem)
         spinnerFontFamilies!!.setSelection(pos)
 
-
         val userFriendlyFontFamilyFontFamilyMapViewModel = ViewModelProvider(requireActivity()).get(
         UserFriendlyFontFamilyFontFamilyMapViewModel::class.java
         )
@@ -111,6 +114,44 @@ class FontSettingsFragment : Fragment() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        boldSwitch = view.findViewById(R.id.boldSwitch)
+        boldSwitch?.isChecked = ftp!!.typeface == Typeface.BOLD || ftp!!.typeface == Typeface.BOLD_ITALIC
+
+        boldSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isBoldChecked: Boolean ->
+            if (isBoldChecked) {
+                if (ftp!!.typeface == Typeface.NORMAL) {
+                    ftp!!.typeface = Typeface.BOLD
+                } else if (ftp!!.typeface == Typeface.ITALIC) {
+                    ftp!!.typeface = Typeface.BOLD_ITALIC
+                }
+            } else {
+                if (ftp!!.typeface == Typeface.BOLD) {
+                    ftp!!.typeface = Typeface.NORMAL
+                } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
+                    ftp!!.typeface = Typeface.ITALIC
+                }
+            }
+        }
+
+        italicSwitch = view.findViewById(R.id.italicSwitch)
+        italicSwitch?.isChecked = ftp!!.typeface == Typeface.ITALIC || ftp!!.typeface == Typeface.BOLD_ITALIC
+
+        italicSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isItalicChecked: Boolean ->
+            if (isItalicChecked) {
+                if (ftp!!.typeface == Typeface.NORMAL) {
+                    ftp!!.typeface = Typeface.ITALIC
+                } else if (ftp!!.typeface == Typeface.BOLD) {
+                    ftp!!.typeface = Typeface.BOLD_ITALIC
+                }
+            } else {
+                if (ftp!!.typeface == Typeface.ITALIC) {
+                    ftp!!.typeface = Typeface.NORMAL
+                } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
+                    ftp!!.typeface = Typeface.BOLD
+                }
+            }
         }
     }
 

@@ -39,7 +39,7 @@ class TextInputFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_text_input, container, false)
 
         val generateImageButton = view.findViewById<View>(R.id.generateImageButton)
-        generateImageButton.setOnClickListener { generateImage(view) }
+        generateImageButton.setOnClickListener { generateImage() }
 
         val loadSaveFileNavButton = view.findViewById<View>(R.id.loadSaveFileNavButton)
         loadSaveFileNavButton.setOnClickListener { onExitToUserFilesFragment(view) }
@@ -75,7 +75,7 @@ class TextInputFragment : Fragment() {
             ?.commit()
     }
 
-    private fun generateImage(view: View?) {
+    private fun generateImage() {
         try {
             val ftp: FrameTextParameters? = frameTextParametersViewModel?.getSelectedItem()?.value
             if (ftp != null && context != null) {
@@ -83,14 +83,14 @@ class TextInputFragment : Fragment() {
                 val strTextInput = editTextInput.text.toString()
                 val tfd = TextFormattingDetails(
                     strTextInput, ftp.optimizeSpacing, ftp.hyphenateText,
-                    ftp.hyphenFileName, 50, 170, ftp.getTxtSymbolsMargin(), ftp.textColor, ftp.fontFamily
+                    ftp.hyphenFileName, 50, 170, ftp.getTxtSymbolsMargin(), ftp.textColor, ftp.fontFamily, ftp.typeface
                 )
                 val edgeShapeDetails: EdgeShapeDetails? = ftp.getShapeDetails()
                 if (edgeShapeDetails != null) {
                     val heartsValentine = ImageGenerator(
                         tfd,
                         ftp.mainShapeType,
-                        edgeShapeDetails!!,
+                        edgeShapeDetails,
                         ftp.backgroundColor,
                         ftp.outerMargin,
                         requireContext()
@@ -114,12 +114,8 @@ class TextInputFragment : Fragment() {
                     if (frameTextImage != null) {
                         frameTextBitmapViewModel?.selectItem(frameTextImage)
 
-                        val hvi: FrameTextImageFragment? =
-                            frameTextBitmapViewModel?.getSelectedImageFragment()?.getValue()
-
-                        if (hvi != null) {
-                            hvi.updateImage(heartsValentine.bitmap)
-                        }
+                        frameTextBitmapViewModel?.getSelectedImageFragment()?.value
+                            ?.updateImage(heartsValentine.bitmap)
                     }
                     val tabLayout: TabLayout? =
                         tabLayoutViewModel?.getSelectedItem()?.value
@@ -148,7 +144,7 @@ class TextInputFragment : Fragment() {
         }
     }
 
-    fun generateImageTitle(): String? {
+    private fun generateImageTitle(): String {
         var generateImageTitle = "Generate image"
         if (context != null && requireContext().resources != null) {
             generateImageTitle = requireContext().resources.getString(R.string.generateImage)
@@ -156,7 +152,7 @@ class TextInputFragment : Fragment() {
         return generateImageTitle
     }
 
-    fun getUnexpectedErrorMessage(): String? {
+    private fun getUnexpectedErrorMessage(): String {
         val unexpectedError = "An unexpected error occurred."
         if (context != null && requireContext().resources != null) {
             requireContext().resources.getString(R.string.error_unexpected)

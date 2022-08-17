@@ -239,6 +239,7 @@ class MainActivity : AppCompatActivity() {
                     ftp.mainShapeType = MainShapeType.valueOf(mainShape)
                     ftp.symbol = jsonObject[Constants.SYMBOL] as String
                     ftp.fontFamily = jsonObject[Constants.FONT_FAMILY] as String
+                    ftp.typeface = jsonObject.getInt(Constants.TYPEFACE)
                 }
             }
         }
@@ -357,6 +358,7 @@ class MainActivity : AppCompatActivity() {
             jsonObject.put(Constants.MAIN_SHAPE_TYPE, hvp.mainShapeType)
             jsonObject.put(Constants.SYMBOL, hvp.symbol)
             jsonObject.put(Constants.FONT_FAMILY, hvp.fontFamily)
+            jsonObject.put(Constants.TYPEFACE, hvp.typeface)
 
             return jsonObject
         }

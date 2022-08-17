@@ -64,6 +64,8 @@
     <string name="already_purchased_">Already purchased!</string>
     <string name="font_settings">Font settings &#62;</string>
     <string name="font_family">Font name</string>
+    <string name="bold_switch">Bold</string>
+    <string name="italic_switch">Italic</string>
     <string name="select">Select \u0026 close</string>
     <string name="standard">Standard color</string>
     <string name="custom">Custom color</string>

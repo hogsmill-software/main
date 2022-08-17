@@ -9,7 +9,8 @@ class TextFormattingDetails(
     val lineHeight: Int, // The margin between heart frame and actual text. Can be 0.
     val txtHeartsMargin: Int,
     val txtColor: Int,
-    val fontFamily: String
+    val fontFamily: String,
+    val typeFace: Int
 ) {
     var hyphenateText = false
         private set

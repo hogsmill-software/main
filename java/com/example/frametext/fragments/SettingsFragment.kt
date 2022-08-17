@@ -142,7 +142,6 @@ class SettingsFragment : Fragment() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         })
 
-
         val outerMarginNumber = view.findViewById<EditText>(R.id.outerMarginNumber)
         outerMarginNumber.setText(
             java.lang.String.format(

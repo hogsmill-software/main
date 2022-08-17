@@ -1,5 +1,6 @@
 package com.example.frametext.globalObjects
 
+import android.graphics.Typeface
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.helpers.Constants.FF_NORMAL
@@ -21,6 +22,7 @@ class FrameTextParameters {
     var mainShapeType: MainShapeType = MainShapeType.Heart
     var symbol: String? = "☻"
     var fontFamily: String = FF_NORMAL
+    var typeface = Typeface.NORMAL
 
     fun setTxtSymbolsMargin(txtSymbolsMargin: Int) {
         if (txtSymbolsMargin <= maxTxtSymbolsMargin) this.txtSymbolsMargin = txtSymbolsMargin
