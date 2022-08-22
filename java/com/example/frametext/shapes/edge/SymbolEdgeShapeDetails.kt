@@ -17,8 +17,6 @@ class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeS
         private set
     override var bottomAdjustment: Float = 0f
         private set
-    override var closestDistance: Int = 0
-        private set
 
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
         // draws a blue square behind symbol
@@ -49,13 +47,5 @@ class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeS
         width = rectBounding.width().toFloat()
         height = rectBounding.height().toFloat()
         bottomAdjustment = -height / 2.0f - centerY
-
-        closestDistance = when (symbol) {
-            "█" -> 250
-            "●" -> 200
-            "▬" -> 200
-            "★" -> 180
-            else -> 150
-        }
     }
 }

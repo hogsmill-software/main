@@ -20,9 +20,10 @@ class FrameTextParameters {
     var emoji = 0x2665.toChar().toString()
     var symbolShapeType: SymbolShapeType = SymbolShapeType.Heart
     var mainShapeType: MainShapeType = MainShapeType.Heart
-    var symbol: String? = "☻"
+    var symbol: String? = null
     var fontFamily: String = FF_NORMAL
     var typeface = Typeface.NORMAL
+    var minDistEdgeShape = 0
 
     fun setTxtSymbolsMargin(txtSymbolsMargin: Int) {
         if (txtSymbolsMargin <= maxTxtSymbolsMargin) this.txtSymbolsMargin = txtSymbolsMargin

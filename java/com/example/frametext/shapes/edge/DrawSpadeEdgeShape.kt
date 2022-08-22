@@ -19,8 +19,6 @@ class DrawSpadeEdgeShape(var size: Int,  override var color: Int) : ColoredEdgeS
         private set
     override var bottomAdjustment: Float = -2 * height
         private set
-    override var closestDistance: Int = 150
-        private set
 
     private val radius: Float = 0.28f * height
     private val path = Path()

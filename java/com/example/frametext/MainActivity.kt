@@ -130,9 +130,10 @@ class MainActivity : AppCompatActivity() {
         userFilesViewModel.selectedItem.observe(this) { }
 
         // FrameText parameters
-        val frameTextParametersViewModel: FrameTextParametersViewModel = ViewModelProvider(this).get(
-            FrameTextParametersViewModel::class.java
-        )
+        val frameTextParametersViewModel: FrameTextParametersViewModel =
+            ViewModelProvider(this).get(
+                FrameTextParametersViewModel::class.java
+            )
         frameTextParametersViewModel.selectItem(ftp)
         frameTextParametersViewModel.getSelectedItem().observe(this) { }
 
@@ -182,19 +183,32 @@ class MainActivity : AppCompatActivity() {
 
         // Font family maps - only need to initialize once...
         userFriendlyFontFamilyFontFamilyMap = Utilities.userFriendlyFontFamilyToFontFamilyHashMap()
-        val userFriendlyFontFamilyFontFamilyMapViewModel: UserFriendlyFontFamilyFontFamilyMapViewModel = ViewModelProvider(this).get(
-            UserFriendlyFontFamilyFontFamilyMapViewModel::class.java
-        )
+        val userFriendlyFontFamilyFontFamilyMapViewModel: UserFriendlyFontFamilyFontFamilyMapViewModel =
+            ViewModelProvider(this).get(
+                UserFriendlyFontFamilyFontFamilyMapViewModel::class.java
+            )
         userFriendlyFontFamilyFontFamilyMapViewModel.selectItem(userFriendlyFontFamilyFontFamilyMap)
         userFriendlyFontFamilyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
 
         fontFamilyUserFriendlyFontFamilyMap = Utilities.fontFamilyToUserFriendlyFontFamilyHashMap()
 
-        val fontFamilyUserFriendlyFontFamilyMapViewModel: FontFamilyUserFriendlyFontFamilyMapViewModel = ViewModelProvider(this).get(
-            FontFamilyUserFriendlyFontFamilyMapViewModel::class.java
-        )
+        val fontFamilyUserFriendlyFontFamilyMapViewModel: FontFamilyUserFriendlyFontFamilyMapViewModel =
+            ViewModelProvider(this).get(
+                FontFamilyUserFriendlyFontFamilyMapViewModel::class.java
+            )
         fontFamilyUserFriendlyFontFamilyMapViewModel.selectItem(fontFamilyUserFriendlyFontFamilyMap)
         fontFamilyUserFriendlyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
+
+        // if ftp.minDistEdgeShape is 0, it has never been saved and therefore needs to be recomputed
+        // from symbol/emoji set as default.
+        if (ftp.minDistEdgeShape == 0) {
+            ftp.minDistEdgeShape = Utilities.closestDistance(
+                ftp.useEmoji,
+                ftp.emoji,
+                ftp.symbol,
+                ftp.symbolShapeType
+            )
+        }
     }
 
     private fun loadUserFile(): java.util.ArrayList<String> {

@@ -16,9 +16,9 @@
     <string name="hyphenate_switch">Hyphenate</string>
     <string name="optimize_spacing_switch">Optimize spacing</string>
     <string name="txt_to_symbol_dist">Symbol to text distance</string>
-    <string name="enter_number_between_0_50">Number between 0&#8211;50</string>
+    <string name="enter_number_between_0_50">0…50</string>
     <string name="margin">Margin</string>
-    <string name="enter_number_between_0_500">Number between 0&#8211;500</string>
+    <string name="enter_number_between_0_500">0…500</string>
     <string name="use_emoji">Use emoji</string>
     <string name="shape_color">Symbol color</string>
     <string name="background_color">Background color</string>
@@ -66,6 +66,10 @@
     <string name="font_family">Font name</string>
     <string name="bold_switch">Bold</string>
     <string name="italic_switch">Italic</string>
+    <string name="min_dist_symbols">Min. dist. symbols</string>
+    <string name="number_between_100_500">100…500</string>
+    <string name="less_than_100_error_msg">"%d is less than 100 and won't be saved."</string>
+    <string name="blank_default_error_msg">"As field is blank, default for symbol/emoji will be used."</string>
     <string name="select">Select \u0026 close</string>
     <string name="standard">Standard color</string>
     <string name="custom">Custom color</string>

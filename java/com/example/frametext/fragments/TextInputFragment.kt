@@ -87,35 +87,36 @@ class TextInputFragment : Fragment() {
                 )
                 val edgeShapeDetails: EdgeShapeDetails? = ftp.getShapeDetails()
                 if (edgeShapeDetails != null) {
-                    val heartsValentine = ImageGenerator(
+                    val frameTextImgContainer = ImageGenerator(
                         tfd,
                         ftp.mainShapeType,
                         edgeShapeDetails,
                         ftp.backgroundColor,
                         ftp.outerMargin,
+                        ftp.minDistEdgeShape,
                         requireContext()
                     )
 
-                    heartsValentine.computeTextFit(requireContext())
-                    heartsValentine.draw()
+                    frameTextImgContainer.computeTextFit(requireContext())
+                    frameTextImgContainer.draw()
 
                     // generate image file in Pictures folder:
                     if (activity != null) {
-                        val fileName = "HV-" + System.currentTimeMillis()
+                        val fileName = "FT-" + System.currentTimeMillis()
                         MediaStore.Images.Media.insertImage(
                             requireActivity().contentResolver,
-                            heartsValentine.bitmap,
+                            frameTextImgContainer.bitmap,
                             fileName,
-                            "Generated through Hearts Valentine."
+                            "Generated through FrameText."
                         )
                     }
-                    val frameTextImage: Bitmap? = heartsValentine.bitmap
+                    val frameTextImage: Bitmap? = frameTextImgContainer.bitmap
 
                     if (frameTextImage != null) {
                         frameTextBitmapViewModel?.selectItem(frameTextImage)
 
                         frameTextBitmapViewModel?.getSelectedImageFragment()?.value
-                            ?.updateImage(heartsValentine.bitmap)
+                            ?.updateImage(frameTextImgContainer.bitmap)
                     }
                     val tabLayout: TabLayout? =
                         tabLayoutViewModel?.getSelectedItem()?.value

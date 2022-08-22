@@ -2,8 +2,11 @@ package com.example.frametext.helpers
 
 import android.content.Context
 import android.graphics.Point
+import android.text.InputFilter
+import android.text.Spanned
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.helpers.Constants.FF_MONOSPACE
 import com.example.frametext.helpers.Constants.FF_NORMAL
 import com.example.frametext.helpers.Constants.FF_NOTOSERIF
@@ -121,5 +124,35 @@ object Utilities {
         fontFamilyToUserFriendlyFontFamilyHashMap[FF_SANS_SERIF_MEDIUM] = UFFF_SANS_SERIF_MEDIUM
         fontFamilyToUserFriendlyFontFamilyHashMap[FF_SERIF] = UFFF_SERIF
         return fontFamilyToUserFriendlyFontFamilyHashMap
+    }
+    @Suppress("UNUSED_PARAMETER")
+    fun closestDistance(useEmoji: Boolean, emoji: String, symbol: String?, symbolShapeType: SymbolShapeType): Int {
+        // parameter emoji shall almost certainly be used in future
+        if (useEmoji)
+            return 250
+        else if (symbol == null || symbol.isEmpty()) {
+            val closestDistance = when (symbolShapeType) {
+                SymbolShapeType.Circle -> 150
+                SymbolShapeType.Star -> 150
+                SymbolShapeType.Square -> 150
+                SymbolShapeType.Heart -> 150
+                SymbolShapeType.Spade -> 150
+                SymbolShapeType.Club -> 150
+                SymbolShapeType.Diamond -> 150
+                SymbolShapeType.Smiley -> 150
+                SymbolShapeType.None -> 150
+            }
+            return closestDistance
+        }
+        else {
+            val closestDistance = when (symbol) {
+                "█" -> 250
+                "●" -> 200
+                "▬" -> 200
+                "★" -> 180
+                else -> 150
+            }
+            return closestDistance
+        }
     }
 }

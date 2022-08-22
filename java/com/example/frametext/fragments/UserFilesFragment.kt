@@ -115,6 +115,7 @@ class UserFilesFragment : Fragment() {
                 ftp!!.getShapeDetails()!!,
                 ftp!!.backgroundColor,
                 ftp!!.outerMargin,
+                ftp!!.minDistEdgeShape,
                 requireContext()
             )
             imageGenerator.computeTextFit(requireContext())

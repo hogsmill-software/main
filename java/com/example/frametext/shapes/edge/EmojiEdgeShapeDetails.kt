@@ -160,8 +160,6 @@ class EmojiEdgeShapeDetails(private val emoji: String) : EdgeShapeDetails {
 
     override val bottomAdjustment: Float
         get() = (-33).toFloat()
-    override val closestDistance: Int
-        get() = 250
 
     init {
         initialize()

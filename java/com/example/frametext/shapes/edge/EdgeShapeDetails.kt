@@ -10,5 +10,4 @@ interface EdgeShapeDetails {
     val centerX: Float
     val centerY: Float
     val bottomAdjustment: Float
-    val closestDistance: Int
 }

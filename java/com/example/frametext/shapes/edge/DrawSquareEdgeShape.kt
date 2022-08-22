@@ -25,9 +25,6 @@ class DrawSquareEdgeShape(_size: Int, override var color: Int) :
     override val bottomAdjustment: Float
         get() = -2 * size
 
-    override val closestDistance: Int
-        get() = 150
-
     init {
         size = _size.toFloat()
         centerX = 0.5f * size

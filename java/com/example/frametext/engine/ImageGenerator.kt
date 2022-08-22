@@ -19,6 +19,7 @@ class ImageGenerator(
     sd: EdgeShapeDetails,
     backgroundColor: Int,
     margin: Int,
+    minDistEdgeShape: Int,
     context: Context
 ) {
     var bitmap: Bitmap? = null
@@ -33,6 +34,7 @@ class ImageGenerator(
     private val backgroundColor: Int
     private var context: Context
     private val mainShapeType: MainShapeType
+    private val minDistEdgeShape: Int
     private fun initialize() {
         initializeGraphics()
         setStandardTextFont()
@@ -176,9 +178,6 @@ class ImageGenerator(
     }
 
     fun draw() {
-        val closestDistance: Int =
-            sd.closestDistance // cannot get an exact distance between hearts centres. This is lowest value possible for good fit.
-
         // We work out this distance later, which will be a bit greater.
         paint!!.color = backgroundColor
         canvas!!.drawRect(0f, 0f, mainSizes.width.toFloat(), mainSizes.height.toFloat(), paint!!)
@@ -193,7 +192,7 @@ class ImageGenerator(
         // Draw hearts...
         val ms: MainShape? = ObjectFromShapeType.getMainShape(
             mainShapeType,
-            canvas!!, mainSizes, closestDistance, sd
+            canvas!!, mainSizes, minDistEdgeShape, sd
         )
         ms?.draw()
 
@@ -214,5 +213,6 @@ class ImageGenerator(
         initialize()
         this.context = context
         this.mainShapeType = mainShapeType
+        this.minDistEdgeShape = minDistEdgeShape
     }
 }

@@ -19,8 +19,6 @@ class DrawHeartEdgeShape(
         private set
     override var bottomAdjustment: Float = -2 * height
         private set
-    override var closestDistance: Int = 150
-        private set
 
     private var radius = 0.28f * width
     private val path = Path()

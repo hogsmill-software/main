@@ -12,7 +12,10 @@ import com.example.frametext.R
 import com.example.frametext.helpers.Utilities
 
 class EmojiCellCtrl : View {
-    private var emoji = 0x2665.toChar().toString()
+
+    var emoji = 0x2665.toChar().toString()
+        private set
+
     private val paint = Paint()
     private var showBorder = false
     private var _isSelected = false
@@ -52,10 +55,6 @@ class EmojiCellCtrl : View {
     fun setEmoji(emoji: String) {
         this.emoji = emoji
         invalidate()
-    }
-
-    fun getEmoji(): String {
-        return emoji
     }
 
     override fun setSelected(selected: Boolean) {

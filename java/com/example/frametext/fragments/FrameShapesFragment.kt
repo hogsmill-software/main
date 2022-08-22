@@ -6,8 +6,10 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.*
 import android.widget.CompoundButton
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
@@ -20,10 +22,12 @@ import com.example.frametext.R
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.globalObjects.FrameTextParameters
+import com.example.frametext.helpers.MinMaxFilter
 import com.example.frametext.helpers.Utilities
 import com.example.frametext.userControls.*
 import com.example.frametext.userControls.colorPicker.ColorPickerPopup
 import com.example.frametext.viewModels.FrameTextParametersViewModel
+import java.util.*
 
 //import kotlinx.coroutines.DelicateCoroutinesApi
 
@@ -39,6 +43,9 @@ class FrameShapesFragment : Fragment() {
     private var mainShapePopupPt: Point? = null
     private var popUpPointsInitialized = false
     private var useEmojiSwitch = false
+    private var minDistSymbols: EditText? = null
+    private var warningMsg: TextView? = null
+
  //   private var newFeaturesViewModel: NewFeaturesViewModel? = null
 
     override fun onAttach(context: Context) {
@@ -89,6 +96,7 @@ class FrameShapesFragment : Fragment() {
                 useEmojiSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                     ftp!!.useEmoji = isChecked
                     activateDeactivateHeartColorButton(view, !isChecked)
+                    resetMinDistEdgeShape()
                 }
                 // Hide emoji button if emojis not purchased
                 val emojiLineLayout = view.findViewById<LinearLayout>(R.id.emojiLinearLayout)
@@ -118,8 +126,39 @@ class FrameShapesFragment : Fragment() {
                         val noPurchaseMessage = view.findViewById<TextView>(R.id.noPurchaseMessage)
                         noPurchaseMessage.visibility = View.GONE
 
+            warningMsg = view.findViewById(R.id.warningMsg)
+            minDistSymbols = view.findViewById(R.id.min_dist_symbols)
 
+            minDistSymbols?.setText(
+                java.lang.String.format(
+                    Locale.getDefault(),
+                    "%d",
+                    ftp!!.minDistEdgeShape,
+                ), TextView.BufferType.EDITABLE
+            )
 
+            minDistSymbols?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, ::assignMinDistEdgeShapeIfMoreThan100
+            ) {   // If user has neglected to fill this value, reset this to default
+                ftp!!.minDistEdgeShape = Utilities.closestDistance(
+                    ftp!!.useEmoji,
+                    ftp!!.emoji,
+                    ftp?.symbol,
+                    ftp!!.symbolShapeType
+                )
+                warningMsg!!.visibility = View.VISIBLE
+                warningMsg!!.text = String.format(requireContext().resources!!.getString(R.string.blank_default_error_msg))
+            })
+        }
+    }
+
+    private fun assignMinDistEdgeShapeIfMoreThan100(dist: Int) {
+        if (dist >= 100) {
+            ftp!!.minDistEdgeShape = dist
+            warningMsg!!.visibility = View.GONE
+        }
+        else {
+            warningMsg!!.visibility = View.VISIBLE
+            warningMsg!!.text = String.format(requireContext().resources.getString(R.string.less_than_100_error_msg), dist)
         }
     }
 
@@ -262,7 +301,7 @@ class FrameShapesFragment : Fragment() {
 
     private fun emojiPopupReceivedClick(alertDialog: Dialog) {
         alertDialog.dismiss()
-        ftp!!.emoji = emojiButton!!.getEmoji()
+        ftp!!.emoji = emojiButton!!.emoji
     }
 
     private fun openShapePopup() {
@@ -298,6 +337,7 @@ class FrameShapesFragment : Fragment() {
         alertDialog.dismiss()
         ftp!!.symbolShapeType = filledShapeButton!!.getShapeType()
         ftp!!.symbol = filledShapeButton!!.getSymbol()
+        resetMinDistEdgeShape()
     }
 
     private fun openMainShapePopup() {
@@ -330,5 +370,24 @@ class FrameShapesFragment : Fragment() {
     private fun openMainShapePopupReceivedClick(alertDialog: Dialog) {
         alertDialog.dismiss()
         ftp!!.mainShapeType = unfilledShapeButton!!.getShapeType()
+        resetMinDistEdgeShape()
+    }
+
+    private fun resetMinDistEdgeShape() {
+        ftp?.minDistEdgeShape = Utilities.closestDistance(
+            ftp!!.useEmoji,
+            ftp!!.emoji,
+            ftp?.symbol,
+            ftp!!.symbolShapeType
+        )
+
+        if (minDistSymbols != null && ftp?.minDistEdgeShape != null) {
+            val str = ftp?.minDistEdgeShape!!.toString()
+            minDistSymbols!!.setText(str)
+        }
+
+        if (warningMsg != null) {
+            warningMsg!!.visibility = View.GONE
+        }
     }
 }

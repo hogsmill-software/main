@@ -3,9 +3,7 @@ package com.example.frametext.fragments
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputFilter
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -128,19 +126,9 @@ class SettingsFragment : Fragment() {
                 ftp!!.getTxtSymbolsMargin()
             ), TextView.BufferType.EDITABLE
         )
-        symbolsToTextNumber.filters = arrayOf(MinMaxFilter("0", "50"))
-        symbolsToTextNumber.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                if (s.isNotEmpty()) {
-                    ftp!!.setTxtSymbolsMargin(s.toString().toInt())
-                } else {
-                    ftp!!.setTxtSymbolsMargin(0)
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        })
+        symbolsToTextNumber?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 50, { t ->
+            (ftp!!.setTxtSymbolsMargin(t))
+        }, { ftp!!.setTxtSymbolsMargin(0) }))
 
         val outerMarginNumber = view.findViewById<EditText>(R.id.outerMarginNumber)
         outerMarginNumber.setText(
@@ -150,20 +138,9 @@ class SettingsFragment : Fragment() {
                 ftp!!.outerMargin
             ), TextView.BufferType.EDITABLE
         )
-        outerMarginNumber.filters = arrayOf<InputFilter>(MinMaxFilter("0", "500"))
-        outerMarginNumber.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                if (s.isNotEmpty()) {
-                   ftp!!.outerMargin = s.toString().toInt()
-                } else {
-                    ftp!!.outerMargin = 0
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        })
-
+        outerMarginNumber?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, { t ->
+            ftp!!.outerMargin = t }, { ftp!!.outerMargin = 0 }))
+        
         val buttonNavToFrmShapeSettings = view.findViewById<View>(R.id.frameShapeSettings)
         buttonNavToFrmShapeSettings.setOnClickListener { navigateToFrameShapeSettingsFragment() }
 
@@ -186,6 +163,7 @@ class SettingsFragment : Fragment() {
         deleteSettingsButton.setOnClickListener { deleteSettings() }
 
     }
+
 
     fun saveSelectedItem() {
    //     selectedItem = spinner.getSelectedItem() as String
@@ -244,27 +222,7 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun onClickTextColorButton(v: View?, textColorButton: AppCompatButton) {
-        context?.let {
-            ftp?.let { it1 ->
-                ColorPickerPopup.Builder(it).initialColor(it1.textColor)
-                    .enableBrightness(true)
-                    .enableAlpha(true)
-                    .okTitle(resources.getString(R.string.select))
-                    .cancelTitle(resources.getString(R.string.cancel))
-                    .showIndicator(true)
-                    .showValue(true)
-                    .build()
-                    .show(v,
-                        object : ColorPickerPopup.ColorPickerObserver() {
-                            override fun onColorPicked(color: Int) {
-                                textColorButton.setBackgroundColor(color)
-                                ftp!!.textColor = color
-                            }
-                        })
-            }
-        }
-    }
+
 
 
     fun updateHyphenDropdown() {

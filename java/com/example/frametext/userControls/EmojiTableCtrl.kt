@@ -138,7 +138,7 @@ class EmojiTableCtrl : View, View.OnClickListener {
         // Click on bottom border and get crash without if statement as out of range.
         // Click on right border and leftmost next item selected without columns check.
         if (pos < emojiCellCtrlList.size && col < columns && pos >= 0) {
-            selectedEmojiCtrl!!.setEmoji(emojiCellCtrlList[pos].getEmoji())
+            selectedEmojiCtrl!!.setEmoji(emojiCellCtrlList[pos].emoji)
             success = performClick()
         }
         return success
@@ -154,11 +154,11 @@ class EmojiTableCtrl : View, View.OnClickListener {
         this.selectedEmojiCtrl = selectedEmojiCtrl
         var selectedEmoji = ""
         if (selectedEmojiCtrl != null) {
-            selectedEmoji = selectedEmojiCtrl.getEmoji()
+            selectedEmoji = selectedEmojiCtrl.emoji
         }
         for (idx in emojiCellCtrlList.indices) {
             val ecc = emojiCellCtrlList[idx]
-            if (ecc.getEmoji().compareTo(selectedEmoji) == 0) {
+            if (ecc.emoji.compareTo(selectedEmoji) == 0) {
                 ecc.isSelected = true
             }
         }

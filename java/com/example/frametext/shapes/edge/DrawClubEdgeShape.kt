@@ -29,8 +29,6 @@ class DrawClubEdgeShape(size: Int, override var color: Int) : ColoredEdgeShapeDe
         private set
     override var bottomAdjustment: Float = -2 * size.toFloat()
         private set
-    override var closestDistance: Int = 150
-        private set
 
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
         var yy = y
