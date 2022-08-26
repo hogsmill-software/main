@@ -140,7 +140,7 @@ class SettingsFragment : Fragment() {
         )
         outerMarginNumber?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, { t ->
             ftp!!.outerMargin = t }, { ftp!!.outerMargin = 0 }))
-        
+
         val buttonNavToFrmShapeSettings = view.findViewById<View>(R.id.frameShapeSettings)
         buttonNavToFrmShapeSettings.setOnClickListener { navigateToFrameShapeSettingsFragment() }
 
