@@ -26,12 +26,12 @@ class ShapeTableCtrl : View, View.OnClickListener {
     private var verticalGapHeight = 0f
     private var popUpBound: RectF? = null
 
-    constructor(context: Context) : super(context) {
-        init(context)
+    constructor(context: Context, purchasedMore: Boolean) : super(context) {
+        init(context, purchasedMore)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context)
+        init(context, false)
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -39,10 +39,10 @@ class ShapeTableCtrl : View, View.OnClickListener {
         attrs,
         defStyleAttr
     ) {
-        init(context)
+        init(context, false)
     }
 
-    private fun init(context: Context) {
+    private fun init(context: Context, purchasedMore: Boolean) {
         shapeCellCtrlList.add(ShapeCellCtrl(context, SymbolShapeType.Square, false))
         shapeCellCtrlList.add(ShapeCellCtrl(context, "▲", false))
         shapeCellCtrlList.add(ShapeCellCtrl(context, SymbolShapeType.Circle, false))
@@ -58,7 +58,11 @@ class ShapeTableCtrl : View, View.OnClickListener {
             val scc = ShapeCellCtrl(context, suit, false)
             shapeCellCtrlList.add(scc)
         }
-        val remainingSymbols = "✪⍟⎈❉❋✺✹✸✶✷✵✲✱✦⊛⁕❃❂✼⨳✚❖✜֎֍†‡•◙█●▬★"
+        var remainingSymbols = "✪⍟⎈❉❋✺✹✸✶✷✵✲✱✦⊛"
+
+        if (purchasedMore) {
+            remainingSymbols =  remainingSymbols + "⁕❃❂✼⨳✚❖✜֎֍†‡•◙█●▬★"
+        }
 
         for (element in remainingSymbols) {
             val scc = ShapeCellCtrl(context, element.toString(), false)

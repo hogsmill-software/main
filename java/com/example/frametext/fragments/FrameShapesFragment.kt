@@ -10,7 +10,6 @@ import android.text.InputFilter
 import android.view.*
 import android.widget.CompoundButton
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
@@ -18,7 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.frametext.FrameTextApplication
 import com.example.frametext.R
+import com.example.frametext.billing.SKU_MORE_EMOJIS
+import com.example.frametext.billing.SKU_MORE_SYMBOLS
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.globalObjects.FrameTextParameters
@@ -27,11 +29,10 @@ import com.example.frametext.helpers.Utilities
 import com.example.frametext.userControls.*
 import com.example.frametext.userControls.colorPicker.ColorPickerPopup
 import com.example.frametext.viewModels.FrameTextParametersViewModel
+import com.example.frametext.viewModels.NewFeaturesViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import java.util.*
 
-//import kotlinx.coroutines.DelicateCoroutinesApi
-
-//@OptIn(DelicateCoroutinesApi::class)
 class FrameShapesFragment : Fragment() {
     private var fragmentActivityContext: FragmentActivity? = null
     var ftp: FrameTextParameters? = null
@@ -45,26 +46,21 @@ class FrameShapesFragment : Fragment() {
     private var useEmojiSwitch = false
     private var minDistSymbols: EditText? = null
     private var warningMsg: TextView? = null
-
- //   private var newFeaturesViewModel: NewFeaturesViewModel? = null
+    private var newFeaturesViewModel: NewFeaturesViewModel? = null
+    private var purchasedMoreEmojis = false
+    private var purchasedMoreSymbols = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentActivityContext = context as FragmentActivity
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val heartValParametersViewModel = ViewModelProvider(requireActivity()).get(
             FrameTextParametersViewModel::class.java
         )
-        ftp = heartValParametersViewModel.getSelectedItem().value//.selectedItem.value
-
-    //    val newFeaturesViewModelFactory: NewFeaturesViewModel.NewFeaturesViewModelFactory =
-    //        NewFeaturesViewModel.NewFeaturesViewModelFactory(
-    //            (requireActivity().application as HeartsValentineApplication).appContainer.storeManager
-     //       )
-    //    newFeaturesViewModel = ViewModelProvider(this, newFeaturesViewModelFactory)
-     //       .get(NewFeaturesViewModel::class.java)
+        ftp = heartValParametersViewModel.getSelectedItem().value
 
         val symbolsColorButton = view.findViewById<AppCompatButton>(R.id.symbolsColorButton)
         symbolsColorButton.setBackgroundColor(ftp!!.symbolsColor)
@@ -74,9 +70,35 @@ class FrameShapesFragment : Fragment() {
             )
         }
 
+        // Check in app purchase here
+        val newFeaturesViewModelFactory: NewFeaturesViewModel.NewFeaturesViewModelFactory =
+            NewFeaturesViewModel.NewFeaturesViewModelFactory(
+                (requireActivity().application as FrameTextApplication).appContainer.storeManager
+            )
+        newFeaturesViewModel = ViewModelProvider(this, newFeaturesViewModelFactory)
+            .get(NewFeaturesViewModel::class.java)
+
+        val act = activity
+        if (act != null) {
+            newFeaturesViewModel!!.isPurchased(SKU_MORE_EMOJIS).observe(
+                viewLifecycleOwner
+            ) { purchasedMoreEmojis = it }
+
+            newFeaturesViewModel!!.isPurchased(SKU_MORE_SYMBOLS).observe(
+                viewLifecycleOwner
+            ) { purchasedMoreSymbols = it }
+        }
+
+        val notPurchasedMoreEmojisMessage = view.findViewById<TextView>(R.id.notPurchasedMoreEmojisMessage)
+        notPurchasedMoreEmojisMessage.visibility = if (purchasedMoreEmojis) View.GONE else View.VISIBLE
+
+        val notPurchasedMoreSymbolsMessage = view.findViewById<TextView>(R.id.notPurchasedMoreSymbolsMessage)
+        notPurchasedMoreSymbolsMessage.visibility = if (purchasedMoreSymbols) View.GONE else View.VISIBLE
+
         emojiButton = view.findViewById(R.id.emojiButton)
         emojiButton?.setEmoji(ftp!!.emoji)
         emojiButton?.setOnClickListener { _: View? -> openEmojiPopup() }
+
         filledShapeButton = view.findViewById(R.id.filledShapeButton)
         if (ftp!!.symbolShapeType == SymbolShapeType.None) {
             filledShapeButton?.setSymbol(ftp!!.symbol)
@@ -84,71 +106,46 @@ class FrameShapesFragment : Fragment() {
             filledShapeButton?.setShapeType(ftp!!.symbolShapeType)
         }
         filledShapeButton?.setOnClickListener { _: View? -> openShapePopup() }
-        activateDeactivateHeartColorButton(view, !ftp!!.useEmoji)
+
+        activateDeactivateSymbolColorButton(view, !ftp!!.useEmoji)
         val useEmojiSwitch = view.findViewById<SwitchCompat>(R.id.useEmojiSwitch)
 
-        val act = activity
-        if (act != null) {
-
-
-
-                useEmojiSwitch.isChecked = ftp!!.useEmoji
-                useEmojiSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                    ftp!!.useEmoji = isChecked
-                    activateDeactivateHeartColorButton(view, !isChecked)
-                    resetMinDistEdgeShape()
-                }
-                // Hide emoji button if emojis not purchased
-                val emojiLineLayout = view.findViewById<LinearLayout>(R.id.emojiLinearLayout)
-
-
-
-                    // Hide symbol button if symbols and colours not purchased
-                    val symbolLinearLayout = view.findViewById<LinearLayout>(R.id.symbolLinearLayout)
-
-
-
-                    // Hide symbol colour button if symbols and colours not purchased
-                    val symbolColourLinearLayout =
-                        view.findViewById<LinearLayout>(R.id.symbolColourLinearLayout)
-
-               //     newFeaturesViewModel!!.isPurchased(SKU_MAINFRAME_SHAPES).observe(this.viewLifecycleOwner
-
-                        // Hide symbol colour button if symbols and colours not purchased
-                        val mainShapeLinearLayout = view.findViewById<LinearLayout>(R.id.mainShapeLinearLayout)
-
-                        unfilledShapeButton = view.findViewById(R.id.unfilledShapeButton)
-                        unfilledShapeButton?.setFillShape(false)
-                        unfilledShapeButton?.setShapeType(ftp!!.mainShapeType)
-                        unfilledShapeButton?.setOnClickListener { _: View? -> openMainShapePopup() }
-
-                        // If no purchases, show friendly message
-                        val noPurchaseMessage = view.findViewById<TextView>(R.id.noPurchaseMessage)
-                        noPurchaseMessage.visibility = View.GONE
-
-            warningMsg = view.findViewById(R.id.warningMsg)
-            minDistSymbols = view.findViewById(R.id.min_dist_symbols)
-
-            minDistSymbols?.setText(
-                java.lang.String.format(
-                    Locale.getDefault(),
-                    "%d",
-                    ftp!!.minDistEdgeShape,
-                ), TextView.BufferType.EDITABLE
-            )
-
-            minDistSymbols?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, ::assignMinDistEdgeShapeIfMoreThan100
-            ) {   // If user has neglected to fill this value, reset this to default
-                ftp!!.minDistEdgeShape = Utilities.closestDistance(
-                    ftp!!.useEmoji,
-                    ftp!!.emoji,
-                    ftp?.symbol,
-                    ftp!!.symbolShapeType
-                )
-                warningMsg!!.visibility = View.VISIBLE
-                warningMsg!!.text = String.format(requireContext().resources!!.getString(R.string.blank_default_error_msg))
-            })
+        useEmojiSwitch.isChecked = ftp!!.useEmoji
+        useEmojiSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            ftp!!.useEmoji = isChecked
+            activateDeactivateSymbolColorButton(view, !isChecked)
+            resetMinDistEdgeShape()
         }
+
+        unfilledShapeButton = view.findViewById(R.id.unfilledShapeButton)
+        unfilledShapeButton?.setFillShape(false)
+        unfilledShapeButton?.setShapeType(ftp!!.mainShapeType)
+        unfilledShapeButton?.setOnClickListener { _: View? -> openMainShapePopup() }
+
+
+
+        warningMsg = view.findViewById(R.id.warningMsg)
+        minDistSymbols = view.findViewById(R.id.min_dist_symbols)
+
+        minDistSymbols?.setText(
+            java.lang.String.format(
+                Locale.getDefault(),
+                "%d",
+                ftp!!.minDistEdgeShape,
+            ), TextView.BufferType.EDITABLE
+        )
+
+        minDistSymbols?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, ::assignMinDistEdgeShapeIfMoreThan100
+        ) {   // If user has neglected to fill this value, reset this to default
+            ftp!!.minDistEdgeShape = Utilities.closestDistance(
+                ftp!!.useEmoji,
+                ftp!!.emoji,
+                ftp?.symbol,
+                ftp!!.symbolShapeType
+            )
+            warningMsg!!.visibility = View.VISIBLE
+            warningMsg!!.text = String.format(requireContext().resources!!.getString(R.string.blank_default_error_msg))
+        })
     }
 
     private fun assignMinDistEdgeShapeIfMoreThan100(dist: Int) {
@@ -235,7 +232,7 @@ class FrameShapesFragment : Fragment() {
         }
     }
 
-    private fun activateDeactivateHeartColorButton(view: View, activate: Boolean) {
+    private fun activateDeactivateSymbolColorButton(view: View, activate: Boolean) {
         val emojiText = view.findViewById<TextView>(R.id.emojiText)
         emojiText.setTextColor(if (activate) Color.GRAY else Color.BLACK)
         val edgeShapeText = view.findViewById<TextView>(R.id.edgeShapeText)
@@ -276,7 +273,7 @@ class FrameShapesFragment : Fragment() {
         }
         initializePopUpPoints()
         val alertDialog = Dialog(this.requireContext())
-        val etc = this.context?.let { EmojiTableCtrl(it) }
+        val etc = this.context?.let { EmojiTableCtrl(it, purchasedMoreEmojis) }
         etc?.setSelectedEmojiCtrl(emojiButton)
         alertDialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -286,8 +283,8 @@ class FrameShapesFragment : Fragment() {
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.copyFrom(alertDialog.window!!.attributes)
         layoutParams.gravity = Gravity.TOP or Gravity.START
-        layoutParams.x = 0 //emojiPopUpPt.x - etc.getComputedWidth();
-        layoutParams.y = 0 //emojiPopUpPt.y + etc.getComputedStartDrawHeight();
+        layoutParams.x = 0
+        layoutParams.y = 0
         layoutParams.width = mainShapePopupPt!!.x
         layoutParams.height = mainShapePopupPt!!.y
         alertDialog.window!!.attributes = layoutParams
@@ -312,7 +309,7 @@ class FrameShapesFragment : Fragment() {
         val alertDialog = Dialog(this.requireContext())
         //  ([ShapeType, String])[] shapeTypeArray = {[ShapeType.StraightHeart, 0], ShapeType.Circle, ShapeType.Square, ShapeType.Star, ShapeType.Spade, ShapeType.Club, ShapeType.Diamond};
         if (this.context != null) {
-            val stc = ShapeTableCtrl(this.requireContext())
+            val stc = ShapeTableCtrl(this.requireContext(), purchasedMoreSymbols)
 
             filledShapeButton?.let { stc.setSelectedShapeCtrl(it) }
             alertDialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -321,8 +318,8 @@ class FrameShapesFragment : Fragment() {
             val layoutParams = WindowManager.LayoutParams()
             layoutParams.copyFrom(alertDialog.window!!.attributes)
             layoutParams.gravity = Gravity.TOP or Gravity.START
-            layoutParams.x = shapePopUpPt!!.x // - stc.getComputedWidth();
-            layoutParams.y = shapePopUpPt!!.y // + stc.getComputedStartDrawHeight();
+            layoutParams.x = shapePopUpPt!!.x
+            layoutParams.y = shapePopUpPt!!.y
             alertDialog.window!!.attributes = layoutParams
             stc.setOnClickListener {
                 openShapePopupReceivedClick(

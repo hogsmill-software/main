@@ -45,7 +45,6 @@
                 android:text="@string/use_emoji" />
 
             <LinearLayout
-                android:id="@+id/emojiLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -96,8 +95,18 @@
                         android:background="@color/white"/>
                 </FrameLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/notPurchasedMoreEmojisMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_purchased_more_emojis"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
             <LinearLayout
-                android:id="@+id/symbolLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -146,8 +155,19 @@
                         android:background="@color/white"/>
                 </FrameLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/notPurchasedMoreSymbolsMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_purchased_more_symbols"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
             <LinearLayout
-                android:id="@+id/symbolColourLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -222,7 +242,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/mainShapeLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -271,15 +290,6 @@
                         android:background="@color/white"/>
                 </FrameLayout>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/noPurchaseMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_purchase"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="13dp"
-                android:textColor="@color/black"/>
         </LinearLayout>
     </ScrollView>
     </FrameLayout>

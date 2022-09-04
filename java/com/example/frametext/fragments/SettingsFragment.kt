@@ -156,6 +156,9 @@ class SettingsFragment : Fragment() {
         val buttonNavToFontSettings = view.findViewById<View>(R.id.font_settings)
         buttonNavToFontSettings.setOnClickListener { navigateToFontSettingsFragment() }
 
+        val buttonNavToNewFeatureSetting = view.findViewById<View>(R.id.newFeatures)
+        buttonNavToNewFeatureSetting.setOnClickListener { navigateToNewFeaturesFragment() }
+
         val saveSettingsButton = view.findViewById<View>(R.id.saveSettings)
         saveSettingsButton.setOnClickListener { saveSettings() }
 
@@ -164,10 +167,9 @@ class SettingsFragment : Fragment() {
 
     }
 
-
     fun saveSelectedItem() {
-   //     selectedItem = spinner.getSelectedItem() as String
-   //     neededToDownloadText = hyphenFilesList.isEmpty()
+        selectedItem = spinner!!.selectedItem as String
+        neededToDownloadText = hyphenFilesList!!.isEmpty()
     }
 
     private fun navigateToHyphenationFragment() {
@@ -200,6 +202,16 @@ class SettingsFragment : Fragment() {
             .commit()
     }
 
+    private fun navigateToNewFeaturesFragment() {
+        val fragment: Fragment = NewFeaturesFragment()
+        val fragmentManager = fragmentActivityContext!!.supportFragmentManager
+        fragmentManager.beginTransaction()
+            .replace(R.id.settings_frame, fragment)
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun onClickBackgroundColorButton(v: View?, backgroundColorButton: AppCompatButton) {
         context?.let {
             ftp?.let { it1 ->
@@ -221,9 +233,6 @@ class SettingsFragment : Fragment() {
             }
         }
     }
-
-
-
 
     fun updateHyphenDropdown() {
         if (hyphenFilesList!!.isEmpty()) {
@@ -260,20 +269,6 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    /*
-    void activateDeactivateHeartColorButton(View view, boolean activate) {
-        // This methods just gives the disable look.
-        TextView heartColorText = view.findViewById(R.id.heartColorText);
-        heartColorText.setTextColor(activate? Color.BLACK : Color.GRAY);
-
-        View heartColorButtonFrame  = view.findViewById(R.id.heartColorButtonFrame);
-        if (getContext() != null && getContext().getResources() != null) {
-            heartColorButtonFrame.setBackgroundColor(activate ? getContext().getResources().getColor(R.color.highlightBlue) : getContext().getResources().getColor(R.color.midDayFog));
-        }
-        androidx.appcompat.widget.AppCompatButton heartsColorButton = view.findViewById(R.id.heartsColorButton);
-        heartsColorButton.setBackgroundColor(activate? hvp.getHeartsColor() : hvp.getHeartsColor() & 0x88FFFFFF);
-    }
-    */
     private fun saveSettings() {
         try {
             val jsonObj: JSONObject? = ftp?.let {

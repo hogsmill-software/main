@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/info_pop_up_border">
+    <TextView
+        android:id="@+id/infoDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"/>
+    <ImageView
+        android:id="@+id/infoInAppImage"
+        android:layout_width="wrap_content"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/info_description"
+        android:layout_height="wrap_content">
+    </ImageView>
+    <TextView
+        android:id="@+id/infoPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold|italic"
+        android:textColor="@color/black"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/close"
+        android:id="@+id/closePopupBtn"/>
+</LinearLayout>

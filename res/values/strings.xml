@@ -47,7 +47,8 @@
     <string name="select_symbol">Select a symbol</string>
     <string name="select_main_shape">Select a main shape</string>
     <string name="new_features">New features &#62;</string>
-    <string name="no_purchase">You have not purchased any New features yet. To do this, press \u0022&#60; Back\u0022, scroll down if necessary and select \u0022New features &#62;\u0022.</string>
+    <string name="not_purchased_more_emojis">You can buy more emojis. To do this, press \u0022&#60; Back\u0022, scroll down if necessary and select \u0022New features &#62;\u0022.</string>
+    <string name="not_purchased_more_symbols">You can buy more symbols. To do this, press \u0022&#60; Back\u0022, scroll down if necessary and select \u0022New features &#62;\u0022.</string>
     <string name="new_features_ellipsis">New features…</string>
     <string name="info">Info…</string>
     <string name="buy">Buy!</string>
@@ -58,9 +59,8 @@
     <string name="title_emojis">Emojis in frame</string>
     <string name="title_main_shapes">Different main shapes</string>
     <string name="title_symbols_and_colours">Symbols and colours in frame</string>
-    <string name="description_emojis">Allows you to choose between 54 different emojis in frame. These can be used instead of standard red heart.</string>
-    <string name="description_main_shapes">This feature allows you to have a main shape different from a heart.\nAt this time, a square and a circle are also possible as main shapes.</string>
-    <string name="description_symbols_and_colours">Allows you to choose between an extra 31 other symbols instead of heart in frame.\nThis feature also enables you to change colour of symbol, so can have a pink heart for instance.</string>
+    <string name="description_emojis">Allows you to choose from an extra 12 more emojis. See inside red markings.</string>
+    <string name="description_symbols_and_colours">Allows you to choose between an extra 18 other symbols. See inside red frame.</string>
     <string name="already_purchased_">Already purchased!</string>
     <string name="font_settings">Font settings &#62;</string>
     <string name="font_family">Font name</string>

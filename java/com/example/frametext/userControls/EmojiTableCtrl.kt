@@ -24,12 +24,12 @@ class EmojiTableCtrl : View, View.OnClickListener {
     private var verticalGapHeight = 0f
     private var popUpBound: RectF? = null
 
-    constructor(context: Context) : super(context) {
-        init(context)
+    constructor(context: Context, purchasedMore: Boolean) : super(context) {
+        init(context, purchasedMore)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context)
+        init(context, false)
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -37,14 +37,22 @@ class EmojiTableCtrl : View, View.OnClickListener {
         attrs,
         defStyleAttr
     ) {
-        init(context)
+        init(context, false)
     }
 
-    private fun init(context: Context) {
+    private fun init(context: Context, purchasedMore: Boolean) {
         var emojiCount = 0
         var i = 0
         val emojiList =
-            "❤️\uD83E\uDDE1\uD83D\uDC9B\uD83D\uDC9A\uD83D\uDC99\uD83D\uDC9C\uD83D\uDDA4\uD83E\uDD0D\uD83E\uDD0E\uD83D\uDC94\uD83D\uDC8C️\uD83D\uDC95\uD83D\uDC9E\uD83D\uDC93\uD83D\uDC97\uD83D\uDC96\uD83D\uDC98\uD83D\uDC9D\uD83D\uDC9F\uD83D\uDD34\uD83D\uDFE0\uD83D\uDFE1\uD83D\uDFE2\uD83D\uDD35\uD83D\uDFE3⚪⚫\uD83D\uDFE4\uD83D\uDD3A\uD83D\uDD38\uD83D\uDD39\uD83D\uDD36\uD83D\uDD37\uD83D\uDFE5\uD83D\uDFE7\uD83D\uDFE8\uD83D\uDFE9\uD83D\uDFE6\uD83D\uDFEA⬛⬜\uD83D\uDFEB♠️♣️♥️♦️\uD83D\uDCA7\uD83E\uDE78⭐\uD83C\uDF1F✨\uD83D\uDCA5\uD83D\uDD25☀️"
+            if (purchasedMore) "❤️\uD83E\uDDE1\uD83D\uDC9B\uD83D\uDC9A\uD83D\uDC99\uD83D\uDC9C\uD83D\uDDA4\uD83E\uDD0D\uD83E\uDD0E\uD83D\uDC94\uD83D\uDC8C️\uD83D\uDC95\uD83D\uDC9E\uD83D\uDC93\uD83D\uDC97\uD83D\uDC96\uD83D\uDC98\uD83D\uDC9D\uD83D\uDC9F\uD83D\uDD34\uD83D\uDFE0\uD83D\uDFE1\uD83D\uDFE2\uD83D\uDD35\uD83D\uDFE3⚪⚫\uD83D\uDFE4\uD83D\uDD3A\uD83D\uDD38\uD83D\uDD39\uD83D\uDD36\uD83D\uDD37\uD83D\uDFE5\uD83D\uDFE7\uD83D\uDFE8\uD83D\uDFE9\uD83D\uDFE6\uD83D\uDFEA⬛⬜\uD83D\uDFEB♠️♣️♥️♦️\uD83D\uDCA7\uD83E\uDE78⭐\uD83C\uDF1F✨\uD83D\uDCA5\uD83D\uDD25☀️"
+            else "❤️\uD83E\uDDE1\uD83D\uDC9B\uD83D\uDC9A\uD83D\uDC99\uD83D\uDC9C" +
+                    "\uD83D\uDDA4\uD83E\uDD0D\uD83E\uDD0E" +
+                  /*  "\uD83D\uDC94\uD83D\uDC8C️\uD83D\uDC95\uD83D\uDC9E\uD83D\uDC93\uD83D\uDC97\uD83D\uDC96\uD83D\uDC98\uD83D\uDC9D\uD83D\uDC9F*/
+        "\uD83D\uDD34\uD83D\uDFE0\uD83D\uDFE1\uD83D\uDFE2\uD83D\uDD35\uD83D\uDFE3⚪⚫\uD83D\uDFE4" +
+                   "\uD83D\uDD3A" +
+              /*      "\uD83D\uDD38" +
+                    "\uD83D\uDD39" + */
+                    "\uD83D\uDD36\uD83D\uDD37\uD83D\uDFE5\uD83D\uDFE7\uD83D\uDFE8\uD83D\uDFE9\uD83D\uDFE6\uD83D\uDFEA⬛⬜\uD83D\uDFEB♠️♣️♥️♦️\uD83D\uDCA7\uD83E\uDE78⭐\uD83C\uDF1F✨\uD83D\uDCA5\uD83D\uDD25☀️"
         while (i < emojiList.length) {
             val chr = emojiList[i]
             var singleEmojiString: String?
