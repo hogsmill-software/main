@@ -1,10 +1,7 @@
 package com.example.frametext.engine
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.Typeface
+import android.graphics.*
 import com.example.frametext.engine.mainSizes.MainSizes
 import com.example.frametext.engine.textBoundaries.TextBoundaries
 import com.example.frametext.enums.MainShapeType
@@ -398,16 +395,20 @@ internal class DrawText(
                     }
                     // Don't forget to add last line.
                     if (lineWidth + wordWidth <= boundingRect.width() && !breakLoop) {
-                        lineInProgress.append(wordInProgress)
-                        lineWidth += wordWidth.toFloat()
-                        txtRectDetails.text = lineInProgress.toString()
-                        txtRectDetails.textWidth = lineWidth.toInt()
-                        lineInProgress.setLength(0)
-                        wordInProgress.setLength(0)
-                        lineWidth = 0f
-                        // here end of line set to true
-                        txtRectDetails.setEndOfLine()
-                        txtLineDetails.allTextFits = true
+                        // When Java splits data into lines using carriage return, it removes all end empty lines
+                        // Kotlin doesn't do this, so have to check if empty otherwise erases last valid line.
+                        if (data.isNotEmpty()) {
+                            lineInProgress.append(wordInProgress)
+                            lineWidth += wordWidth.toFloat()
+                            txtRectDetails.text = lineInProgress.toString()
+                            txtRectDetails.textWidth = lineWidth.toInt()
+                            lineInProgress.setLength(0)
+                            wordInProgress.setLength(0)
+                            lineWidth = 0f
+                            // here end of line set to true
+                            txtRectDetails.setEndOfLine()
+                            txtLineDetails.allTextFits = true
+                        }
                     } else {
                         // We couldn't place last piece of text...
                         txtLineDetails.allTextFits = false
@@ -424,12 +425,8 @@ internal class DrawText(
                         }
                     }
                 }
-                //		scanner.close();
             }
-        } //catch (FileNotFoundException e) {
-        //	System.out.println("An error occurred reading " + tfd.getContentText() + " file.");
-        //	e.printStackTrace();
-        //}
+        }
         catch (e: NoSuchElementException) {
             println("An error occurred with call to rectLstIterator.next() file.")
             e.printStackTrace()
@@ -443,17 +440,17 @@ internal class DrawText(
     }
 
     /*
-	//void drawTextBoundingRectangles() {
-	//	int col = paint.getColor();
-	//	paint.setColor(Color.BLUE);
-    //
-	//	for (TextRectDetails txtRectDetails : rectLst) {
-	//		Rect txtBoundingRect = txtRectDetails.getBoundingRect();
-	//		g2d.drawRect(txtBoundingRect, paint);
-		}
-		paint.setColor(col);
-	}
-	*/
+    fun drawTextBoundingRectangles() {
+        val col = paint.color
+        paint.color = Color.BLUE
+        for (txtRectDetails in rectLst!!) {
+            val txtBoundingRect = txtRectDetails.boundingRect
+            canvas.drawRect(txtBoundingRect, paint)
+        }
+        paint.color = col
+    }
+    */
+
     fun draw() {
         try {
             // Uncomment for testing purpose
