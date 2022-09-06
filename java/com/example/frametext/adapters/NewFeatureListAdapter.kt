@@ -54,17 +54,11 @@ class NewFeatureListAdapter internal constructor(
             newFeaturesFragment: NewFeaturesFragment
         ) {
             val infoTitle: Int = when (item) {
-                SKU_MORE_EMOJIS -> R.string.title_emojis
-                SKU_MORE_SYMBOLS -> R.string.title_symbols_and_colours
+                SKU_MORE_EMOJIS -> R.string.title_more_emojis
+                SKU_MORE_SYMBOLS -> R.string.title_more_symbols
                 else -> 0
             }
             binding.featureName.text = context.resources.getString(infoTitle)
-
-            newFeaturesViewModel.getSkuDetails(item).title.observe(newFeaturesFragment.viewLifecycleOwner) {
-                binding.featureName.apply {
-                    text = it
-                }
-            }
 
             newFeaturesViewModel.isPurchased(item).observe(
                 newFeaturesFragment.viewLifecycleOwner

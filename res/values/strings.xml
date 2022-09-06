@@ -56,9 +56,8 @@
     <string name="info_description">[screenshot of choices]</string>
     <string name="close">Close</string>
     <string name="price">Price:&#160;%1$s</string>
-    <string name="title_emojis">Emojis in frame</string>
-    <string name="title_main_shapes">Different main shapes</string>
-    <string name="title_symbols_and_colours">Symbols and colours in frame</string>
+    <string name="title_more_emojis">More emojis</string>
+    <string name="title_more_symbols">More symbols</string>
     <string name="description_emojis">Allows you to choose from an extra 12 more emojis. See inside red markings.</string>
     <string name="description_symbols_and_colours">Allows you to choose between an extra 18 other symbols. See inside red frame.</string>
     <string name="already_purchased_">Already purchased!</string>
