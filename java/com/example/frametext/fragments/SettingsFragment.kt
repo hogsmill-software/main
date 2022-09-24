@@ -58,24 +58,16 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         val frameTextParametersViewModel: FrameTextParametersViewModel =
-            ViewModelProvider(requireActivity()).get(
-                FrameTextParametersViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
         ftp = frameTextParametersViewModel.getSelectedItem().value
         val hyphenFilesListViewModel: HyphenFilesListViewModel =
-            ViewModelProvider(requireActivity()).get(
-                HyphenFilesListViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[HyphenFilesListViewModel::class.java]
         hyphenFilesList = hyphenFilesListViewModel.selectedItem.value
         val hplFileNameMapViewModel: HplFileNameMapViewModel =
-            ViewModelProvider(requireActivity()).get(
-                HplFileNameMapViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[HplFileNameMapViewModel::class.java]
         hplFileNameMap = hplFileNameMapViewModel.getSelectedItem().value
         val fileNameHplMapViewModel: FileNameHplMapViewModel =
-            ViewModelProvider(requireActivity()).get(
-                FileNameHplMapViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[FileNameHplMapViewModel::class.java]
         fileNameHplMap = fileNameHplMapViewModel.getSelectedItem().value
 
         val button = view.findViewById<View>(R.id.downloadHyphenNavButton)
