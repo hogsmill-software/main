@@ -22,11 +22,11 @@ class ImageGenerator(
     minDistEdgeShape: Int,
     context: Context
 ) {
-    var bitmap: Bitmap? = null
+    var bitmap: Bitmap
         private set
 
-    private var paint: Paint? = null
-    private var canvas: Canvas? = null
+    private var paint: Paint
+    private var canvas: Canvas
     private val sd: EdgeShapeDetails
     private var dt: DrawText? = null
     private var pixelTxtLen = 0f
@@ -35,38 +35,16 @@ class ImageGenerator(
     private var context: Context
     private val mainShapeType: MainShapeType
     private val minDistEdgeShape: Int
-    private fun initialize() {
-        initializeGraphics()
-        setStandardTextFont()
-        computePixelTextLength()
-    }
 
-    // Initialises an unused graphic object so can calculate text size.
-    // We don't know the size of the image till we have the text size.
-    // We can only have this by creating an unused graphic object.
-    private fun initializeGraphics() {
-        bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-        canvas = Canvas(bitmap!!)
-    }
 
-    private fun setStandardTextFont() {
-        val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
-        paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint!!.typeface = tf
-        paint!!.textSize = 150f
-    }
 
-    // Computes the pixel text length. (Not number of characters)
-    private fun computePixelTextLength() {
-        pixelTxtLen = paint!!.measureText(tfd.contentText)
-    }
 
     // part of experiment - used for computing gross estimate
     private fun textLenFromWidth(width: Int): Int {
         //hd = new HeartDetails(/*canvas*/);
         mainSizes.resetSizes(width)
-        dt = DrawText(canvas!!, mainSizes, sd, tfd, mainShapeType, context)
-        return dt!!.computeTextSpaceAvailable()
+        dt = DrawText(canvas, mainSizes, sd, tfd, mainShapeType, context)
+        return dt?.computeTextSpaceAvailable() ?: 0
     }
 
     private fun computeWidthEstimateFromTextLen(
@@ -120,20 +98,21 @@ class ImageGenerator(
         var smallDecrease = false
         var smallIncrease = false
         var bestOptimization = false
-        canvas = Canvas(bitmap!!)
+        canvas = Canvas(bitmap)
         do {
             counter++
             if (mainSizes.width == 0 || mainSizes.height == 0) throw FrameTextException(
                 context.resources.getString(R.string.error_no_width_or_height)
             )
-            dt = DrawText(canvas!!, mainSizes, sd, tfd, mainShapeType, context)
+            dt = DrawText(canvas, mainSizes, sd, tfd, mainShapeType, context)
+
             if (counter == 1) {
-                dt!!.resetTextInputDetails()
+                dt?.resetTextInputDetails()
             }
-            dt!!.computeTextPlacementDetails()
+            dt?.computeTextPlacementDetails()
             if (bestOptimization) break
-            if (dt!!.doesAllTextFit()) {
-                if (dt!!.sizeOptimized()) {
+            if (dt?.doesAllTextFit() == true) {
+                if (dt?.sizeOptimized() == true) {
                     goodSize = true
                 } else {
                     // Frame is too big. We need to decrease it and try again...
@@ -166,21 +145,21 @@ class ImageGenerator(
                 increased = true
             }
         } while (!goodSize && counter < maxIterations)
-        bitmap!!.recycle()
+        bitmap.recycle()
         bitmap = Bitmap.createBitmap(
             mainSizes.width,
             mainSizes.height,
             Bitmap.Config.ARGB_8888
         )
-        canvas = Canvas(bitmap!!)
-        dt = DrawText(canvas!!, mainSizes, sd, tfd, mainShapeType, context)
-        dt!!.computeTextPlacementDetails()
+        canvas = Canvas(bitmap)
+        dt = DrawText(canvas, mainSizes, sd, tfd, mainShapeType, context)
+        dt?.computeTextPlacementDetails()
     }
 
     fun draw() {
         // We work out this distance later, which will be a bit greater.
-        paint!!.color = backgroundColor
-        canvas!!.drawRect(0f, 0f, mainSizes.width.toFloat(), mainSizes.height.toFloat(), paint!!)
+        paint.color = backgroundColor
+        canvas.drawRect(0f, 0f, mainSizes.width.toFloat(), mainSizes.height.toFloat(), paint)
 
         /* for testing emoji placement
 		if (sd instanceof EmojiShapeDetails) {
@@ -192,13 +171,13 @@ class ImageGenerator(
         // Draw hearts...
         val ms: MainShape? = ObjectFromShapeType.getMainShape(
             mainShapeType,
-            canvas!!, mainSizes, minDistEdgeShape, sd
+            canvas, mainSizes, minDistEdgeShape, sd
         )
         ms?.draw()
 
         // for testing so see where bounding rectangles are...
         // dt.drawTextBoundingRectangles();
-        dt!!.draw()
+        dt?.draw()
     }
 
     companion object {
@@ -207,12 +186,24 @@ class ImageGenerator(
     }
 
     init {
-        mainSizes = ObjectFromShapeType.getMainSizeFromShapeType(mainShapeType, margin)!!
+        mainSizes = ObjectFromShapeType.getMainSizeFromShapeType(mainShapeType, margin)
         this.sd = sd
         this.backgroundColor = backgroundColor
-        initialize()
         this.context = context
         this.mainShapeType = mainShapeType
         this.minDistEdgeShape = minDistEdgeShape
+        // Initialises an unused graphic object so can calculate text size.
+        // We don't know the size of the image till we have the text size.
+        // We can only have this by creating an unused graphic object.
+        bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        canvas = Canvas(bitmap)
+
+        val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
+        paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.typeface = tf
+        paint.textSize = 150f
+
+        // Computes the pixel text length. (Not number of characters)
+        pixelTxtLen = paint.measureText(tfd.contentText)
     }
 }

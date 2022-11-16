@@ -7,7 +7,7 @@ class TextRectDetails(val boundingRect: Rect) {
         endOfLine = true
     }
 
-    var text: String? = null
+    var text: String = String()
     var textWidth = 0
     private var endOfLine = false
 

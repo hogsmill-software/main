@@ -19,16 +19,16 @@ internal class DrawText(
     context: Context?
 ) {
     private val paint: Paint
-    private val tb: TextBoundaries?
+    private val tb: TextBoundaries
     private var hyphenator: Hyphenator? = null
     private val hyphen = '-'
     private val hyphenWidth: Float
-    private var rectLst: List<TextRectDetails>? = null
+    private var rectLst: List<TextRectDetails> = ArrayList()
     private var lastWord: String? = null
     fun computeTextSpaceAvailable(): Int {
-        rectLst = tb?.computeTextRectangles()
+        rectLst = tb.computeTextRectangles()
         var retVal = 0
-        for (txtRectDetails in rectLst!!) {
+        for (txtRectDetails in rectLst) {
             retVal += txtRectDetails.boundingRect.width()
         }
         return retVal
@@ -41,7 +41,7 @@ internal class DrawText(
     ) {
         if (wordInProgressNoPunctuation.isNotEmpty()) {
             val brokenWords: Array<String> =
-                hyphenator!!.hyphenateWord(wordInProgressNoPunctuation.toString())
+                hyphenator?.hyphenateWord(wordInProgressNoPunctuation.toString()) ?: arrayOf(wordInProgressNoPunctuation.toString())
             if (brokenWordsList.size == 0) {
                 brokenWords[0] = punctuations.toString() + brokenWords[0]
                 brokenWordsList.addAll(brokenWords)
@@ -75,8 +75,8 @@ internal class DrawText(
         var noHyphenWord =
             false // This is set to true when we are not hyphenating a particular word.
         try {
-            rectLst = tb?.computeTextRectangles()
-            val rectLstIterator = rectLst!!.iterator()
+            rectLst = tb.computeTextRectangles()
+            val rectLstIterator = rectLst.iterator()
             if (rectLstIterator.hasNext()) {
                 var txtRectDetails = rectLstIterator.next()
                 var boundingRect: Rect = txtRectDetails.boundingRect
@@ -198,7 +198,7 @@ internal class DrawText(
                                         }
                                         exception.add(wordFragment.toString())
                                         handlerRet = j - 1
-                                        hyphenator!!.addException(exception.toTypedArray())
+                                        hyphenator?.addException(exception.toTypedArray())
                                         usrExceptionMap[i] = UserExceptionDetails(
                                             wordInProgress.toString(),
                                             wordWidth,
@@ -456,7 +456,7 @@ internal class DrawText(
             // Uncomment for testing purpose
             //drawTextBoundingRectangles();
             paint.color = tfd.txtColor
-            for (txtRectDetails in rectLst!!) {
+            for (txtRectDetails in rectLst) {
                 val txtBoundingRect: Rect = txtRectDetails.boundingRect
                 var txt: String? = txtRectDetails.text
                 if (txt != null && txt.isNotEmpty()) {
@@ -562,12 +562,14 @@ internal class DrawText(
     // Otherwise returns false.
     fun sizeOptimized(): Boolean {
         var optimized = false
-        val li = rectLst!!.listIterator(rectLst!!.size)
+        val li = rectLst.listIterator(rectLst.size)
         var lastRectWidth = 0
         var previousRectWidth: Int
         var lastWordSegmentWidth = 0f
         if (tfd.hyphenateText && lastWord != null) {
-            val brokenWords: Array<String> = hyphenator!!.hyphenateWord(lastWord!!)
+            // According to Kotlin documentation the !! should be redundant here.
+            // See https://kotlinlang.org/docs/null-safety.html#checking-for-null-in-conditions
+            val brokenWords: Array<String> = hyphenator?.hyphenateWord(lastWord!!) ?: arrayOf(lastWord!!)
             val lastWordSegment = "-" + brokenWords[brokenWords.size - 1]
             //lastWordSegmentWidth = g2d.getFontMetrics().charsWidth(lastWordSegment.toCharArray(), 0, lastWordSegment.length());
             lastWordSegmentWidth = paint.measureText(lastWordSegment)
@@ -595,7 +597,7 @@ internal class DrawText(
                         } else {
                             // If the last word in rectangle is wider than rectangle below, then it is optimized.
                             val lastWordInRect: String =
-                                trd.text!!.substring(trd.text!!.lastIndexOf(" ") + 1)
+                                trd.text.substring(trd.text.lastIndexOf(" ") + 1)
 
                             val lastWordInRectWidth = paint.measureText(lastWordInRect)
                             if (lastWordInRectWidth > lastRectWidth) {

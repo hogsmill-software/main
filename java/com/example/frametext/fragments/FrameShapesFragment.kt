@@ -57,9 +57,7 @@ class FrameShapesFragment : Fragment() {
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val heartValParametersViewModel = ViewModelProvider(requireActivity()).get(
-            FrameTextParametersViewModel::class.java
-        )
+        val heartValParametersViewModel = ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
         ftp = heartValParametersViewModel.getSelectedItem().value
 
         val symbolsColorButton = view.findViewById<AppCompatButton>(R.id.symbolsColorButton)
@@ -75,8 +73,7 @@ class FrameShapesFragment : Fragment() {
             NewFeaturesViewModel.NewFeaturesViewModelFactory(
                 (requireActivity().application as FrameTextApplication).appContainer.storeManager
             )
-        newFeaturesViewModel = ViewModelProvider(this, newFeaturesViewModelFactory)
-            .get(NewFeaturesViewModel::class.java)
+        newFeaturesViewModel = ViewModelProvider(this, newFeaturesViewModelFactory)[NewFeaturesViewModel::class.java]
 
         val act = activity
         if (act != null) {
@@ -121,8 +118,6 @@ class FrameShapesFragment : Fragment() {
         unfilledShapeButton?.setFillShape(false)
         unfilledShapeButton?.setShapeType(ftp!!.mainShapeType)
         unfilledShapeButton?.setOnClickListener { _: View? -> openMainShapePopup() }
-
-
 
         warningMsg = view.findViewById(R.id.warningMsg)
         minDistSymbols = view.findViewById(R.id.min_dist_symbols)
