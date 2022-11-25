@@ -61,7 +61,7 @@ class ShapeTableCtrl : View, View.OnClickListener {
         var remainingSymbols = "✪⍟⎈❉❋✺✹✸✶✷✵✲✱✦⊛"
 
         if (purchasedMore) {
-            remainingSymbols =  remainingSymbols + "⁕❃❂✼⨳✚❖✜֎֍†‡•◙█●▬★"
+            remainingSymbols += "⁕❃❂✼⨳✚❖✜֎֍†‡•◙█●▬★"
         }
 
         for (element in remainingSymbols) {

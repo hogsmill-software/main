@@ -29,6 +29,8 @@ class ColorPickerPopup private constructor(builder: Builder) {
     private val showIndicator: Boolean
     private val showValue: Boolean
     private val onlyUpdateOnTouchEventUp: Boolean
+    private var layout: View? = null
+
     fun show(observer: ColorPickerObserver?) {
         if (observer != null) {
             show(null, observer)
@@ -83,6 +85,9 @@ class ColorPickerPopup private constructor(builder: Builder) {
         if (showValue) {
             colorHex.text = colorHex(initialColor)
         }
+        // my addition
+        val colorTableCtrl: ColorTableCtrl = layout.findViewById(R.id.colorTableCtrl)
+        colorTableCtrl.colorPickerPopup = this
 
         val observer2 = object : ColorObserver {
             override fun onColor(color: Int, fromUser: Boolean, shouldPropagate: Boolean) {
@@ -92,8 +97,11 @@ class ColorPickerPopup private constructor(builder: Builder) {
                 if (showValue) {
                     colorHex.text = colorHex(color)
                 }
+                // my addition
+                colorTableCtrl.setColor(color)
             }
         }
+        colorTableCtrl.subscribe(observer2)
         colorPickerView.subscribe(observer2)
 
         // My code additions
@@ -110,7 +118,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
         val spinnerControls = layout.findViewById<LinearLayout>(R.id.spinnerControls)
         spinnerControls.visibility = View.GONE
         initializeSpinnerControls(layout)
-        initializeColorButtons(layout)
+
         popupWindow!!.animationStyle = R.style.TopDefaultsViewColorPickerPopupAnimation
         if (tempParent == null) tempParent = layout
         popupWindowDarkBackground!!.showAtLocation(tempParent, Gravity.NO_GRAVITY, 0, 0)
@@ -175,6 +183,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
     }
 
     private fun initializeSpinnerControls(layout: View) {
+        this.layout = layout
         val incrementOpacityButton = layout.findViewById<ImageButton>(R.id.incrementOpacityButton)
         val decrementOpacityButton = layout.findViewById<ImageButton>(R.id.decrementOpacityButton)
         val hexNumberOpacity = layout.findViewById<TextView>(R.id.hexNumberOpacity)
@@ -253,59 +262,13 @@ class ColorPickerPopup private constructor(builder: Builder) {
         repeatTouchListenersInitialize(decrementBlueButton, hexNumberBlue, layout, 4, false)
     }
 
-    private fun initializeColorButtons(layout: View) {
-        val colorPickerView: ColorPickerView = layout.findViewById(R.id.colorPickerView)
-        setColorButtonListeners(colorPickerView, layout, R.id.color1)
-        setColorButtonListeners(colorPickerView, layout, R.id.color2)
-        setColorButtonListeners(colorPickerView, layout, R.id.color3)
-        setColorButtonListeners(colorPickerView, layout, R.id.color4)
-        setColorButtonListeners(colorPickerView, layout, R.id.color5)
-        setColorButtonListeners(colorPickerView, layout, R.id.color6)
-        setColorButtonListeners(colorPickerView, layout, R.id.color7)
-        setColorButtonListeners(colorPickerView, layout, R.id.color8)
-    }
-
-    private fun setColorButtonListeners(
-        colorPickerView: ColorPickerView,
-        layout: View,
-        colorFrmId: Int
-    ) {
-        val viewColor = layout.findViewById<View>(colorFrmId)
-        val colorDrawable = viewColor.background as ColorDrawable
-        viewColor.setOnClickListener {
-            setColorOnClick(
-                colorPickerView,
-                layout,
-                colorDrawable.color
-            )
+    // Quickfix method
+    fun setColorFromColorTableCtrlView(color: Int) {
+        if (layout != null) {
+            val colorPickerView: ColorPickerView = layout!!.findViewById(R.id.colorPickerView)
+            colorPickerView.setInitialColor(color)
+            setSpinnerControls(layout!!, color)
         }
-    }
-
-    private fun setColorOnClick(colorPickerView: ColorPickerView, layout: View, color: Int) {
-        colorPickerView.setInitialColor(color)
-        setSpinnerControls(layout, color)
-        setSelectedColorFrame(layout)
-    }
-
-    private fun setSelectedColorFrame(layout: View) {
-        val colorPickerView: ColorPickerView = layout.findViewById(R.id.colorPickerView)
-        val selectedColor: Int = colorPickerView.color
-        setColorFrameStatus(layout, selectedColor, R.id.color1, R.id.colorFrame1)
-        setColorFrameStatus(layout, selectedColor, R.id.color2, R.id.colorFrame2)
-        setColorFrameStatus(layout, selectedColor, R.id.color3, R.id.colorFrame3)
-        setColorFrameStatus(layout, selectedColor, R.id.color4, R.id.colorFrame4)
-        setColorFrameStatus(layout, selectedColor, R.id.color5, R.id.colorFrame5)
-        setColorFrameStatus(layout, selectedColor, R.id.color6, R.id.colorFrame6)
-        setColorFrameStatus(layout, selectedColor, R.id.color7, R.id.colorFrame7)
-        setColorFrameStatus(layout, selectedColor, R.id.color8, R.id.colorFrame8)
-    }
-
-    private fun setColorFrameStatus(layout: View, selectedColor: Int, colorId: Int, frameId: Int) {
-        val viewColor = layout.findViewById<View>(colorId)
-        val colorDrawable = viewColor.background as ColorDrawable
-        val viewColorFrame = layout.findViewById<View>(frameId)
-        viewColorFrame.visibility =
-            if (colorDrawable.color == selectedColor) View.VISIBLE else View.INVISIBLE
     }
 
     private fun onUpClick(hexNumber: TextView, layout: View, shiftRequired: Int) {
@@ -375,7 +338,10 @@ class ColorPickerPopup private constructor(builder: Builder) {
             4 -> colorPickerView.setInitialColor(color and -0x100 or num)
             else -> colorPickerView.setInitialColor(color and -0x100 or num)
         }
-        setSelectedColorFrame(layout)
+        val selectedColor: Int = colorPickerView.color
+        val colorTableCtrl: ColorTableCtrl = layout.findViewById(R.id.colorTableCtrl)
+        colorTableCtrl.setColor(selectedColor)
+        colorTableCtrl.invalidate()
     }
 
     private fun setCustomTab(layout: View) {
@@ -385,11 +351,9 @@ class ColorPickerPopup private constructor(builder: Builder) {
         customBtn.setTypeface(null, Typeface.BOLD)
         customBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.pinkMagenta))
 
-
         val standardBtn = layout.findViewById<AppCompatButton>(R.id.standard)
         standardBtn.setTypeface(null, Typeface.NORMAL)
         standardBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.navyBlue))
-
 
         val spinnerControls = layout.findViewById<LinearLayout>(R.id.spinnerControls)
         spinnerControls.visibility = View.GONE
@@ -411,7 +375,6 @@ class ColorPickerPopup private constructor(builder: Builder) {
         setSpinnerControls(layout, colorPickerView.color)
         val colorTableLayout = layout.findViewById<LinearLayout>(R.id.colorTableLayout)
         colorTableLayout.visibility = View.VISIBLE
-        setSelectedColorFrame(layout)
     }
 
     private fun setSpinnerControls(layout: View, color: Int) {
