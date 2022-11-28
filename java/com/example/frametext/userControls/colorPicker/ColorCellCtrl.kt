@@ -74,7 +74,8 @@ class ColorCellCtrl: View  {
     companion object {
         var size = 0f
         private set
-        private var selectFrameWidth = 0f
+        public var selectFrameWidth = 0f
+            private set
         private var boundingRect: RectF? = null
         private var selectFrameRect: RectF? = null
         private var colorRect: RectF? = null

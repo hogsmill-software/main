@@ -47,14 +47,14 @@ class ColorPickerPopup private constructor(builder: Builder) {
             layout, ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         popupWindow!!.isOutsideTouchable = false // so doesn't close if click on outside
         val blankLayout: View = inflater.inflate(R.layout.blank_screen_popup, null)
         popupWindowDarkBackground = PopupWindow(
             blankLayout, ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        popupWindowDarkBackground!!.setBackgroundDrawable(ColorDrawable(0x66000000))
+        popupWindowDarkBackground!!.setBackgroundDrawable(ColorDrawable(0x30000000))
         popupWindowDarkBackground!!.isOutsideTouchable =
             false // so doesn't close if click on outside
         colorPickerView.setInitialColor(initialColor)

@@ -50,12 +50,14 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
         super.onDraw(canvas)
 
         canvas.save()
+        // Need to subtract frame width or right frames of right cells are not drawn.
+        var drawableWidth = width - ColorCellCtrl.selectFrameWidth
         for (row in 0..lastRow) {
             canvas.save()
             for (column in 0..lastColumn) {
                 colorCellCtrlList[row*columns + column].draw(canvas)
                 // Need to add 1 as drawn AFTER width of ColorCellCtrl - otherwise overlay 1 pixel.
-                val horizontalTranslate = ColorCellCtrl.size + (width - columns*ColorCellCtrl.size)/columns + 1
+                val horizontalTranslate = ColorCellCtrl.size + (drawableWidth - columns*ColorCellCtrl.size)/columns + 1
                 canvas.translate(horizontalTranslate, 0f)
             }
             canvas.restore()
@@ -80,14 +82,18 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
         if (colPos - col < ColorCellCtrl.size/(ColorCellCtrl.size + gapWidth)) {
             colorCellCtrlList.forEach {it.isSelected = false}
             val row: Int = (event.y/ColorCellCtrl.size).toInt()
-            val activeCellCtrl = colorCellCtrlList[row*columns + col]
-            activeCellCtrl.isSelected = true
-            color = activeCellCtrl.color
-            // doesn't work.
-            emitter.onColor(color = color, fromUser = true, shouldPropagate = true)
-            this.colorPickerPopup?.setColorFromColorTableCtrlView(color)
-            this.invalidate()
-            success = performClick()
+            val pos = row*columns + col
+
+            if (pos < colorCellCtrlList.size && pos >= 0) {
+                val activeCellCtrl = colorCellCtrlList[pos]
+                activeCellCtrl.isSelected = true
+                color = activeCellCtrl.color
+                // doesn't work.
+                emitter.onColor(color = color, fromUser = true, shouldPropagate = true)
+                this.colorPickerPopup?.setColorFromColorTableCtrlView(color)
+                this.invalidate()
+                success = performClick()
+            }
         }
 
         return success
