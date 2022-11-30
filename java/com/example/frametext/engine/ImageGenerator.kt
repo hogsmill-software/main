@@ -154,6 +154,20 @@ class ImageGenerator(
         canvas = Canvas(bitmap)
         dt = DrawText(canvas, mainSizes, sd, tfd, mainShapeType, context)
         dt?.computeTextPlacementDetails()
+        // Let's check if text using all rectangle. If not, we can subtly increase space between characters.
+        // A bit rudimentary, but work so far with few samples I have.
+        while (dt?.remUnUsedRectangles()!! > 0) {
+            dt?.incrementCharGap()
+            dt?.clearTextFromRectangles()
+            dt?.computeTextPlacementDetails(false)
+
+            if (dt?.doesAllTextFit() == false) {
+                dt?.decrementCharGap()
+                dt?.clearTextFromRectangles()
+                dt?.computeTextPlacementDetails(false)
+                break
+            }
+        }
     }
 
     fun draw() {

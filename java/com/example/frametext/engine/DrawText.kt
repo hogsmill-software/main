@@ -25,6 +25,7 @@ internal class DrawText(
     private val hyphenWidth: Float
     private var rectLst: List<TextRectDetails> = ArrayList()
     private var lastWord: String? = null
+    private var charGap: Float = 0f
     fun computeTextSpaceAvailable(): Int {
         rectLst = tb.computeTextRectangles()
         var retVal = 0
@@ -56,17 +57,19 @@ internal class DrawText(
     }
 
     private fun getCharWidth(chr: Char): Float {
+        val width: Float
         if (charWidthMap.containsKey(chr)) {
-            val width = charWidthMap[chr]
-            return width ?: 0.0f
+            width = charWidthMap[chr] ?: 0.0f
         }
-        val width = paint.measureText(chr.toString())
-        charWidthMap[chr] = width
-        return width
+        else {
+            width = paint.measureText(chr.toString())
+            charWidthMap[chr] = width
+        }
+        return width + charGap
     }
 
     // Computes bounding rectangles and text inside each of the rectangles
-    fun computeTextPlacementDetails() {
+    fun computeTextPlacementDetails(reInitEectangles: Boolean = true) {
         var chr: Char
         val lineInProgress = StringBuilder()
         val wordInProgress = StringBuilder()
@@ -75,7 +78,9 @@ internal class DrawText(
         var noHyphenWord =
             false // This is set to true when we are not hyphenating a particular word.
         try {
-            rectLst = tb.computeTextRectangles()
+            if (reInitEectangles) {
+                rectLst = tb.computeTextRectangles()
+            }
             val rectLstIterator = rectLst.iterator()
             if (rectLstIterator.hasNext()) {
                 var txtRectDetails = rectLstIterator.next()
@@ -618,6 +623,34 @@ internal class DrawText(
 
     fun resetTextInputDetails() {
         textInputDetails.reset()
+    }
+
+    fun remUnUsedRectangles(): Int {
+        // Computes remaining unused/empty rectangle.
+        var txt = rectLst.last().text
+        var idxRev = rectLst.size - 1
+        var unUsedRectangles = 0
+
+        while (txt == "" && --idxRev >= 0) {
+            txt = rectLst[idxRev].text
+            unUsedRectangles++
+        }
+        return unUsedRectangles
+    }
+
+    fun incrementCharGap() {
+        charGap ++
+    }
+
+    fun decrementCharGap() {
+        charGap --
+    }
+
+    fun clearTextFromRectangles() {
+        rectLst.forEach {
+            it.text = ""
+            it.textWidth = 0
+        }
     }
 
     companion object {
