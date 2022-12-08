@@ -5,4 +5,5 @@ enum class MainShapeType {
     Heart,
     Circle,
     Square,
+    Diamond
 }

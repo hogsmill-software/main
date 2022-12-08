@@ -2,17 +2,11 @@ package com.example.frametext.engine
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.example.frametext.engine.mainShapes.CircleMainShape
-import com.example.frametext.engine.mainShapes.HeartMainShape
-import com.example.frametext.engine.mainShapes.MainShape
-import com.example.frametext.engine.mainShapes.SquareMainShape
+import com.example.frametext.engine.mainShapes.*
 import com.example.frametext.engine.mainSizes.HeartMainSizes
 import com.example.frametext.engine.mainSizes.MainSizes
 import com.example.frametext.engine.mainSizes.SquareMainSizes
-import com.example.frametext.engine.textBoundaries.CircleTextBoundaries
-import com.example.frametext.engine.textBoundaries.HeartTextBoundaries
-import com.example.frametext.engine.textBoundaries.SquareTextBoundaries
-import com.example.frametext.engine.textBoundaries.TextBoundaries
+import com.example.frametext.engine.textBoundaries.*
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.shapes.edge.EdgeShapeDetails
 
@@ -20,7 +14,7 @@ object ObjectFromShapeType {
     fun getMainSizeFromShapeType(st: MainShapeType?, margin: Int): MainSizes {
         when (st) {
             MainShapeType.Heart -> return HeartMainSizes(margin)
-            MainShapeType.Square, MainShapeType.Circle -> return SquareMainSizes(margin)
+            MainShapeType.Square, MainShapeType.Circle, MainShapeType.Diamond -> return SquareMainSizes(margin)
             else -> {}
         }
         // Return a square -this could be wrong, but alternative if return null is potential crash. Best option is let's default to that - not perfect admittedly.
@@ -43,6 +37,9 @@ object ObjectFromShapeType {
             }
             MainShapeType.Circle -> if (mainSizes is SquareMainSizes) {
                 return CircleTextBoundaries(paint, mainSizes, sd, tfd)
+            }
+            MainShapeType.Diamond -> if (mainSizes is SquareMainSizes) {
+                return DiamondTextBoundaries(paint, mainSizes, sd, tfd)
             }
             else -> {}
         }
@@ -100,6 +97,9 @@ object ObjectFromShapeType {
             }
             MainShapeType.Circle -> if (mainSizes is SquareMainSizes) {
                 return CircleMainShape(canvas, mainSizes, closestDistance, sd)
+            }
+            MainShapeType.Diamond -> if (mainSizes is SquareMainSizes) {
+                return DiamondMainShape(canvas, mainSizes, closestDistance, sd)
             }
             else -> {}
         }

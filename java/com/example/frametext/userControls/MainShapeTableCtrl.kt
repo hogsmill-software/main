@@ -25,7 +25,7 @@ class MainShapeTableCtrl : View, View.OnClickListener {
     private var selectMainShape: String? = null
     private val rcBounds = Rect()
     private var verticalGapHeight = 0f
-    private var popUpBound: RectF? = null
+    private lateinit var popUpBound: RectF
 
     constructor(context: Context?) : super(context) {
         columns = 0
@@ -51,7 +51,7 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         shapeTypes: Array<MainShapeType>,
         fillShape: Boolean
     ) : super(context) {
-        columns = 3
+        columns = 4
         lastColumn = columns - 1
         this.fillShape = fillShape
         init(context, shapeTypes)
@@ -91,7 +91,7 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         super.onDraw(canvas)
         paint.color = ContextCompat.getColor(context, R.color.white)
         paint.style = Paint.Style.FILL
-        canvas.drawRect(popUpBound!!, paint)
+        canvas.drawRect(popUpBound, paint)
         paint.color = ContextCompat.getColor(context, R.color.black)
         canvas.drawText(
             selectMainShape!!,

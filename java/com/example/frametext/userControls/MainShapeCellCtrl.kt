@@ -10,10 +10,7 @@ import androidx.core.content.ContextCompat
 import com.example.frametext.R
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.helpers.Utilities
-import com.example.frametext.shapes.main.CircleMainShape
-import com.example.frametext.shapes.main.HeartMainShape
-import com.example.frametext.shapes.main.MainShape
-import com.example.frametext.shapes.main.SquareMainShape
+import com.example.frametext.shapes.main.*
 
 class MainShapeCellCtrl : View {
     private val paint = Paint()
@@ -72,6 +69,8 @@ class MainShapeCellCtrl : View {
                 CircleMainShape(ContextCompat.getColor(context, R.color.black), innerShapeWidth)
             MainShapeType.Square -> drawShapeDetails =
                 SquareMainShape(ContextCompat.getColor(context, R.color.black), innerShapeWidth)
+            MainShapeType.Diamond -> drawShapeDetails =
+                DiamondMainShape(ContextCompat.getColor(context, R.color.black), innerShapeWidth)
             else -> {}
         }
 

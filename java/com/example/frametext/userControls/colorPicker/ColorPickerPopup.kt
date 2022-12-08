@@ -54,7 +54,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
             blankLayout, ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        popupWindowDarkBackground!!.setBackgroundDrawable(ColorDrawable(0x50000000))
+        popupWindowDarkBackground!!.setBackgroundDrawable(ColorDrawable(Constants.DARK_BACKGROUND_OPACITY))
         popupWindowDarkBackground!!.isOutsideTouchable =
             false // so doesn't close if click on outside
         colorPickerView.setInitialColor(initialColor)

@@ -335,7 +335,7 @@ class FrameShapesFragment : Fragment() {
     private fun openMainShapePopup() {
         initializePopUpPoints()
         val alertDialog = Dialog(this.requireContext())
-        val shapeTypeArray = arrayOf(MainShapeType.Heart, MainShapeType.Circle, MainShapeType.Square)
+        val shapeTypeArray = arrayOf(MainShapeType.Heart, MainShapeType.Circle, MainShapeType.Square, MainShapeType.Diamond)
         val mSTC = this.context?.let { MainShapeTableCtrl(it, shapeTypeArray, false) }
         unfilledShapeButton?.let { mSTC?.setSelectedEmojiCtrl(it) }
         alertDialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)

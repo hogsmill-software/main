@@ -105,6 +105,7 @@ internal class DrawText(
                     var breakLoop = false
                     var emojiLen = 0
                     var emojiPos = -2
+                    var emojiShiftedNextRectangle = false
                     var i = 0
                     while (i < data.length) {
 
@@ -273,6 +274,8 @@ internal class DrawText(
                                         lineWidth = 0f
                                         txtRectDetails = rectLstIterator.next()
                                         boundingRect = txtRectDetails.boundingRect
+                                        // We are calling rectLstIterator.next(). Be careful or have an empty blank line.
+                                        emojiShiftedNextRectangle = true
                                     } else {
                                         break
                                     }
@@ -372,6 +375,14 @@ internal class DrawText(
                                     // Rectangles start by getting wider
                                     var badFit = true
                                     //	int currentWidth = txtRectDetails.getBoundingRect().width;
+                                    // Protection so don't have a blank empty line. See Tom Ato sample which ends with tomato emoji. Use diamond main shape
+                                    if (emojiShiftedNextRectangle) {
+                                        boundingRect = txtRectDetails.boundingRect
+                                        if (wordWidth <= boundingRect.width()) {
+                                            badFit = false
+                                        }
+                                    }
+
                                     while (rectLstIterator.hasNext() && badFit) {
                                         txtRectDetails = rectLstIterator.next()
                                         boundingRect = txtRectDetails.boundingRect
@@ -389,6 +400,11 @@ internal class DrawText(
                                         break
                                     }
                                 }
+
+                                if (emojiShiftedNextRectangle) {
+                                    emojiShiftedNextRectangle = false
+                                }
+
                                 if (chr == ' ' && i != data.length - 1) {
                                     i-- // We are changing bounding rectangle, so we have to go back so we re-process the space we have just
                                     // done on next bounding box and we add word that didn't fit into next bounding rectangle that way..
