@@ -15,9 +15,8 @@ import com.example.frametext.shapes.main.*
 class MainShapeCellCtrl : View {
     private val paint = Paint()
     private var showBorder = false
-    private var _isSelected = false
+    private var isMainShapeSelected = false
     private var shapeType: MainShapeType = MainShapeType.None
-    private var fillShape = false
     private var drawShapeDetails: MainShape? = null
     private var innerShapeBorder = 0f
 
@@ -40,14 +39,12 @@ class MainShapeCellCtrl : View {
     constructor(
         context: Context,
         shapeType: MainShapeType,
-        fillShape: Boolean,
         showBorder: Boolean
     ) : super(context) {
         initStandardSizes(context)
         this.shapeType = shapeType
-        this.fillShape = fillShape
         this.showBorder = showBorder
-        _isSelected = false
+        isMainShapeSelected = false
         createShape(context)
     }
 
@@ -73,8 +70,6 @@ class MainShapeCellCtrl : View {
                 DiamondMainShape(ContextCompat.getColor(context, R.color.black), innerShapeWidth)
             else -> {}
         }
-
-
     }
 
     fun setShapeType(shapeType: MainShapeType) {
@@ -87,15 +82,11 @@ class MainShapeCellCtrl : View {
         return shapeType
     }
 
-    fun setFillShape(fillShape: Boolean) {
-        this.fillShape = fillShape
-    }
-
     val size: Int
         get() = Companion.size.toInt()
 
     override fun setSelected(selected: Boolean) {
-        _isSelected = selected
+        isMainShapeSelected = selected
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -104,16 +95,16 @@ class MainShapeCellCtrl : View {
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = borderWidth
-            canvas.drawRect(boundingRect!!, paint)
+            canvas.drawRect(boundingRect, paint)
         }
-        if (_isSelected) {
+        if (isMainShapeSelected) {
             paint.color = ContextCompat.getColor(context, R.color.faintHighlightBlue)
             paint.style = Paint.Style.FILL
-            canvas.drawRect(boundingRect!!, paint)
+            canvas.drawRect(boundingRect, paint)
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = borderWidth
-            canvas.drawRect(boundingRect!!, paint)
+            canvas.drawRect(boundingRect, paint)
         }
         if (drawShapeDetails != null) {
             val shapeColor = ContextCompat.getColor(context, R.color.black)
@@ -125,29 +116,24 @@ class MainShapeCellCtrl : View {
     private fun drawShapeType(canvas: Canvas) {
         if (drawShapeDetails != null) {
             paint.color = drawShapeDetails!!.getColor()
-            if (fillShape) {
-                paint.style = Paint.Style.FILL
-            } else {
-                paint.style = Paint.Style.STROKE
-                val shapeWidth = Utilities.convertDpToPixel(3f, this.context).toInt()
-                paint.strokeWidth = shapeWidth.toFloat()
-            }
+            paint.style = Paint.Style.STROKE
+            val shapeWidth = Utilities.convertDpToPixel(3f, this.context).toInt()
+            paint.strokeWidth = shapeWidth.toFloat()
+
             val shapeHeight: Float = if (shapeType === MainShapeType.Heart) {
                 -drawShapeDetails!!.getHeight() + 1.5f * innerShapeBorder
             } else {
                 -drawShapeDetails!!.getHeight() + innerShapeBorder
             }
             drawShapeDetails!!.draw(canvas, innerShapeBorder, shapeHeight, paint)
-            if (!fillShape) {
-                paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
-                val writingWidth = Utilities.convertDpToPixel(1f, this.context).toInt()
-                paint.strokeWidth = writingWidth.toFloat()
-                drawShapeDetails!!.drawWriting(canvas, innerShapeBorder, shapeHeight, paint)
-                paint.color = drawShapeDetails!!.getColor()
-                val shapeWidth = Utilities.convertDpToPixel(3f, this.context).toInt()
-                paint.strokeWidth = shapeWidth.toFloat()
-                drawShapeDetails!!.draw(canvas, innerShapeBorder, shapeHeight, paint)
-            }
+
+            paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
+            val writingWidth = Utilities.convertDpToPixel(1f, this.context).toInt()
+            paint.strokeWidth = writingWidth.toFloat()
+            drawShapeDetails!!.drawWriting(canvas, innerShapeBorder, shapeHeight, paint)
+            paint.color = drawShapeDetails!!.getColor()
+            paint.strokeWidth = shapeWidth.toFloat()
+            drawShapeDetails!!.draw(canvas, innerShapeBorder, shapeHeight, paint)
         }
     }
 
@@ -160,15 +146,14 @@ class MainShapeCellCtrl : View {
     companion object {
         private var size = 0f
         private var borderWidth = 0f
-        private var boundingRect: RectF? = null
+        private lateinit var boundingRect: RectF
+        private var initialized = false
         private fun initStandardSizes(context: Context) {
-            size = Utilities.convertDpToPixel(28f, context)
-            borderWidth = Utilities.convertDpToPixel(1f, context)
-            if (boundingRect == null) {
-                boundingRect = RectF(
-                    0f, 0f,
-                    size, size
-                )
+            if (!initialized) {
+                initialized = true
+                size = Utilities.convertDpToPixel(28f, context)
+                borderWidth = Utilities.convertDpToPixel(1f, context)
+                boundingRect = RectF(0f, 0f, size, size)
             }
         }
     }

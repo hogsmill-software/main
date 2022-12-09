@@ -38,7 +38,7 @@ class FrameShapesFragment : Fragment() {
     var ftp: FrameTextParameters? = null
     private var emojiButton: EmojiCellCtrl? = null
     private var filledShapeButton: ShapeCellCtrl? = null
-    private var unfilledShapeButton: MainShapeCellCtrl? = null
+    private lateinit var unfilledShapeButton: MainShapeCellCtrl
     private var emojiPopUpPt: Point? = null
     private var shapePopUpPt: Point? = null
     private var mainShapePopupPt: Point? = null
@@ -115,9 +115,8 @@ class FrameShapesFragment : Fragment() {
         }
 
         unfilledShapeButton = view.findViewById(R.id.unfilledShapeButton)
-        unfilledShapeButton?.setFillShape(false)
-        unfilledShapeButton?.setShapeType(ftp!!.mainShapeType)
-        unfilledShapeButton?.setOnClickListener { _: View? -> openMainShapePopup() }
+        unfilledShapeButton.setShapeType(ftp!!.mainShapeType)
+        unfilledShapeButton.setOnClickListener { openMainShapePopup() }
 
         warningMsg = view.findViewById(R.id.warningMsg)
         minDistSymbols = view.findViewById(R.id.min_dist_symbols)
@@ -336,8 +335,7 @@ class FrameShapesFragment : Fragment() {
         initializePopUpPoints()
         val alertDialog = Dialog(this.requireContext())
         val shapeTypeArray = arrayOf(MainShapeType.Heart, MainShapeType.Circle, MainShapeType.Square, MainShapeType.Diamond)
-        val mSTC = this.context?.let { MainShapeTableCtrl(it, shapeTypeArray, false) }
-        unfilledShapeButton?.let { mSTC?.setSelectedEmojiCtrl(it) }
+        val mSTC = this.context?.let { MainShapeTableCtrl(it, shapeTypeArray, unfilledShapeButton) }
         alertDialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         if (mSTC != null) {
@@ -361,7 +359,7 @@ class FrameShapesFragment : Fragment() {
 
     private fun openMainShapePopupReceivedClick(alertDialog: Dialog) {
         alertDialog.dismiss()
-        ftp!!.mainShapeType = unfilledShapeButton!!.getShapeType()
+        ftp!!.mainShapeType = unfilledShapeButton.getShapeType()
         resetMinDistEdgeShape()
     }
 

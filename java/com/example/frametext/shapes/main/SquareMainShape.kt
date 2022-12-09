@@ -4,14 +4,17 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 
-class SquareMainShape(var _color: Int, private val _size: Int) :
+class SquareMainShape(private var _color: Int, _size: Int) :
     MainShape {
     var size: Float = 0.0f
+    private val path = Path()
 
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
         var yy = y
         yy += size
         canvas.drawRect(x, yy, x + size, yy + size, paint)
+        path.reset()
+        path.addRect(x, yy, x + size, yy + size, Path.Direction.CCW)
     }
 
     override fun getWidth(): Float {
@@ -47,7 +50,11 @@ class SquareMainShape(var _color: Int, private val _size: Int) :
         line.lineTo(x + size, 5 * size / 6f + vLineShift)
         line.moveTo(x, 6 * size / 6f + vLineShift)
         line.lineTo(x + size, 6 * size / 6f + vLineShift)
+
+        canvas.save()
+        canvas.clipPath(path)
         canvas.drawPath(line, paint)
+        canvas.restore()
     }
 
     init {
