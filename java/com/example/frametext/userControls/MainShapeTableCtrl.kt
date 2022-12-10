@@ -22,9 +22,9 @@ class MainShapeTableCtrl : View, View.OnClickListener {
     private val mainShapeCellCtrlList = ArrayList<MainShapeCellCtrl>()
     private lateinit var selectMainShape: String
     private val rcHeaderBounds = Rect()
-    private lateinit var rcFullScreenBound: RectF
+    private lateinit var rcFullScreenBounds: RectF
     private lateinit var rcPopupBounds: RectF
-    private var margin: Float = 0f
+    private var popupMargin: Float = 0f
     private var headerMainShapesGap = 0f // Gap between header and main shapes below.
     private var mainShapesHorizontalGap = 0f // Gap between the main shapes
 
@@ -77,9 +77,9 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectMainShape = resources.getString(R.string.select_main_shape)
         paint.getTextBounds(selectMainShape, 0, selectMainShape.length, rcHeaderBounds)
-        rcFullScreenBound = RectF(0f, 0f, ptMainScreenSize.x.toFloat(), ptMainScreenSize.y.toFloat())
+        rcFullScreenBounds = RectF(0f, 0f, ptMainScreenSize.x.toFloat(), ptMainScreenSize.y.toFloat())
 
-        margin = Utilities.convertDpToPixel(7f, context)
+        popupMargin = Utilities.convertDpToPixel(7f, context)
         headerMainShapesGap = Utilities.convertDpToPixel(40f, context)
         mainShapesHorizontalGap = Utilities.convertDpToPixel(12f, context)
         // Might need a vertical gap in future
@@ -91,17 +91,14 @@ class MainShapeTableCtrl : View, View.OnClickListener {
             (rows * size).toFloat()
         )
 
-
-
         val innerHeight = rcHeaderBounds.height() + rcMainShapesBounds.height() + headerMainShapesGap
-        rcPopupBounds = RectF((ptMainScreenSize.x - rcHeaderBounds.width()) / 2.0f - margin,
-            (ptMainScreenSize.y - innerHeight) / 2.0f - margin,
-            (ptMainScreenSize.x - rcHeaderBounds.width()) / 2.0f + rcHeaderBounds.width() + margin,
+        rcPopupBounds = RectF((ptMainScreenSize.x - rcHeaderBounds.width()) / 2.0f - popupMargin,
+            (ptMainScreenSize.y - innerHeight) / 2.0f - popupMargin,
+            (ptMainScreenSize.x - rcHeaderBounds.width()) / 2.0f + rcHeaderBounds.width() + popupMargin,
             (ptMainScreenSize.y - innerHeight) / 2.0f
                     + innerHeight
-                    + margin
+                    + popupMargin
         )
-
     }
 
     public override fun onDraw(canvas: Canvas) {
@@ -109,7 +106,7 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         paint.color = Constants.DARK_BACKGROUND_OPACITY
 
         paint.style = Paint.Style.FILL
-        canvas.drawRect(rcFullScreenBound, paint)
+        canvas.drawRect(rcFullScreenBounds, paint)
 
         paint.color = ContextCompat.getColor(context, R.color.white)
         canvas.drawRect(rcPopupBounds, paint)
@@ -117,13 +114,13 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         paint.color = ContextCompat.getColor(context, R.color.black)
         canvas.drawText(
             selectMainShape,
-            (rcFullScreenBound.width() - rcHeaderBounds.width()) / 2.0f,
-            rcPopupBounds.top + rcHeaderBounds.height() + margin,
+            (rcFullScreenBounds.width() - rcHeaderBounds.width()) / 2.0f,
+            rcPopupBounds.top + rcHeaderBounds.height() + popupMargin,
             paint
         )
         canvas.translate(
-            (rcFullScreenBound.width() - rcMainShapesBounds.width()) / 2.0f,
-            rcPopupBounds.top + rcHeaderBounds.height() + margin + headerMainShapesGap
+            (rcFullScreenBounds.width() - rcMainShapesBounds.width()) / 2.0f,
+            rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerMainShapesGap
         )
         paint.color = ContextCompat.getColor(context, R.color.midDayFog)
         paint.style = Paint.Style.STROKE
@@ -139,14 +136,14 @@ class MainShapeTableCtrl : View, View.OnClickListener {
 
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        setMeasuredDimension(rcFullScreenBound.width().toInt(), rcFullScreenBound.height().toInt())
+        setMeasuredDimension(rcFullScreenBounds.width().toInt(), rcFullScreenBounds.height().toInt())
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         super.onTouchEvent(event) // this super call is important !!!
         var success = false
-        val x = event.x - (rcFullScreenBound.width() - rcMainShapesBounds.width()) / 2.0f
-        val y = event.y - (rcPopupBounds.top + margin + rcHeaderBounds.height() + headerMainShapesGap)
+        val x = event.x - (rcFullScreenBounds.width() - rcMainShapesBounds.width()) / 2.0f
+        val y = event.y - (rcPopupBounds.top + popupMargin + rcHeaderBounds.height() + headerMainShapesGap)
 
         if (x >= 0 && x <= rcMainShapesBounds.width() && y >= 0 && y <= rcMainShapesBounds.height()) {
             val xSumSizeHorizontalGapRatio = x / (size + mainShapesHorizontalGap)

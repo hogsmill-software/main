@@ -95,16 +95,16 @@ class MainShapeCellCtrl : View {
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = borderWidth
-            canvas.drawRect(boundingRect, paint)
+            canvas.drawRect(rcBounds, paint)
         }
         if (isMainShapeSelected) {
             paint.color = ContextCompat.getColor(context, R.color.faintHighlightBlue)
             paint.style = Paint.Style.FILL
-            canvas.drawRect(boundingRect, paint)
+            canvas.drawRect(rcBounds, paint)
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = borderWidth
-            canvas.drawRect(boundingRect, paint)
+            canvas.drawRect(rcBounds, paint)
         }
         if (drawShapeDetails != null) {
             val shapeColor = ContextCompat.getColor(context, R.color.black)
@@ -146,14 +146,14 @@ class MainShapeCellCtrl : View {
     companion object {
         private var size = 0f
         private var borderWidth = 0f
-        private lateinit var boundingRect: RectF
+        private lateinit var rcBounds: RectF
         private var initialized = false
         private fun initStandardSizes(context: Context) {
             if (!initialized) {
                 initialized = true
                 size = Utilities.convertDpToPixel(28f, context)
                 borderWidth = Utilities.convertDpToPixel(1f, context)
-                boundingRect = RectF(0f, 0f, size, size)
+                rcBounds = RectF(0f, 0f, size, size)
             }
         }
     }

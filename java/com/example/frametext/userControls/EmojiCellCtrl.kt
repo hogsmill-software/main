@@ -18,7 +18,7 @@ class EmojiCellCtrl : View {
 
     private val paint = Paint()
     private var showBorder = false
-    private var _isSelected = false
+    private var isEmojiSelected = false
     private var isActive = true
 
     constructor(context: Context?) : super(context) {
@@ -49,7 +49,7 @@ class EmojiCellCtrl : View {
         }
         this.emoji = emoji
         this.showBorder = showBorder
-        _isSelected = false
+        isEmojiSelected = false
     }
 
     fun setEmoji(emoji: String) {
@@ -58,7 +58,7 @@ class EmojiCellCtrl : View {
     }
 
     override fun setSelected(selected: Boolean) {
-        _isSelected = selected
+        isEmojiSelected = selected
     }
 
     val size: Int
@@ -75,21 +75,21 @@ class EmojiCellCtrl : View {
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = borderWidth
-            boundingRect?.let { canvas.drawRect(it, paint) }
+            rcBounds.let { canvas.drawRect(it, paint) }
         }
-        if (_isSelected) {
+        if (isEmojiSelected) {
             paint.color = ContextCompat.getColor(context, R.color.faintHighlightBlue)
             paint.style = Paint.Style.FILL
-            boundingRect?.let { canvas.drawRect(it, paint) }
+            rcBounds.let { canvas.drawRect(it, paint) }
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = borderWidth
-            boundingRect?.let { canvas.drawRect(it, paint) }
+            rcBounds.let { canvas.drawRect(it, paint) }
         }
         if (!isActive) {
             paint.color = ContextCompat.getColor(context, R.color.midDayFog)
             paint.style = Paint.Style.FILL
-            boundingRect?.let { canvas.drawRect(it, paint) }
+            rcBounds.let { canvas.drawRect(it, paint) }
             paint.color = ContextCompat.getColor(context, R.color.translucide)
         } else {
             paint.color = ContextCompat.getColor(context, R.color.black)
@@ -111,15 +111,16 @@ class EmojiCellCtrl : View {
         private var txtSize = 0f
         private var txtBaseLinePos = 0f
         private var borderWidth = 0f
-        private var boundingRect: RectF? = null
+        private lateinit var rcBounds: RectF
+        private var initialized = false
         private fun initStandardSizes(context: Context) {
-            size = Utilities.convertDpToPixel(28f, context)
-            txtSize = Utilities.convertDpToPixel(22.5f, context)
-            txtBaseLinePos = Utilities.convertDpToPixel(21.5f, context)
-            borderWidth = Utilities.convertDpToPixel(2f, context)
-            if (boundingRect == null) {
-                boundingRect =
-                    RectF(0f, 0f, size, size)
+            if (!initialized) {
+                initialized = true
+                size = Utilities.convertDpToPixel(28f, context)
+                txtSize = Utilities.convertDpToPixel(22.5f, context)
+                txtBaseLinePos = Utilities.convertDpToPixel(21.5f, context)
+                borderWidth = Utilities.convertDpToPixel(2f, context)
+                rcBounds = RectF(0f, 0f, size, size)
             }
         }
     }
