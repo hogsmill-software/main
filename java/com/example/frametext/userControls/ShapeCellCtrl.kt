@@ -97,7 +97,6 @@ class ShapeCellCtrl : View {
         shapeType = SymbolShapeType.None
         drawShapeDetails = null
         this.symbol = symbol
-        // createShape(this.getContext());
         invalidate()
     }
 

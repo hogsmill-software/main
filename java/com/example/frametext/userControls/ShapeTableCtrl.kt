@@ -9,22 +9,24 @@ import androidx.core.content.ContextCompat
 import com.example.frametext.R
 import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.helpers.Utilities
-import kotlin.math.abs
+import com.example.frametext.userControls.colorPicker.Constants
+import kotlin.math.max
 
 class ShapeTableCtrl : View, View.OnClickListener {
     private var columns = 0
     private var lastColumn = 0
     private var borderThickness = 0
     private var borderMargin = 0
-    private var selectedShapeCtrl: ShapeCellCtrl? = null
+    private lateinit var selectedShapeCtrl: ShapeCellCtrl
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var boundingRect: RectF? = null
+    private lateinit var rcShapesBounds: RectF
     private val shapeCellCtrlList = ArrayList<ShapeCellCtrl>()
-    private var popUpSize: Point? = null
-    private var selectSymbol: String? = null
-    private val rcBounds = Rect()
-    private var verticalGapHeight = 0f
-    private var popUpBound: RectF? = null
+    private lateinit var  selectSymbol: String
+    private val rcHeaderBounds = Rect()
+    private lateinit var rcFullScreenBounds: RectF
+    private lateinit var rcPopupBounds: RectF
+    private var popupMargin: Float = 0f
+    private var headerShapesGap = 0f // Gap between header and shapes below.
 
     constructor(context: Context, purchasedMore: Boolean) : super(context) {
         init(context, purchasedMore)
@@ -79,43 +81,55 @@ class ShapeTableCtrl : View, View.OnClickListener {
             val shapeCellCtrl = shapeCellCtrlList[0]
             size = shapeCellCtrl.size
         }
-        boundingRect = RectF(
+        rcShapesBounds = RectF(
             halfThickness.toFloat(),
-            (rows * size - halfThickness + 2 * borderMargin).toFloat(),
+            halfThickness.toFloat(),
             (columns * size - halfThickness + 2 * borderMargin).toFloat(),
-            halfThickness.toFloat()
+            (rows * size - halfThickness + 2 * borderMargin).toFloat()
         )
-        popUpSize = Utilities.getRealScreenSize(context)
+        val ptMainScreenSize = Utilities.getRealScreenSize(context)
         val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
         paint.typeface = tf
-        paint.textSize = Utilities.convertDpToPixel(40f, getContext())
+        paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectSymbol = resources.getString(R.string.select_symbol)
-        paint.getTextBounds(selectSymbol, 0, selectSymbol!!.length, rcBounds)
-        verticalGapHeight =
-            (popUpSize!!.y - abs(boundingRect!!.height()) - abs(rcBounds.height())) / 3.0f
-        popUpBound = RectF(0f, 0f, popUpSize!!.x.toFloat(), popUpSize!!.y.toFloat())
+        paint.getTextBounds(selectSymbol, 0, selectSymbol.length, rcHeaderBounds)
+        rcFullScreenBounds = RectF(0f, 0f, ptMainScreenSize.x.toFloat(), ptMainScreenSize.y.toFloat())
+
+        popupMargin = Utilities.convertDpToPixel(7f, context)
+        headerShapesGap = Utilities.convertDpToPixel(30f, context)
+
+        val innerHeight = rcHeaderBounds.height() + rcShapesBounds.height() + headerShapesGap
+        val innerWidth = max(rcHeaderBounds.width().toFloat(), rcShapesBounds.width())
+        rcPopupBounds = RectF((ptMainScreenSize.x - innerWidth) / 2.0f - popupMargin,
+            (ptMainScreenSize.y - innerHeight) / 2.0f - popupMargin,
+            (ptMainScreenSize.x + innerWidth) / 2.0f + popupMargin,
+            (ptMainScreenSize.y + innerHeight) / 2.0f + popupMargin)
     }
 
     public override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint.color = Constants.DARK_BACKGROUND_OPACITY
         paint.style = Paint.Style.FILL
-        canvas.drawRect(popUpBound!!, paint)
+        canvas.drawRect(rcFullScreenBounds, paint)
+
+        paint.color = ContextCompat.getColor(context, R.color.white)
+        canvas.drawRect(rcPopupBounds, paint)
+
         paint.color = ContextCompat.getColor(context, R.color.black)
         canvas.drawText(
-            selectSymbol!!,
-            (popUpSize!!.x - rcBounds.width()) / 2.0f,
-            verticalGapHeight + rcBounds.height(),
+            selectSymbol,
+            (rcFullScreenBounds.width() - rcHeaderBounds.width()) / 2.0f,
+            rcPopupBounds.top + rcHeaderBounds.height() + popupMargin,
             paint
         )
         canvas.translate(
-            (popUpSize!!.x - boundingRect!!.width()) / 2.0f,
-            2 * verticalGapHeight + rcBounds.height()
+            (rcFullScreenBounds.width() - rcShapesBounds.width()) / 2.0f,
+            rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerShapesGap
         )
         paint.color = ContextCompat.getColor(context, R.color.midDayFog)
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = borderThickness.toFloat()
-        canvas.drawRect(boundingRect!!, paint)
+        canvas.drawRect(rcShapesBounds, paint)
         canvas.translate(borderMargin.toFloat(), borderMargin.toFloat())
         for (i in shapeCellCtrlList.indices) {
             shapeCellCtrlList[i].draw(canvas)
@@ -132,14 +146,14 @@ class ShapeTableCtrl : View, View.OnClickListener {
 
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        setMeasuredDimension(popUpSize!!.x, popUpSize!!.y)
+        setMeasuredDimension(rcFullScreenBounds.width().toInt(), rcFullScreenBounds.height().toInt())
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         super.onTouchEvent(event) // this super call is important !!!
         var success = false
-        val x = event.x - (popUpSize!!.x - boundingRect!!.width()) / 2.0f
-        val y = event.y - (2 * verticalGapHeight + rcBounds.height())
+        val x = event.x - (rcFullScreenBounds.width() - rcShapesBounds.width()) / 2.0f
+        val y = event.y - (rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerShapesGap)
         val col: Int = (x - borderMargin).toInt() / size
         val row: Int = (y - borderMargin).toInt() / size
         val pos = columns * row + col
@@ -149,9 +163,9 @@ class ShapeTableCtrl : View, View.OnClickListener {
         if (pos < shapeCellCtrlList.size && col < columns && pos >= 0) {
             val sCC = shapeCellCtrlList[pos]
             if (sCC.getShapeType() !== SymbolShapeType.None) {
-                selectedShapeCtrl!!.setShapeType(sCC.getShapeType())
+                selectedShapeCtrl.setShapeType(sCC.getShapeType())
             } else {
-                selectedShapeCtrl!!.setSymbol(sCC.getSymbol())
+                selectedShapeCtrl.setSymbol(sCC.getSymbol())
             }
             success = performClick()
         }
