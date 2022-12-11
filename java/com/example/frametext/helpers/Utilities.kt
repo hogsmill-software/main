@@ -2,8 +2,6 @@ package com.example.frametext.helpers
 
 import android.content.Context
 import android.graphics.Point
-import android.text.InputFilter
-import android.text.Spanned
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.example.frametext.enums.SymbolShapeType
@@ -27,43 +25,9 @@ import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF_LIGHT
 import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF_MEDIUM
 import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF_THIN
 import com.example.frametext.helpers.Constants.UFFF_SERIF
-import com.google.android.material.tabs.TabLayout
 import java.util.ArrayList
 
 object Utilities {
-    private var tabLayout: TabLayout? = null
-    fun setTabLayout(tabLayout_: TabLayout) {
-        tabLayout = tabLayout_
-    }
-
-    fun getTotalTopHeight(context: Context): Int {
-        val realScreenSize: Point = getRealScreenSize(context)
-        var topHeight = 0
-        val res = context.resources
-        if (res != null) {
-            val metrics = res.displayMetrics
-            if (metrics != null) {
-                val mhp = metrics.heightPixels
-                val mwp = metrics.widthPixels
-                topHeight += if (mhp == realScreenSize.y) {
-                    realScreenSize.x - mwp
-                } else {
-                    realScreenSize.y - mhp
-                }
-            }
-        }
-        if (tabLayout != null) {
-            topHeight += tabLayout!!.height
-        }
-
-        // Arbitrary correction - seems to give best results across 4 emulators;
-        topHeight -= (convertDpToPixel(
-            32f,
-            context
-        ) - 32).toInt()
-        return topHeight
-    }
-
     fun getRealScreenSize(context: Context): Point {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
@@ -75,10 +39,6 @@ object Utilities {
     // 2 methods below from  https://androiddvlpr.com/android-dp-to-px/
     fun convertDpToPixel(dp: Float, context: Context): Float {
         return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
-
-    fun convertPixelsToDp(px: Float, context: Context): Float {
-        return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
     fun userFriendlyFontFamilyList(): ArrayList<String>{
@@ -154,5 +114,11 @@ object Utilities {
             }
             return closestDistance
         }
+    }
+}
+// From https://medium.com/android-news/how-to-remove-all-from-your-kotlin-code-87dc2c9767fb see section 4
+fun <T1, T2> ifNotNull(value1: T1?, value2: T2?, bothNotNull: (T1, T2) -> (Unit)) {
+    if (value1 != null && value2 != null) {
+        bothNotNull(value1, value2)
     }
 }

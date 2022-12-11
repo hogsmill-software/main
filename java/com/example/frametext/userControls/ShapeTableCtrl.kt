@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.example.frametext.R
 import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.helpers.Utilities
+import com.example.frametext.helpers.ifNotNull
 import com.example.frametext.userControls.colorPicker.Constants
 import kotlin.math.max
 
@@ -186,9 +187,12 @@ class ShapeTableCtrl : View, View.OnClickListener {
                 if (scc.getShapeType() === selectedShapeCtrl.getShapeType()) {
                     scc.isSelected = true
                 }
-            } else if (selectedShapeCtrl.getSymbol() != null && scc.getSymbol() != null) {
-                if (scc.getSymbol()!!.compareTo(selectedShapeCtrl.getSymbol()!!) == 0) {
-                    scc.isSelected = true
+            } else ifNotNull(selectedShapeCtrl.getSymbol(), scc.getSymbol()) {
+                selectedShapeCtrlSymbol, symbol ->
+                run {
+                    if ((selectedShapeCtrlSymbol).compareTo(symbol) == 0) {
+                        scc.isSelected = true
+                    }
                 }
             }
         }
