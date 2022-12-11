@@ -153,21 +153,23 @@ class ImageGenerator(
         dt?.computeTextPlacementDetails()
         // Let's check if text using all rectangle. If not, we can subtly increase space between characters.
         // A bit rudimentary, but work so far with few samples I have.
-        while (dt?.remUnUsedRectangles()!! > 0) {
-            dt?.incrementCharGap()
-            dt?.clearTextFromRectangles()
-            dt?.computeTextPlacementDetails(false)
+        // With optimize spacing turned off, looks worse with this code.
+        if (tfd.optimizeSpacing) {
+            while (dt?.remUnUsedRectangles()!! > 0) {
+                dt?.incrementCharGap()
+                dt?.clearTextFromRectangles()
+                dt?.computeTextPlacementDetails(false)
 
-            if (dt?.doesAllTextFit() == false) {
-                dt?.decrementCharGap()
+                if (dt?.doesAllTextFit() == false) {
+                    dt?.decrementCharGap()
 
-                if (dt?.charGapChangeMinThreshold()!!) {
-                    dt?.clearTextFromRectangles()
-                    dt?.computeTextPlacementDetails(false)
-                    break
-                }
-                else {
-                    dt?.reduceCharGapChange()
+                    if (dt?.charGapChangeMinThreshold()!!) {
+                        dt?.clearTextFromRectangles()
+                        dt?.computeTextPlacementDetails(false)
+                        break
+                    } else {
+                        dt?.reduceCharGapChange()
+                    }
                 }
             }
         }
