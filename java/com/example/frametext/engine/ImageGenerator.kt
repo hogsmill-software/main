@@ -36,9 +36,6 @@ class ImageGenerator(
     private val mainShapeType: MainShapeType
     private val minDistEdgeShape: Int
 
-
-
-
     // part of experiment - used for computing gross estimate
     private fun textLenFromWidth(width: Int): Int {
         //hd = new HeartDetails(/*canvas*/);
@@ -163,9 +160,15 @@ class ImageGenerator(
 
             if (dt?.doesAllTextFit() == false) {
                 dt?.decrementCharGap()
-                dt?.clearTextFromRectangles()
-                dt?.computeTextPlacementDetails(false)
-                break
+
+                if (dt?.charGapChangeMinThreshold()!!) {
+                    dt?.clearTextFromRectangles()
+                    dt?.computeTextPlacementDetails(false)
+                    break
+                }
+                else {
+                    dt?.reduceCharGapChange()
+                }
             }
         }
     }

@@ -26,6 +26,7 @@ internal class DrawText(
     private var rectLst: List<TextRectDetails> = ArrayList()
     private var lastWord: String? = null
     private var charGap: Float = 0f
+    private var charGapChange: Float = 1f
     fun computeTextSpaceAvailable(): Int {
         rectLst = tb.computeTextRectangles()
         var retVal = 0
@@ -69,7 +70,7 @@ internal class DrawText(
     }
 
     // Computes bounding rectangles and text inside each of the rectangles
-    fun computeTextPlacementDetails(reInitEectangles: Boolean = true) {
+    fun computeTextPlacementDetails(reInitRectangles: Boolean = true) {
         var chr: Char
         val lineInProgress = StringBuilder()
         val wordInProgress = StringBuilder()
@@ -78,7 +79,7 @@ internal class DrawText(
         var noHyphenWord =
             false // This is set to true when we are not hyphenating a particular word.
         try {
-            if (reInitEectangles) {
+            if (reInitRectangles) {
                 rectLst = tb.computeTextRectangles()
             }
             val rectLstIterator = rectLst.iterator()
@@ -655,12 +656,21 @@ internal class DrawText(
     }
 
     fun incrementCharGap() {
-        charGap ++
+        charGap += charGapChange
     }
 
     fun decrementCharGap() {
-        charGap --
+        charGap -= charGapChange
     }
+
+    fun reduceCharGapChange() {
+        charGapChange /= 2f
+    }
+
+    fun charGapChangeMinThreshold(): Boolean {
+        return charGapChange < 0.0625
+    }
+
 
     fun clearTextFromRectangles() {
         rectLst.forEach {
