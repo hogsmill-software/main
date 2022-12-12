@@ -34,19 +34,19 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import java.util.*
 
 class FrameShapesFragment : Fragment() {
-    private var fragmentActivityContext: FragmentActivity? = null
-    var ftp: FrameTextParameters? = null
-    private var emojiButton: EmojiCellCtrl? = null
-    private var filledShapeButton: ShapeCellCtrl? = null
+    private lateinit var fragmentActivityContext: FragmentActivity
+    lateinit var ftp: FrameTextParameters
+    private lateinit var emojiButton: EmojiCellCtrl
+    private lateinit var filledShapeButton: ShapeCellCtrl
     private lateinit var unfilledShapeButton: MainShapeCellCtrl
-    private var emojiPopUpPt: Point? = null
-    private var shapePopUpPt: Point? = null
-    private var mainShapePopupPt: Point? = null
+    private lateinit var emojiPopUpPt: Point
+    private lateinit var shapePopUpPt: Point
+    private lateinit var mainShapePopupPt: Point
     private var popUpPointsInitialized = false
     private var useEmojiSwitch = false
-    private var minDistSymbols: EditText? = null
-    private var warningMsg: TextView? = null
-    private var newFeaturesViewModel: NewFeaturesViewModel? = null
+    private lateinit var minDistSymbols: EditText
+    private lateinit var warningMsg: TextView
+    private lateinit var newFeaturesViewModel: NewFeaturesViewModel
     private var purchasedMoreEmojis = false
     private var purchasedMoreSymbols = false
 
@@ -58,10 +58,10 @@ class FrameShapesFragment : Fragment() {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val heartValParametersViewModel = ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
-        ftp = heartValParametersViewModel.getSelectedItem().value
+        ftp = heartValParametersViewModel.getSelectedItem().value!!
 
         val symbolsColorButton = view.findViewById<AppCompatButton>(R.id.symbolsColorButton)
-        symbolsColorButton.setBackgroundColor(ftp!!.symbolsColor)
+        symbolsColorButton.setBackgroundColor(ftp.symbolsColor)
         symbolsColorButton.setOnClickListener {
             onClickSymbolsColorButton(
                 symbolsColorButton
@@ -77,11 +77,11 @@ class FrameShapesFragment : Fragment() {
 
         val act = activity
         if (act != null) {
-            newFeaturesViewModel!!.isPurchased(SKU_MORE_EMOJIS).observe(
+            newFeaturesViewModel.isPurchased(SKU_MORE_EMOJIS).observe(
                 viewLifecycleOwner
             ) { purchasedMoreEmojis = it }
 
-            newFeaturesViewModel!!.isPurchased(SKU_MORE_SYMBOLS).observe(
+            newFeaturesViewModel.isPurchased(SKU_MORE_SYMBOLS).observe(
                 viewLifecycleOwner
             ) { purchasedMoreSymbols = it }
         }
@@ -93,63 +93,63 @@ class FrameShapesFragment : Fragment() {
         notPurchasedMoreSymbolsMessage.visibility = if (purchasedMoreSymbols) View.GONE else View.VISIBLE
 
         emojiButton = view.findViewById(R.id.emojiButton)
-        emojiButton?.setEmoji(ftp!!.emoji)
-        emojiButton?.setOnClickListener { _: View? -> openEmojiPopup() }
+        emojiButton.setEmoji(ftp.emoji)
+        emojiButton.setOnClickListener { openEmojiPopup() }
 
         filledShapeButton = view.findViewById(R.id.filledShapeButton)
-        if (ftp!!.symbolShapeType == SymbolShapeType.None) {
-            filledShapeButton?.setSymbol(ftp!!.symbol)
+        if (ftp.symbolShapeType == SymbolShapeType.None) {
+            filledShapeButton.setSymbol(ftp.symbol)
         } else {
-            filledShapeButton?.setShapeType(ftp!!.symbolShapeType)
+            filledShapeButton.setShapeType(ftp.symbolShapeType)
         }
-        filledShapeButton?.setOnClickListener { _: View? -> openShapePopup() }
+        filledShapeButton.setOnClickListener { openShapePopup() }
 
-        activateDeactivateSymbolColorButton(view, !ftp!!.useEmoji)
+        activateDeactivateSymbolColorButton(view, !ftp.useEmoji)
         val useEmojiSwitch = view.findViewById<SwitchCompat>(R.id.useEmojiSwitch)
 
-        useEmojiSwitch.isChecked = ftp!!.useEmoji
+        useEmojiSwitch.isChecked = ftp.useEmoji
         useEmojiSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            ftp!!.useEmoji = isChecked
+            ftp.useEmoji = isChecked
             activateDeactivateSymbolColorButton(view, !isChecked)
             resetMinDistEdgeShape()
         }
 
         unfilledShapeButton = view.findViewById(R.id.unfilledShapeButton)
-        unfilledShapeButton.setShapeType(ftp!!.mainShapeType)
+        unfilledShapeButton.setShapeType(ftp.mainShapeType)
         unfilledShapeButton.setOnClickListener { openMainShapePopup() }
 
         warningMsg = view.findViewById(R.id.warningMsg)
         minDistSymbols = view.findViewById(R.id.min_dist_symbols)
 
-        minDistSymbols?.setText(
+        minDistSymbols.setText(
             java.lang.String.format(
                 Locale.getDefault(),
                 "%d",
-                ftp!!.minDistEdgeShape,
+                ftp.minDistEdgeShape,
             ), TextView.BufferType.EDITABLE
         )
 
-        minDistSymbols?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, ::assignMinDistEdgeShapeIfMoreThan100
+        minDistSymbols.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, ::assignMinDistEdgeShapeIfMoreThan100
         ) {   // If user has neglected to fill this value, reset this to default
-            ftp!!.minDistEdgeShape = Utilities.closestDistance(
-                ftp!!.useEmoji,
-                ftp!!.emoji,
-                ftp?.symbol,
-                ftp!!.symbolShapeType
+            ftp.minDistEdgeShape = Utilities.closestDistance(
+                ftp.useEmoji,
+                ftp.emoji,
+                ftp.symbol,
+                ftp.symbolShapeType
             )
-            warningMsg!!.visibility = View.VISIBLE
-            warningMsg!!.text = String.format(requireContext().resources!!.getString(R.string.blank_default_error_msg))
+            warningMsg.visibility = View.VISIBLE
+            warningMsg.text = String.format(requireContext().resources.let { it?.getString(R.string.blank_default_error_msg) } ?: "")
         })
     }
 
     private fun assignMinDistEdgeShapeIfMoreThan100(dist: Int) {
         if (dist >= 100) {
-            ftp!!.minDistEdgeShape = dist
-            warningMsg!!.visibility = View.GONE
+            ftp.minDistEdgeShape = dist
+            warningMsg.visibility = View.GONE
         }
         else {
-            warningMsg!!.visibility = View.VISIBLE
-            warningMsg!!.text = String.format(requireContext().resources.getString(R.string.less_than_100_error_msg), dist)
+            warningMsg.visibility = View.VISIBLE
+            warningMsg.text = String.format(requireContext().resources.getString(R.string.less_than_100_error_msg), dist)
         }
     }
 
@@ -166,16 +166,16 @@ class FrameShapesFragment : Fragment() {
             } else {
                 Point()
             }
-            emojiPopUpPt!!.x = screenSizePt.x
-            emojiPopUpPt!!.y = screenSizePt.y
+            emojiPopUpPt.x = screenSizePt.x
+            emojiPopUpPt.y = screenSizePt.y
 
             // now the shape button
-            shapePopUpPt!!.x = screenSizePt.x
-            shapePopUpPt!!.y = emojiPopUpPt!!.y
+            shapePopUpPt.x = screenSizePt.x
+            shapePopUpPt.y = emojiPopUpPt.y
 
             // now the main shape popup button
-            mainShapePopupPt!!.x = screenSizePt.x
-            mainShapePopupPt!!.y = screenSizePt.y
+            mainShapePopupPt.x = screenSizePt.x
+            mainShapePopupPt.y = screenSizePt.y
         }
     }
 
@@ -194,7 +194,7 @@ class FrameShapesFragment : Fragment() {
 
     private fun navigateToSettingsFragment() {
         val fragment: Fragment = SettingsFragment()
-        val fragmentManager = fragmentActivityContext!!.supportFragmentManager
+        val fragmentManager = fragmentActivityContext.supportFragmentManager
         fragmentManager.beginTransaction()
             .replace(R.id.settings_frame, fragment)
             .setReorderingAllowed(true)
@@ -202,11 +202,11 @@ class FrameShapesFragment : Fragment() {
     }
 
     private fun onClickSymbolsColorButton(heartsColorButton: AppCompatButton) {
-        if (!ftp!!.useEmoji) {
+        if (!ftp.useEmoji) {
 
-            if (!ftp!!.useEmoji) {
+            if (!ftp.useEmoji) {
                 context?.let {
-                    ColorPickerPopup.Builder(it).initialColor(ftp!!.symbolsColor)
+                    ColorPickerPopup.Builder(it).initialColor(ftp.symbolsColor)
                         .enableBrightness(true)
                         .enableAlpha(true)
                         .okTitle(resources.getString(R.string.select))
@@ -218,7 +218,7 @@ class FrameShapesFragment : Fragment() {
                             object : ColorPickerPopup.ColorPickerObserver() {
                                 override fun onColorPicked(color: Int) {
                                     heartsColorButton.setBackgroundColor(color)
-                                    ftp!!.symbolsColor = color
+                                    ftp.symbolsColor = color
                                 }
                             })
                 }
@@ -254,11 +254,11 @@ class FrameShapesFragment : Fragment() {
             val unfilledShapeButtonFrame = view.findViewById<View>(R.id.unfilledShapeButtonFrame)
             unfilledShapeButtonFrame.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.highlightBlue))
         }
-        emojiButton!!.setIsActive(!activate)
-        filledShapeButton!!.setIsActive(activate)
+        emojiButton.setIsActive(!activate)
+        filledShapeButton.setIsActive(activate)
         useEmojiSwitch = !activate
         val symbolsColorButton = view.findViewById<AppCompatButton>(R.id.symbolsColorButton)
-        symbolsColorButton.setBackgroundColor(if (activate) ftp!!.symbolsColor else ftp!!.symbolsColor and -0x77000001)
+        symbolsColorButton.setBackgroundColor(if (activate) ftp.symbolsColor else ftp.symbolsColor and -0x77000001)
     }
 
     private fun openEmojiPopup() {
@@ -268,31 +268,33 @@ class FrameShapesFragment : Fragment() {
         initializePopUpPoints()
         val alertDialog = Dialog(this.requireContext())
         val etc = this.context?.let { EmojiTableCtrl(it, purchasedMoreEmojis) }
-        etc?.setSelectedEmojiCtrl(emojiButton)
-        alertDialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        if (etc != null) {
-            alertDialog.setContentView(etc)
+        emojiButton.let { etc?.setSelectedEmojiCtrl(it) }
+        alertDialog.window.let {
+            it?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            it?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            if (etc != null) {
+                alertDialog.setContentView(etc)
+            }
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(it?.attributes)
+            layoutParams.gravity = Gravity.TOP or Gravity.START
+            layoutParams.x = 0
+            layoutParams.y = 0
+            layoutParams.width = mainShapePopupPt.x
+            layoutParams.height = mainShapePopupPt.y
+            it?.attributes = layoutParams
+            etc?.setOnClickListener {
+                emojiPopupReceivedClick(
+                    alertDialog
+                )
+            }
+            alertDialog.show()
         }
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertDialog.window!!.attributes)
-        layoutParams.gravity = Gravity.TOP or Gravity.START
-        layoutParams.x = 0
-        layoutParams.y = 0
-        layoutParams.width = mainShapePopupPt!!.x
-        layoutParams.height = mainShapePopupPt!!.y
-        alertDialog.window!!.attributes = layoutParams
-        etc?.setOnClickListener {
-            emojiPopupReceivedClick(
-                alertDialog
-            )
-        }
-        alertDialog.show()
     }
 
     private fun emojiPopupReceivedClick(alertDialog: Dialog) {
         alertDialog.dismiss()
-        ftp!!.emoji = emojiButton!!.emoji
+        ftp.emoji = emojiButton.emoji
     }
 
     private fun openShapePopup() {
@@ -305,29 +307,32 @@ class FrameShapesFragment : Fragment() {
         if (this.context != null) {
             val stc = ShapeTableCtrl(this.requireContext(), purchasedMoreSymbols)
 
-            filledShapeButton?.let { stc.setSelectedShapeCtrl(it) }
-            alertDialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            alertDialog.setContentView(stc)
-            val layoutParams = WindowManager.LayoutParams()
-            layoutParams.copyFrom(alertDialog.window!!.attributes)
-            layoutParams.gravity = Gravity.TOP or Gravity.START
-            layoutParams.x = shapePopUpPt!!.x
-            layoutParams.y = shapePopUpPt!!.y
-            alertDialog.window!!.attributes = layoutParams
-            stc.setOnClickListener {
-                openShapePopupReceivedClick(
-                    alertDialog
-                )
+            filledShapeButton.let { stc.setSelectedShapeCtrl(it) }
+            alertDialog.window.let {
+                it?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                it?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                alertDialog.setContentView(stc)
+                val layoutParams = WindowManager.LayoutParams()
+                layoutParams.copyFrom(it?.attributes)
+                layoutParams.gravity = Gravity.TOP or Gravity.START
+                layoutParams.x = shapePopUpPt.x
+                layoutParams.y = shapePopUpPt.y
+                it?.attributes = layoutParams
+                stc.setOnClickListener {
+                    openShapePopupReceivedClick(
+                        alertDialog
+                    )
+                }
+                alertDialog.show()
             }
-            alertDialog.show()
         }
     }
 
     private fun openShapePopupReceivedClick(alertDialog: Dialog) {
         alertDialog.dismiss()
-        ftp!!.symbolShapeType = filledShapeButton!!.getShapeType()
-        ftp!!.symbol = filledShapeButton!!.getSymbol()
+        ftp.symbolShapeType = filledShapeButton.getShapeType()
+        ftp.symbol = filledShapeButton.getSymbol()
         resetMinDistEdgeShape()
     }
 
@@ -336,48 +341,46 @@ class FrameShapesFragment : Fragment() {
         val alertDialog = Dialog(this.requireContext())
         val shapeTypeArray = arrayOf(MainShapeType.Heart, MainShapeType.Circle, MainShapeType.Square, MainShapeType.Diamond)
         val mSTC = this.context?.let { MainShapeTableCtrl(it, shapeTypeArray, unfilledShapeButton) }
-        alertDialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        if (mSTC != null) {
-            alertDialog.setContentView(mSTC)
+        alertDialog.window.let {
+            it?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            it?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            if (mSTC != null) {
+                alertDialog.setContentView(mSTC)
+            }
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(it?.attributes)
+            layoutParams.gravity = Gravity.TOP or Gravity.START
+            layoutParams.x = 0
+            layoutParams.y = 0
+            layoutParams.width = mainShapePopupPt.x
+            layoutParams.height = mainShapePopupPt.y
+            it?.attributes = layoutParams
+            mSTC?.setOnClickListener {
+                openMainShapePopupReceivedClick(
+                    alertDialog
+                )
+            }
+            alertDialog.show()
         }
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(alertDialog.window!!.attributes)
-        layoutParams.gravity = Gravity.TOP or Gravity.START
-        layoutParams.x = 0
-        layoutParams.y = 0
-        layoutParams.width = mainShapePopupPt!!.x
-        layoutParams.height = mainShapePopupPt!!.y
-        alertDialog.window!!.attributes = layoutParams
-        mSTC?.setOnClickListener {
-            openMainShapePopupReceivedClick(
-                alertDialog
-            )
-        }
-        alertDialog.show()
     }
 
     private fun openMainShapePopupReceivedClick(alertDialog: Dialog) {
         alertDialog.dismiss()
-        ftp!!.mainShapeType = unfilledShapeButton.getShapeType()
+        ftp.mainShapeType = unfilledShapeButton.getShapeType()
         resetMinDistEdgeShape()
     }
 
     private fun resetMinDistEdgeShape() {
-        ftp?.minDistEdgeShape = Utilities.closestDistance(
-            ftp!!.useEmoji,
-            ftp!!.emoji,
-            ftp?.symbol,
-            ftp!!.symbolShapeType
+        ftp.minDistEdgeShape = Utilities.closestDistance(
+            ftp.useEmoji,
+            ftp.emoji,
+            ftp.symbol,
+            ftp.symbolShapeType
         )
 
-        if (minDistSymbols != null && ftp?.minDistEdgeShape != null) {
-            val str = ftp?.minDistEdgeShape!!.toString()
-            minDistSymbols!!.setText(str)
-        }
+        val str = ftp.minDistEdgeShape.toString()
+        minDistSymbols.setText(str)
 
-        if (warningMsg != null) {
-            warningMsg!!.visibility = View.GONE
-        }
+        warningMsg.visibility = View.GONE
     }
 }
