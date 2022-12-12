@@ -28,7 +28,7 @@ class ImageGenerator(
     private var paint: Paint
     private var canvas: Canvas
     private val sd: EdgeShapeDetails
-    private var dt: DrawText? = null
+    private lateinit var dt: DrawText
     private var pixelTxtLen = 0f
     private val mainSizes: MainSizes
     private val backgroundColor: Int
@@ -41,7 +41,7 @@ class ImageGenerator(
         //hd = new HeartDetails(/*canvas*/);
         mainSizes.resetSizes(width)
         dt = DrawText(canvas, mainSizes, sd, tfd, mainShapeType, context)
-        return dt?.computeTextSpaceAvailable() ?: 0
+        return dt.computeTextSpaceAvailable()
     }
 
     private fun computeWidthEstimateFromTextLen(
@@ -104,12 +104,12 @@ class ImageGenerator(
             dt = DrawText(canvas, mainSizes, sd, tfd, mainShapeType, context)
 
             if (counter == 1) {
-                dt?.resetTextInputDetails()
+                dt.resetTextInputDetails()
             }
-            dt?.computeTextPlacementDetails()
+            dt.computeTextPlacementDetails()
             if (bestOptimization) break
-            if (dt?.doesAllTextFit() == true) {
-                if (dt?.sizeOptimized() == true) {
+            if (dt.doesAllTextFit()) {
+                if (dt.sizeOptimized()) {
                     goodSize = true
                 } else {
                     // Frame is too big. We need to decrease it and try again...
@@ -150,25 +150,25 @@ class ImageGenerator(
         )
         canvas = Canvas(bitmap)
         dt = DrawText(canvas, mainSizes, sd, tfd, mainShapeType, context)
-        dt?.computeTextPlacementDetails()
+        dt.computeTextPlacementDetails()
         // Let's check if text using all rectangle. If not, we can subtly increase space between characters.
         // A bit rudimentary, but work so far with few samples I have.
         // With optimize spacing turned off, looks worse with this code.
         if (tfd.optimizeSpacing) {
-            while (dt?.remUnUsedRectangles()!! > 0) {
-                dt?.incrementCharGap()
-                dt?.clearTextFromRectangles()
-                dt?.computeTextPlacementDetails(false)
+            while (dt.remUnUsedRectangles() > 0) {
+                dt.incrementCharGap()
+                dt.clearTextFromRectangles()
+                dt.computeTextPlacementDetails(false)
 
-                if (dt?.doesAllTextFit() == false) {
-                    dt?.decrementCharGap()
+                if (!dt.doesAllTextFit()) {
+                    dt.decrementCharGap()
 
-                    if (dt?.charGapChangeMinThreshold()!!) {
-                        dt?.clearTextFromRectangles()
-                        dt?.computeTextPlacementDetails(false)
+                    if (dt.charGapChangeMinThreshold()) {
+                        dt.clearTextFromRectangles()
+                        dt.computeTextPlacementDetails(false)
                         break
                     } else {
-                        dt?.reduceCharGapChange()
+                        dt.reduceCharGapChange()
                     }
                 }
             }
@@ -196,7 +196,7 @@ class ImageGenerator(
 
         // for testing so see where bounding rectangles are...
         // dt.drawTextBoundingRectangles();
-        dt?.draw()
+        dt.draw()
     }
 
     companion object {
