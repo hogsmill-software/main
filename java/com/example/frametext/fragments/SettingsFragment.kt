@@ -1,12 +1,9 @@
 package com.example.frametext.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.InputFilter
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
@@ -17,6 +14,7 @@ import com.example.frametext.MainActivity
 import com.example.frametext.R
 import com.example.frametext.globalObjects.FrameTextParameters
 import com.example.frametext.helpers.MinMaxFilter
+import com.example.frametext.userControls.AlertPopupOKCancel
 import com.example.frametext.userControls.colorPicker.ColorPickerPopup
 import com.example.frametext.viewModels.FileNameHplMapViewModel
 import com.example.frametext.viewModels.FrameTextParametersViewModel
@@ -27,6 +25,7 @@ import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 import java.util.*
+
 
 class SettingsFragment : Fragment() {
     private var spinner: Spinner? = null
@@ -270,23 +269,24 @@ class SettingsFragment : Fragment() {
             }
             val hvpSettingsString = jsonObj.toString()
             context ?: throw Exception("getContext returned null.")
-            val settingsPathName: String? = context?.let { MainActivity.getSettingsFileName(it) }
-            if (settingsPathName != null) {
-                val file = File(settingsPathName)
-                val fileWriter = FileWriter(file)
-                val bufferedWriter = BufferedWriter(fileWriter)
-                bufferedWriter.write(hvpSettingsString)
-                bufferedWriter.close()
-                if (context != null) {
-                    AlertDialog.Builder(context)
-                        .setTitle(requireContext().resources.getString(R.string.saveSettings))
-                        .setMessage(requireContext().resources.getString(R.string.saveSettingsInfo))
-                        .setCancelable(false)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.alert_light_frame)
-                        .show()
+
+            val okFuncPtr = {
+                val settingsPathName: String? = context?.let { MainActivity.getSettingsFileName(it) }
+                if (settingsPathName != null) {
+                    val file = File(settingsPathName)
+                    val fileWriter = FileWriter(file)
+                    val bufferedWriter = BufferedWriter(fileWriter)
+                    bufferedWriter.write(hvpSettingsString)
+                    bufferedWriter.close()
                 }
             }
+
+            val alertDialog = AlertPopupOKCancel(requireContext().resources.getString(R.string.saveSettings),
+                requireContext().resources.getString(R.string.saveSettingsInfo),
+                okFuncPtr)
+
+            alertDialog.show(requireView(), requireContext())
+
         } catch (e: Exception) {
             println("An error occurred in method saveSettings().")
             e.printStackTrace()
@@ -300,15 +300,16 @@ class SettingsFragment : Fragment() {
             if (settingsPathName != null) {
                 val file = File(settingsPathName)
                 if (file.exists()) {
-                    if (file.delete() && getContext() != null) {
-                        AlertDialog.Builder(getContext())
-                            .setTitle(requireContext().resources.getString(R.string.deleteSettings))
-                            .setMessage(requireContext().resources.getString(R.string.deleteSettingsInfo))
-                            .setCancelable(false)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .setIcon(android.R.drawable.alert_light_frame)
-                            .show()
+                    val okFuncPtr = {
+                        file.delete()
+                        Unit
                     }
+
+                    val alertDialog = AlertPopupOKCancel(requireContext().resources.getString(R.string.deleteSettings),
+                        requireContext().resources.getString(R.string.deleteSettingsInfo),
+                        okFuncPtr)
+
+                    alertDialog.show(requireView(), requireContext())
                 }
             }
         } catch (e: Exception) {

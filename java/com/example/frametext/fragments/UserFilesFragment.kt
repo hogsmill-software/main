@@ -1,6 +1,5 @@
 package com.example.frametext.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +18,7 @@ import com.example.frametext.engine.FrameTextException
 import com.example.frametext.engine.ImageGenerator
 import com.example.frametext.engine.TextFormattingDetails
 import com.example.frametext.globalObjects.FrameTextParameters
+import com.example.frametext.userControls.AlertPopupOK
 import com.example.frametext.viewModels.FrameTextParametersViewModel
 import com.example.frametext.viewModels.TextInputViewModel
 import com.example.frametext.viewModels.UserFilesViewModel
@@ -63,14 +63,10 @@ class UserFilesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         textInputViewModel = ViewModelProvider(requireActivity())[TextInputViewModel::class.java]
-        val userFilesViewModel: UserFilesViewModel = ViewModelProvider(requireActivity()).get(
-            UserFilesViewModel::class.java
-        )
+        val userFilesViewModel: UserFilesViewModel = ViewModelProvider(requireActivity())[UserFilesViewModel::class.java]
         userFileList = userFilesViewModel.selectedItem.value
         val heartValParametersViewModel: FrameTextParametersViewModel =
-            ViewModelProvider(requireActivity()).get(
-                FrameTextParametersViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
         ftp = heartValParametersViewModel.getSelectedItem().value
 
         userFileListAdapter =
@@ -129,22 +125,11 @@ class UserFilesFragment : Fragment() {
             userFileListAdapter!!.notifyItemInserted(userFileListAdapter!!.itemCount)
             fileName.setText("")
         } catch (e: FrameTextException) {
-            AlertDialog.Builder(context)
-                .setTitle(generateImageTitle())
-                .setMessage(e.message)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(android.R.drawable.alert_light_frame)
-                .show()
+            AlertPopupOK(generateImageTitle(), e.message ?: "").show(requireView(), requireContext())
         } catch (e: IOException) {
-            AlertDialog.Builder(context)
-                .setTitle(generateImageTitle())
-                .setMessage(e.message)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(android.R.drawable.alert_light_frame)
-                .show()
+            AlertPopupOK(generateImageTitle(), e.message ?: "").show(requireView(), requireContext())
         } catch (e: Exception) {
+            AlertPopupOK(generateImageTitle(), e.message ?: "").show(requireView(), requireContext())
             println("An error occurred in method UserFiles::saveFile.")
             e.printStackTrace()
         }

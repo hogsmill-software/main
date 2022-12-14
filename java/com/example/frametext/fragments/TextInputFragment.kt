@@ -1,6 +1,5 @@
 package com.example.frametext.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -18,6 +17,7 @@ import com.example.frametext.engine.ImageGenerator
 import com.example.frametext.engine.TextFormattingDetails
 import com.example.frametext.globalObjects.FrameTextParameters
 import com.example.frametext.shapes.edge.EdgeShapeDetails
+import com.example.frametext.userControls.AlertPopupOK
 import com.example.frametext.viewModels.FrameTextBitmapViewModel
 import com.example.frametext.viewModels.FrameTextParametersViewModel
 import com.example.frametext.viewModels.TabLayoutViewModel
@@ -54,9 +54,9 @@ class TextInputFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         textInputViewModel = ViewModelProvider(requireActivity())[TextInputViewModel::class.java]
-        frameTextBitmapViewModel = ViewModelProvider(requireActivity()).get(FrameTextBitmapViewModel::class.java)
+        frameTextBitmapViewModel = ViewModelProvider(requireActivity())[FrameTextBitmapViewModel::class.java]
         tabLayoutViewModel = ViewModelProvider(requireActivity())[TabLayoutViewModel::class.java]
-        frameTextParametersViewModel = ViewModelProvider(requireActivity()).get(FrameTextParametersViewModel::class.java)
+        frameTextParametersViewModel = ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
 
         val editTextInput = view.findViewById<EditText>(R.id.editTextInput)
         editTextInput.setText(textInputViewModel!!.getSelectedItem().value)
@@ -110,14 +110,13 @@ class TextInputFragment : Fragment() {
                             "Generated through FrameText."
                         )
                     }
-                    val frameTextImage: Bitmap? = frameTextImgContainer.bitmap
+                    val frameTextImage: Bitmap = frameTextImgContainer.bitmap
 
-                    if (frameTextImage != null) {
-                        frameTextBitmapViewModel?.selectItem(frameTextImage)
+                    frameTextBitmapViewModel?.selectItem(frameTextImage)
 
-                        frameTextBitmapViewModel?.getSelectedImageFragment()?.value
-                            ?.updateImage(frameTextImgContainer.bitmap)
-                    }
+                    frameTextBitmapViewModel?.getSelectedImageFragment()?.value
+                        ?.updateImage(frameTextImgContainer.bitmap)
+
                     val tabLayout: TabLayout? =
                         tabLayoutViewModel?.getSelectedItem()?.value
                     if (tabLayout != null) {
@@ -127,21 +126,9 @@ class TextInputFragment : Fragment() {
                 }
             }
         } catch (e: FrameTextException) {
-            AlertDialog.Builder(context)
-                .setTitle(generateImageTitle())
-                .setMessage(e.message)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(android.R.drawable.alert_light_frame)
-                .show()
+            AlertPopupOK(generateImageTitle(), e.message ?: "").show(requireView(), requireContext())
         } catch (e: Exception) {
-            AlertDialog.Builder(context)
-                .setTitle(generateImageTitle())
-                .setMessage(getUnexpectedErrorMessage() + "\n" + e.message)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(android.R.drawable.alert_light_frame)
-                .show()
+            AlertPopupOK(generateImageTitle(), getUnexpectedErrorMessage() + "\n" + e.message).show(requireView(), requireContext())
         }
     }
 

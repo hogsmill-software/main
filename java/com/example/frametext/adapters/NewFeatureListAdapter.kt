@@ -1,7 +1,6 @@
 package com.example.frametext.adapters
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
@@ -19,6 +18,7 @@ import com.example.frametext.billing.SKU_MORE_SYMBOLS
 import com.example.frametext.billing.StoreManager
 import com.example.frametext.databinding.ListNewFeatureItemsBinding
 import com.example.frametext.fragments.NewFeaturesFragment
+import com.example.frametext.userControls.AlertPopupOK
 import com.example.frametext.viewModels.NewFeaturesViewModel
 
 class NewFeatureListAdapter internal constructor(
@@ -187,13 +187,10 @@ class NewFeatureListAdapter internal constructor(
                 isPurchased = it
                 if (isPurchased) {
                     // Show popup already purchased
-                    AlertDialog.Builder(context)
-                        .setTitle(context.resources.getString(R.string.already_purchased_))
-                        .setMessage(context.resources.getString(R.string.already_purchased_))
-                        .setCancelable(false)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.alert_light_frame)
-                        .show()
+                    newFeaturesFragment.view?.let { it1 ->
+                        AlertPopupOK(context.resources.getString(R.string.already_purchased_), context.resources.getString(R.string.already_purchased_)).show(
+                            it1, context)
+                    }
                 } else {
                     storeManager.launchBillingFlow(activity, sku)
                 }
