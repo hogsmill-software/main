@@ -89,7 +89,7 @@ class ShapeTableCtrl : View, View.OnClickListener {
             (rows * size - halfThickness + 2 * borderMargin).toFloat()
         )
         val ptMainScreenSize = Utilities.getRealScreenSize(context)
-        val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
+        val tf = Typeface.create("Normal", Typeface.BOLD)
         paint.typeface = tf
         paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectSymbol = resources.getString(R.string.select_symbol)

@@ -72,7 +72,7 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         }
 
         val ptMainScreenSize = Utilities.getRealScreenSize(context)
-        val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
+        val tf = Typeface.create("Normal", Typeface.BOLD)
         paint.typeface = tf
         paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectMainShape = resources.getString(R.string.select_main_shape)
