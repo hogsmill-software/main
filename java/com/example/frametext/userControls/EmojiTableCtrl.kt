@@ -11,6 +11,7 @@ import com.example.frametext.helpers.EmojiHelper
 import com.example.frametext.helpers.Utilities
 import com.example.frametext.userControls.colorPicker.Constants
 import kotlin.math.max
+import kotlin.math.floor
 
 class EmojiTableCtrl : View, View.OnClickListener {
     private var borderThickness = 0f
@@ -25,6 +26,8 @@ class EmojiTableCtrl : View, View.OnClickListener {
     private lateinit var rcPopupBounds: RectF
     private var popupMargin = 0f
     private var headerEmojisGap = 0f // Gap between header and emojis below.
+    private var emojisHorizontalGap = 0f // Horizontal gap between the emoji buttons
+    private var emojisVerticalGap = 0f // Vertical gap between the emoji buttons
 
     constructor(context: Context, purchasedMore: Boolean) : super(context) {
         init(context, purchasedMore)
@@ -73,16 +76,19 @@ class EmojiTableCtrl : View, View.OnClickListener {
         size = emojiCtrl.size
         val rows: Int = emojiCount / columns + if (emojiCount % columns != 0) 1 else 0
         borderThickness = Utilities.convertDpToPixel(2f, context)
-        borderMargin = Utilities.convertDpToPixel(3f, context)
+        borderMargin = Utilities.convertDpToPixel(10f, context)
         val halfThickness = borderThickness / 2
+        emojisHorizontalGap = Utilities.convertDpToPixel(9f, context)
+        emojisVerticalGap = Utilities.convertDpToPixel(9f, context)
+
         rcEmojisBounds = RectF(
             halfThickness,
             halfThickness,
-            columns * size + 2 * borderMargin - halfThickness,
-            rows * size + 2 * borderMargin - halfThickness
+            columns * size + emojisHorizontalGap * (columns - 1) + 2 * borderMargin - halfThickness,
+            rows * size + emojisVerticalGap * (rows - 1) + 2 * borderMargin - halfThickness
         )
         val ptMainScreenSize = Utilities.getRealScreenSize(context)
-        val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
+        val tf = Typeface.create("Normal", Typeface.BOLD)
         paint.typeface = tf
         paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectEmoji = resources.getString(R.string.select_emoji)
@@ -131,11 +137,11 @@ class EmojiTableCtrl : View, View.OnClickListener {
             emojiCellCtrlList[i].draw(canvas)
             if (i % columns == lastColumn) {
                 canvas.translate(
-                    (-lastColumn * size).toFloat(),
-                    size.toFloat()
+                    -lastColumn * (size + emojisHorizontalGap),
+                    size + emojisVerticalGap
                 )
             } else {
-                canvas.translate(size.toFloat(), 0f)
+                canvas.translate(size + emojisHorizontalGap, 0f)
             }
         }
     }
@@ -148,17 +154,25 @@ class EmojiTableCtrl : View, View.OnClickListener {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         super.onTouchEvent(event) // this super call is important !!!
         var success = false
-        val x = event.x - (rcFullScreenBounds.width() - rcEmojisBounds.width()) / 2.0f
-        val y = event.y - (rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerEmojisGap)
-        val col: Int = (x - borderMargin).toInt() / size
-        val row: Int = (y - borderMargin).toInt() / size
-        val pos: Int = columns * row + col
+        val x = event.x - (rcFullScreenBounds.width() - rcEmojisBounds.width()) / 2.0f - borderMargin
+        val y = event.y - (rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerEmojisGap) - borderMargin
 
-        // Click on bottom border and get crash without if statement as out of range.
-        // Click on right border and leftmost next item selected without columns check.
-        if (pos < emojiCellCtrlList.size && col < columns && pos >= 0) {
-            selectedEmojiCtrl.setEmoji(emojiCellCtrlList[pos].emoji)
-            success = performClick()
+        if (x >= 0 && x <= rcEmojisBounds.width() && y >= 0 && y <= rcEmojisBounds.height()) {
+            val xSumSizeHorizontalGapRatio = x / (size + emojisHorizontalGap)
+            val col = floor(xSumSizeHorizontalGapRatio).toInt()
+
+            // Click is only on a button if remainder is less than size/(size + mainShapesHorizontalGap)
+            if (xSumSizeHorizontalGapRatio - col < size / (size + emojisHorizontalGap)) {
+                val row = floor(y / (size + emojisVerticalGap)).toInt()
+                val pos = columns * row + col
+
+                // Click on bottom border and get crash without if statement as out of range.
+                // Click on right border and leftmost next item selected without columns check.
+                if (pos < emojiCellCtrlList.size && col < columns && pos >= 0) {
+                    selectedEmojiCtrl.setEmoji(emojiCellCtrlList[pos].emoji)
+                    success = performClick()
+                }
+            }
         }
         return success
     }
