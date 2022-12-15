@@ -4,7 +4,7 @@
     <string name="settings">Settings</string>
     <string name="image">Image</string>
     <string name="generateImage">Generate image</string>
-    <string name="load_save_files">Load/Save files ></string>
+    <string name="load_save_files">Load/Save files &#62;</string>
     <string name="enter_text_to_frame">Enter the text you want framed</string>
     <string name="hyphenate_file">Hyphenate file</string>
     <string name="download_hyphenation_files">Download hyphenation files  &#62;</string>
