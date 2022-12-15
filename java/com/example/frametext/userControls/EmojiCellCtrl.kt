@@ -80,11 +80,11 @@ class EmojiCellCtrl : View {
         if (isEmojiSelected) {
             paint.color = ContextCompat.getColor(context, R.color.faintHighlightBlue)
             paint.style = Paint.Style.FILL
-            rcBounds.let { canvas.drawRect(it, paint) }
+            rcSelBounds.let { canvas.drawRect(it, paint) }
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = borderWidth
-            rcBounds.let { canvas.drawRect(it, paint) }
+            rcSelBounds.let { canvas.drawRect(it, paint) }
         }
         if (!isActive) {
             paint.color = ContextCompat.getColor(context, R.color.midDayFog)
@@ -112,6 +112,7 @@ class EmojiCellCtrl : View {
         private var txtBaseLinePos = 0f
         private var borderWidth = 0f
         private lateinit var rcBounds: RectF
+        private lateinit var rcSelBounds: RectF
         private var initialized = false
         private fun initStandardSizes(context: Context) {
             if (!initialized) {
@@ -121,6 +122,8 @@ class EmojiCellCtrl : View {
                 txtBaseLinePos = Utilities.convertDpToPixel(21.5f, context)
                 borderWidth = Utilities.convertDpToPixel(2f, context)
                 rcBounds = RectF(0f, 0f, size, size)
+                val sel_size = Utilities.convertDpToPixel(32f, context)
+                rcSelBounds = RectF(size-sel_size, size-sel_size, sel_size, sel_size)
             }
         }
     }
