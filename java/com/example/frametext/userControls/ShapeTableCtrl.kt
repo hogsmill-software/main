@@ -12,6 +12,7 @@ import com.example.frametext.helpers.Utilities
 import com.example.frametext.helpers.ifNotNull
 import com.example.frametext.userControls.colorPicker.Constants
 import kotlin.math.max
+import kotlin.math.floor
 
 class ShapeTableCtrl : View, View.OnClickListener {
     private var columns = 0
@@ -28,6 +29,8 @@ class ShapeTableCtrl : View, View.OnClickListener {
     private lateinit var rcPopupBounds: RectF
     private var popupMargin: Float = 0f
     private var headerShapesGap = 0f // Gap between header and shapes below.
+    private var shapeHorizontalGap = 0f // Horizontal gap between the emoji buttons
+    private var shapeVerticalGap = 0f // Vertical gap between the emoji buttons
 
     constructor(context: Context, purchasedMore: Boolean) : super(context) {
         init(context, purchasedMore)
@@ -76,8 +79,11 @@ class ShapeTableCtrl : View, View.OnClickListener {
             shapeCellCtrlList.size / columns + if (shapeCellCtrlList.size % columns != 0) 1 else 0
         lastColumn = columns - 1
         borderThickness = Utilities.convertDpToPixel(2f, context).toInt()
-        borderMargin = Utilities.convertDpToPixel(3f, context).toInt()
+        borderMargin = Utilities.convertDpToPixel(8f, context).toInt()
         val halfThickness = borderThickness / 2
+        shapeHorizontalGap = Utilities.convertDpToPixel(5f, context)
+        shapeVerticalGap = Utilities.convertDpToPixel(5f, context)
+
         if (shapeCellCtrlList.size > 0) {
             val shapeCellCtrl = shapeCellCtrlList[0]
             size = shapeCellCtrl.size
@@ -85,8 +91,8 @@ class ShapeTableCtrl : View, View.OnClickListener {
         rcShapesBounds = RectF(
             halfThickness.toFloat(),
             halfThickness.toFloat(),
-            (columns * size - halfThickness + 2 * borderMargin).toFloat(),
-            (rows * size - halfThickness + 2 * borderMargin).toFloat()
+            columns * size + shapeHorizontalGap * (columns - 1) - halfThickness + 2 * borderMargin,
+            rows * size + shapeVerticalGap * (rows - 1) - halfThickness + 2 * borderMargin
         )
         val ptMainScreenSize = Utilities.getRealScreenSize(context)
         val tf = Typeface.create("Normal", Typeface.BOLD)
@@ -136,11 +142,11 @@ class ShapeTableCtrl : View, View.OnClickListener {
             shapeCellCtrlList[i].draw(canvas)
             if (i % columns == lastColumn) {
                 canvas.translate(
-                    (-lastColumn * size).toFloat(),
-                    size.toFloat()
+                    -lastColumn * (size + shapeHorizontalGap),
+                    size + shapeVerticalGap
                 )
             } else {
-                canvas.translate(size.toFloat(), 0f)
+                canvas.translate(size + shapeHorizontalGap, 0f)
             }
         }
     }
@@ -153,22 +159,30 @@ class ShapeTableCtrl : View, View.OnClickListener {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         super.onTouchEvent(event) // this super call is important !!!
         var success = false
-        val x = event.x - (rcFullScreenBounds.width() - rcShapesBounds.width()) / 2.0f
-        val y = event.y - (rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerShapesGap)
-        val col: Int = (x - borderMargin).toInt() / size
-        val row: Int = (y - borderMargin).toInt() / size
-        val pos = columns * row + col
+        val x = event.x - (rcFullScreenBounds.width() - rcShapesBounds.width()) / 2.0f - borderMargin
+        val y = event.y - (rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerShapesGap) - borderMargin
 
-        // Click on bottom border and get crash without if statement as out of range.
-        // Click on right border and leftmost next item selected without columns check.
-        if (pos < shapeCellCtrlList.size && col < columns && pos >= 0) {
-            val sCC = shapeCellCtrlList[pos]
-            if (sCC.getShapeType() !== SymbolShapeType.None) {
-                selectedShapeCtrl.setShapeType(sCC.getShapeType())
-            } else {
-                selectedShapeCtrl.setSymbol(sCC.getSymbol())
+        if (x >= 0 && x <= rcShapesBounds.width() && y >= 0 && y <= rcShapesBounds.height()) {
+            val xSumSizeHorizontalGapRatio = x / (size + shapeHorizontalGap)
+            val col = floor(xSumSizeHorizontalGapRatio).toInt()
+            
+            // Click is only on a button if remainder is less than size/(size + mainShapesHorizontalGap)
+            if (xSumSizeHorizontalGapRatio - col < size / (size + shapeHorizontalGap)) {
+                val row = floor(y / (size + shapeVerticalGap)).toInt()
+                val pos = columns * row + col
+
+                // Click on bottom border and get crash without if statement as out of range.
+                // Click on right border and leftmost next item selected without columns check.
+                if (pos < shapeCellCtrlList.size && col < columns && pos >= 0) {
+                    val sCC = shapeCellCtrlList[pos]
+                    if (sCC.getShapeType() !== SymbolShapeType.None) {
+                        selectedShapeCtrl.setShapeType(sCC.getShapeType())
+                    } else {
+                        selectedShapeCtrl.setSymbol(sCC.getSymbol())
+                    }
+                    success = performClick()
+                }
             }
-            success = performClick()
         }
         return success
     }
