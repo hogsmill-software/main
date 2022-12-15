@@ -85,7 +85,7 @@
     },
     {
         "id": 13,
-        "hpl": "French",
+        "hpl": "Français",
         "downLoaded": false,
         "fileName": "hyph-fr.tex",
         "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-fr.tex"
@@ -99,21 +99,21 @@
     },
     {
         "id": 15,
-        "hpl": "German",
+        "hpl": "Deutsch",
         "downLoaded": false,
         "fileName": "hyph-de-1901.tex",
         "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-de-1901.tex"
     },
     {
         "id": 16,
-        "hpl": "German (1996)",
+        "hpl": "Deutsch (1996)",
         "downLoaded": false,
         "fileName": "hyph-de-1996.tex",
         "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-de-1996.tex"
     },
     {
         "id": 17,
-        "hpl": "German (Swiss)",
+        "hpl": "Deutsch (Schweiz)",
         "downLoaded": false,
         "fileName": "hyph-de-ch-1901.tex",
         "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-de-ch-1901.tex"
