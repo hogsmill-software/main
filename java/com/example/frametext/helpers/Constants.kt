@@ -22,6 +22,7 @@ internal object Constants {
     const val SYMBOL = "symbol"
     const val FONT_FAMILY = "fontFamily"
     const val TYPEFACE = "typeface"
+    const val MIN_DIST_EDGE_SHAPE = "minDistEdgeShape"
 
     // Font family names.
     // these work
