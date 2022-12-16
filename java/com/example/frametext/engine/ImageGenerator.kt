@@ -155,7 +155,7 @@ class ImageGenerator(
         // A bit rudimentary, but work so far with few samples I have.
         // With optimize spacing turned off, looks worse with this code.
         if (tfd.optimizeSpacing) {
-            while (dt.remUnUsedRectangles() > 0) {
+            while (dt.remUnUsedRectangles() > 0 || !dt.doesAllTextFit()) {
                 dt.incrementCharGap()
                 dt.clearTextFromRectangles()
                 dt.computeTextPlacementDetails(false)
