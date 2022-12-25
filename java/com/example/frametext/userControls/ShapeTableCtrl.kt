@@ -24,13 +24,14 @@ class ShapeTableCtrl : View, View.OnClickListener {
     private lateinit var rcShapesBounds: RectF
     private val shapeCellCtrlList = ArrayList<ShapeCellCtrl>()
     private lateinit var  selectSymbol: String
-    private val rcHeaderBounds = Rect()
+    private lateinit var rcHeaderBounds: Rect
     private lateinit var rcFullScreenBounds: RectF
     private lateinit var rcPopupBounds: RectF
     private var popupMargin: Float = 0f
     private var headerShapesGap = 0f // Gap between header and shapes below.
     private var shapeHorizontalGap = 0f // Horizontal gap between the emoji buttons
     private var shapeVerticalGap = 0f // Vertical gap between the emoji buttons
+    private lateinit var popUpHeader: PopupHeader
 
     constructor(context: Context, purchasedMore: Boolean) : super(context) {
         init(context, purchasedMore)
@@ -99,7 +100,10 @@ class ShapeTableCtrl : View, View.OnClickListener {
         paint.typeface = tf
         paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectSymbol = resources.getString(R.string.select_symbol)
-        paint.getTextBounds(selectSymbol, 0, selectSymbol.length, rcHeaderBounds)
+        popUpHeader = PopupHeader(selectSymbol, 0.75f*ptMainScreenSize.x)
+        popUpHeader.computeData(paint)
+        rcHeaderBounds = popUpHeader.rcHeaderBounds
+
         rcFullScreenBounds = RectF(0f, 0f, ptMainScreenSize.x.toFloat(), ptMainScreenSize.y.toFloat())
 
         popupMargin = Utilities.convertDpToPixel(7f, context)
@@ -123,12 +127,7 @@ class ShapeTableCtrl : View, View.OnClickListener {
         canvas.drawRect(rcPopupBounds, paint)
 
         paint.color = ContextCompat.getColor(context, R.color.black)
-        canvas.drawText(
-            selectSymbol,
-            (rcFullScreenBounds.width() - rcHeaderBounds.width()) / 2.0f,
-            rcPopupBounds.top + rcHeaderBounds.height() + popupMargin,
-            paint
-        )
+        popUpHeader.draw(canvas, paint, rcFullScreenBounds.width(),rcPopupBounds.top + popupMargin)
         canvas.translate(
             (rcFullScreenBounds.width() - rcShapesBounds.width()) / 2.0f,
             rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerShapesGap

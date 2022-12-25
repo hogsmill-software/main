@@ -11,6 +11,7 @@ import com.example.frametext.enums.MainShapeType
 import com.example.frametext.helpers.Utilities
 import com.example.frametext.userControls.colorPicker.Constants
 import kotlin.math.floor
+import kotlin.math.max
 
 class MainShapeTableCtrl : View, View.OnClickListener {
     private val columns: Int
@@ -21,12 +22,13 @@ class MainShapeTableCtrl : View, View.OnClickListener {
     private lateinit var rcMainShapesBounds: RectF
     private val mainShapeCellCtrlList = ArrayList<MainShapeCellCtrl>()
     private lateinit var selectMainShape: String
-    private val rcHeaderBounds = Rect()
+    private lateinit var rcHeaderBounds: Rect
     private lateinit var rcFullScreenBounds: RectF
     private lateinit var rcPopupBounds: RectF
     private var popupMargin: Float = 0f
     private var headerMainShapesGap = 0f // Gap between header and main shapes below.
     private var mainShapesHorizontalGap = 0f // Gap between the main shapes
+    private lateinit var popUpHeader: PopupHeader
 
     constructor(context: Context?) : super(context) {
         columns = 0
@@ -76,11 +78,15 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         paint.typeface = tf
         paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectMainShape = resources.getString(R.string.select_main_shape)
-        paint.getTextBounds(selectMainShape, 0, selectMainShape.length, rcHeaderBounds)
+
+        popUpHeader = PopupHeader(selectMainShape, 0.75f*ptMainScreenSize.x)
+        popUpHeader.computeData(paint)
+        rcHeaderBounds = popUpHeader.rcHeaderBounds
+
         rcFullScreenBounds = RectF(0f, 0f, ptMainScreenSize.x.toFloat(), ptMainScreenSize.y.toFloat())
 
         popupMargin = Utilities.convertDpToPixel(7f, context)
-        headerMainShapesGap = Utilities.convertDpToPixel(40f, context)
+        headerMainShapesGap = Utilities.convertDpToPixel(25f, context)
         mainShapesHorizontalGap = Utilities.convertDpToPixel(12f, context)
         // Might need a vertical gap in future
 
@@ -92,11 +98,13 @@ class MainShapeTableCtrl : View, View.OnClickListener {
         )
 
         val innerHeight = rcHeaderBounds.height() + rcMainShapesBounds.height() + headerMainShapesGap
-        rcPopupBounds = RectF((ptMainScreenSize.x - rcHeaderBounds.width()) / 2.0f - popupMargin,
+        // check which wider: header or main shapes?
+        val widest = max(rcHeaderBounds.width().toFloat(), rcMainShapesBounds.width())
+
+        rcPopupBounds = RectF((ptMainScreenSize.x - widest) / 2.0f - popupMargin,
             (ptMainScreenSize.y - innerHeight) / 2.0f - popupMargin,
-            (ptMainScreenSize.x - rcHeaderBounds.width()) / 2.0f + rcHeaderBounds.width() + popupMargin,
-            (ptMainScreenSize.y - innerHeight) / 2.0f
-                    + innerHeight
+            (ptMainScreenSize.x + widest) / 2.0f + popupMargin,
+            (ptMainScreenSize.y + innerHeight) / 2.0f
                     + popupMargin
         )
     }
@@ -110,14 +118,8 @@ class MainShapeTableCtrl : View, View.OnClickListener {
 
         paint.color = ContextCompat.getColor(context, R.color.white)
         canvas.drawRect(rcPopupBounds, paint)
-
         paint.color = ContextCompat.getColor(context, R.color.black)
-        canvas.drawText(
-            selectMainShape,
-            (rcFullScreenBounds.width() - rcHeaderBounds.width()) / 2.0f,
-            rcPopupBounds.top + rcHeaderBounds.height() + popupMargin,
-            paint
-        )
+        popUpHeader.draw(canvas, paint, rcFullScreenBounds.width(),rcPopupBounds.top + popupMargin)
         canvas.translate(
             (rcFullScreenBounds.width() - rcMainShapesBounds.width()) / 2.0f,
             rcPopupBounds.top + rcHeaderBounds.height() + popupMargin + headerMainShapesGap

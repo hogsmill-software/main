@@ -671,7 +671,6 @@ internal class DrawText(
         return charGapChange < 0.0625
     }
 
-
     fun clearTextFromRectangles() {
         rectLst.forEach {
             it.text = ""

@@ -21,13 +21,14 @@ class EmojiTableCtrl : View, View.OnClickListener {
     private lateinit var rcEmojisBounds: RectF // The emojis bounding rectangle
     private val emojiCellCtrlList = ArrayList<EmojiCellCtrl>()
     private lateinit var selectEmoji: String
-    private val rcHeaderBounds = Rect()
+    private lateinit var rcHeaderBounds: Rect
     private lateinit var rcFullScreenBounds: RectF
     private lateinit var rcPopupBounds: RectF
     private var popupMargin = 0f
     private var headerEmojisGap = 0f // Gap between header and emojis below.
     private var emojisHorizontalGap = 0f // Horizontal gap between the emoji buttons
     private var emojisVerticalGap = 0f // Vertical gap between the emoji buttons
+    private lateinit var popUpHeader: PopupHeader
 
     constructor(context: Context, purchasedMore: Boolean) : super(context) {
         init(context, purchasedMore)
@@ -92,7 +93,10 @@ class EmojiTableCtrl : View, View.OnClickListener {
         paint.typeface = tf
         paint.textSize = Utilities.convertDpToPixel(25f, getContext())
         selectEmoji = resources.getString(R.string.select_emoji)
-        paint.getTextBounds(selectEmoji, 0, selectEmoji.length, rcHeaderBounds)
+        popUpHeader = PopupHeader(selectEmoji, 0.75f*ptMainScreenSize.x)
+        popUpHeader.computeData(paint)
+        rcHeaderBounds = popUpHeader.rcHeaderBounds
+
         rcFullScreenBounds = RectF(0f, 0f, ptMainScreenSize.x.toFloat(), ptMainScreenSize.y.toFloat())
 
         popupMargin = Utilities.convertDpToPixel(7f, context)
@@ -116,12 +120,7 @@ class EmojiTableCtrl : View, View.OnClickListener {
         canvas.drawRect(rcPopupBounds, paint)
 
         paint.color = ContextCompat.getColor(context, R.color.black)
-        canvas.drawText(
-            selectEmoji,
-            (rcFullScreenBounds.width() - rcHeaderBounds.width()) / 2.0f,
-            rcPopupBounds.top + rcHeaderBounds.height() + popupMargin,
-            paint
-        )
+        popUpHeader.draw(canvas, paint, rcFullScreenBounds.width(),rcPopupBounds.top + popupMargin)
 
         canvas.translate(
             (rcFullScreenBounds.width() - rcEmojisBounds.width()) / 2.0f,

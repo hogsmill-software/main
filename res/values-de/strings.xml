@@ -43,9 +43,9 @@
     <string name="emoji">Emoji</string>
     <string name="edge_shape">Symbol</string>
     <string name="main_shape">Hauptform</string>
-    <string name="select_emoji">Wählen Sie ein Emoji aus</string>
-    <string name="select_symbol">Wählen Sie ein Symbol aus</string>
-    <string name="select_main_shape">Wählen Sie eine Hauptform aus</string>
+    <string name="select_emoji">Wählen&#160;Sie ein Emoji aus</string>
+    <string name="select_symbol">Wählen&#160;Sie ein Symbol aus</string>
+    <string name="select_main_shape">Wähle den Rahmen aus</string>
     <string name="new_features">Neue Funktionen &#62;</string>
     <string name="not_purchased_more_emojis">Sie können weitere Emojis kaufen. Drücken Sie dazu \u0022&#60; Zurück\u0022, ggf. nach unten scrollen und \u0022Neue Funktionen &#62;\u0022 auswählen.</string>
     <string name="not_purchased_more_symbols">Sie können weitere Symbole kaufen. Drücken Sie dazu \u0022&#60; Zurück\u0022, ggf. nach unten scrollen und \u0022Neue Funktionen &#62;\u0022 auswählen.</string>
