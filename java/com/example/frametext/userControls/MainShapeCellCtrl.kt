@@ -19,6 +19,7 @@ class MainShapeCellCtrl : View {
     private var shapeType: MainShapeType = MainShapeType.None
     private var drawShapeDetails: MainShape? = null
     private var innerShapeBorder = 0f
+    var isMainButton = false // Indicates main button and not in pop up
 
     constructor(context: Context) : super(context) {
         initStandardSizes(context)
@@ -107,7 +108,7 @@ class MainShapeCellCtrl : View {
             canvas.drawRect(rcBounds, paint)
         }
         if (drawShapeDetails != null) {
-            val shapeColor = ContextCompat.getColor(context, R.color.black)
+            val shapeColor = ContextCompat.getColor(context, if (isMainButton || isMainShapeSelected) R.color.black else (Utilities.getTextColorId(context)))
             drawShapeDetails!!.setColor(shapeColor)
         }
         drawShapeType(canvas)

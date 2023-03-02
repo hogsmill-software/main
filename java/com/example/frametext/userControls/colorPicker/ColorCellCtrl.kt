@@ -5,7 +5,6 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.example.frametext.R
 import com.example.frametext.helpers.Utilities
 
 class ColorCellCtrl: View  {
@@ -45,12 +44,12 @@ class ColorCellCtrl: View  {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        paint.color = Color.WHITE
+        paint.color = cellBackgroundColor
         paint.style = Paint.Style.FILL
         boundingRect?.let { canvas.drawRect(it, paint) }
 
         if (colorSelected) {
-            paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
+            paint.color = selectedFrameColor
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = selectFrameWidth
             selectFrameRect?.let { canvas.drawRect(it, paint) }
@@ -60,7 +59,7 @@ class ColorCellCtrl: View  {
         paint.style = Paint.Style.FILL
         colorRect?.let { canvas.drawRect(it, paint) }
 
-        paint.color = Color.BLACK
+        paint.color = cellFrameColor
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = colorFrmWidth
         colorFrmRect?.let { canvas.drawRect(it, paint) }
@@ -74,13 +73,16 @@ class ColorCellCtrl: View  {
     companion object {
         var size = 0f
         private set
-        public var selectFrameWidth = 0f
+        var selectFrameWidth = 0f
             private set
         private var boundingRect: RectF? = null
         private var selectFrameRect: RectF? = null
         private var colorRect: RectF? = null
         private var colorFrmWidth = 0f
         private var colorFrmRect: RectF? = null
+        private var cellBackgroundColor: Int = 0
+        private var cellFrameColor: Int = 0
+        private var selectedFrameColor: Int = 0
 
         private fun initStandardSizes(context: Context) {
             if (boundingRect == null) {
@@ -94,6 +96,9 @@ class ColorCellCtrl: View  {
                 val colorFrmMargin = innerMargin + colorFrmWidth
                 colorFrmRect = RectF(colorFrmMargin, colorFrmMargin, size - colorFrmMargin, size - colorFrmMargin)
             }
+            cellBackgroundColor = ContextCompat.getColor(context, Utilities.getBackgroundColorId(context))
+            cellFrameColor = ContextCompat.getColor(context, Utilities.getTextColorId(context))
+            selectedFrameColor = ContextCompat.getColor(context, Utilities.getFrameColorId(context))
         }
     }
 }

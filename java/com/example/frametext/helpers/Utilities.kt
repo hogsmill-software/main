@@ -1,9 +1,11 @@
 package com.example.frametext.helpers
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Point
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import com.example.frametext.R
 import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.helpers.Constants.FF_MONOSPACE
 import com.example.frametext.helpers.Constants.FF_NORMAL
@@ -113,6 +115,33 @@ object Utilities {
                 else -> 150
             }
             return closestDistance
+        }
+    }
+
+    fun getTextColorId(context: Context) : Int {
+        return when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                Configuration.UI_MODE_NIGHT_YES -> R.color.white
+                Configuration.UI_MODE_NIGHT_NO -> R.color.black
+                Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.black
+                else -> R.color.black
+            }
+    }
+
+    fun getBackgroundColorId(context: Context) : Int {
+        return when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> R.color.black
+            Configuration.UI_MODE_NIGHT_NO -> R.color.white
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.white
+            else -> R.color.white
+        }
+    }
+
+    fun getFrameColorId(context: Context) : Int {
+        return when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> R.color.darkmodeFrameColor
+            Configuration.UI_MODE_NIGHT_NO -> R.color.highlightBlue
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.highlightBlue
+            else -> R.color.highlightBlue
         }
     }
 }

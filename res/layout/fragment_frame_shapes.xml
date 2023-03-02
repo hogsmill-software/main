@@ -17,7 +17,7 @@
         android:padding="5dp"
         android:text="@string/back"
         android:textAllCaps="false"
-        android:textColor="@color/plainBlue" />
+        android:theme="@style/plainBlue" />
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -55,8 +55,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/emoji"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="13dp"
-                    android:textColor="@color/black"/>
+                    android:layout_marginTop="13dp" />
 
                 <View
                     android:layout_width="0dp"
@@ -104,8 +103,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold"/>
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -117,8 +115,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/edge_shape"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="13dp"
-                    android:textColor="@color/black"/>
+                    android:layout_marginTop="13dp"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -164,8 +161,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -177,8 +173,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/shape_color"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="13dp"
-                    android:textColor="@color/black"/>
+                    android:layout_marginTop="13dp"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -225,8 +220,7 @@
                     android:text="@string/min_dist_symbols"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="0dp"
-                    android:layout_marginBottom="35dp"
-                    android:textColor="@color/black"/>
+                    android:layout_marginBottom="35dp"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -252,8 +246,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/main_shape"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="13dp"
-                    android:textColor="@color/black"/>
+                    android:layout_marginTop="13dp"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"

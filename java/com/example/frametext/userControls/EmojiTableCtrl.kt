@@ -116,10 +116,10 @@ class EmojiTableCtrl : View, View.OnClickListener {
         paint.style = Paint.Style.FILL
         canvas.drawRect(rcFullScreenBounds, paint)
 
-        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint.color = ContextCompat.getColor(context, Utilities.getBackgroundColorId(context))
         canvas.drawRect(rcPopupBounds, paint)
 
-        paint.color = ContextCompat.getColor(context, R.color.black)
+        paint.color = ContextCompat.getColor(context, Utilities.getTextColorId(context))
         popUpHeader.draw(canvas, paint, rcFullScreenBounds.width(),rcPopupBounds.top + popupMargin)
 
         canvas.translate(

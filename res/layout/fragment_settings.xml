@@ -38,8 +38,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hyphenate_file"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="3dp"
-                        android:textColor="@color/black"/>
+                        android:layout_marginTop="3dp" />
 
                     <View
                         android:layout_width="0dp"
@@ -82,7 +81,7 @@
                         android:padding="5dp"
                         android:text="@string/download_hyphenation_files"
                         android:textAllCaps="false"
-                        android:textColor="@color/plainBlue" />
+                        android:theme="@style/plainBlue" />
                 </LinearLayout>
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/optimizeSpacingSwitch"
@@ -105,8 +104,7 @@
                         android:text="@string/txt_to_symbol_dist"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="0dp"
-                        android:layout_marginBottom="8dp"
-                        android:textColor="@color/black"/>
+                        android:layout_marginBottom="8dp"/>
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -133,9 +131,7 @@
                         android:text="@string/margin"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="9dp"
-                        android:layout_marginBottom="3dp"
-                        android:textColor="@color/black"/>
-
+                        android:layout_marginBottom="3dp"/>
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -172,7 +168,7 @@
                         android:padding="5dp"
                         android:text="@string/frame_shape_settings"
                         android:textAllCaps="false"
-                        android:textColor="@color/plainBlue" />
+                        android:theme="@style/plainBlue" />
                 </LinearLayout>
 
 
@@ -244,8 +240,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/background_color"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="13dp"
-                        android:textColor="@color/black"/>
+                        android:layout_marginTop="13dp"/>
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -302,7 +297,7 @@
                         android:padding="5dp"
                         android:text="@string/font_settings"
                         android:textAllCaps="false"
-                        android:textColor="@color/plainBlue" />
+                        android:theme="@style/plainBlue" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -323,7 +318,7 @@
                         android:padding="5dp"
                         android:text="@string/new_features"
                         android:textAllCaps="false"
-                        android:textColor="@color/plainBlue" />
+                        android:theme="@style/plainBlue" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

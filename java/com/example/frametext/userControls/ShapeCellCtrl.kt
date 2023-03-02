@@ -22,6 +22,7 @@ class ShapeCellCtrl : View {
     private var drawShapeDetails: ColoredEdgeShapeDetails? = null
     private var innerShapeBorder = 0f
     private var isActive = true
+    var isMainButton = false // Indicates main button and not in pop up
 
     constructor(context: Context) : super(context) {
         initStandardSizes(context)
@@ -142,7 +143,7 @@ class ShapeCellCtrl : View {
             paint.style = Paint.Style.FILL
             boundingRect?.let { canvas.drawRect(it, paint) }
         }
-        val shapeColor = ContextCompat.getColor(context, if (isActive) R.color.black else R.color.fog)
+        val shapeColor = ContextCompat.getColor(context, if (isActive) (if (isMainButton || _isSelected) R.color.black else (Utilities.getTextColorId(context))) else R.color.fog)
         if (drawShapeDetails != null) {
             drawShapeDetails!!.color = shapeColor
             drawShapeType(canvas)

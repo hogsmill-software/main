@@ -9,6 +9,8 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
+import com.example.frametext.helpers.Utilities
 
 abstract class ColorSliderView @JvmOverloads constructor(
     context: Context?,
@@ -150,7 +152,7 @@ abstract class ColorSliderView @JvmOverloads constructor(
         borderPaint.strokeWidth = 0f
         borderPaint.color = Color.BLACK
         selectorPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        selectorPaint.color = Color.BLACK
+        selectorPaint.color = if (context != null) ContextCompat.getColor(context, Utilities.getTextColorId(context)) else Color.BLACK
         selectorPath = Path()
         selectorPath.fillType = Path.FillType.WINDING
     }

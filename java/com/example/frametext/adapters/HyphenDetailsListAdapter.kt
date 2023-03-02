@@ -1,8 +1,9 @@
 package com.example.frametext.adapters
 
-import android.content.Context
-import android.graphics.Typeface
 //https://www.techyourchance.com/asynctask-deprecated/
+import android.content.Context
+import android.content.res.Configuration
+import android.graphics.Typeface
 import android.os.AsyncTask
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +12,17 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.frametext.globalObjects.HyphenDetails
 import com.example.frametext.MainActivity.Companion.getHyphenFileFolder
 import com.example.frametext.R
+import com.example.frametext.globalObjects.HyphenDetails
+import com.example.frametext.helpers.Utilities
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.net.URL
 import java.net.URLConnection
+import java.security.AccessController.getContext
 
 class HyphenDetailsListAdapter internal constructor(
     context: Context,
@@ -197,7 +200,7 @@ class HyphenDetailsListAdapter internal constructor(
     ) {
         downloadDeleteButton.setBackgroundColor(ContextCompat.getColor(context, R.color.navyBlue))
         downloadDeleteButton.text = context.resources.getString(R.string.remove)
-        hyphenFileNameView.setTextColor(ContextCompat.getColor(context, R.color.black))
+        hyphenFileNameView.setTextColor(ContextCompat.getColor(context, Utilities.getTextColorId(context)))
         hyphenFileNameView.setTypeface(null, Typeface.BOLD)
     }
 

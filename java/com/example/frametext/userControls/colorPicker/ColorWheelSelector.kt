@@ -2,11 +2,12 @@ package com.example.frametext.userControls.colorPicker
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
+import com.example.frametext.R
 
 class ColorWheelSelector @JvmOverloads constructor(
     context: Context?,
@@ -39,7 +40,9 @@ class ColorWheelSelector @JvmOverloads constructor(
     }
 
     init {
-        selectorPaint.color = Color.BLACK
+        // Black not ideal in dark mode but other colours are even worse
+      //  selectorPaint.color = if (context != null) ContextCompat.getColor(context, Utilities.getTextColorId(context)) else android.graphics.Color.BLACK
+        selectorPaint.color = android.graphics.Color.BLACK
         selectorPaint.style = Paint.Style.STROKE
         selectorPaint.strokeWidth = 2f
     }

@@ -12,6 +12,7 @@
     <color name="fog">#FF78909C</color>
     <color name="midDayFog">#FFCCCCCC</color>
     <color name="plainBlue">#FF155AFF</color>
+    <color name="plainBlueDark">#FF2ABAFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="red">#FFFF0000</color>
     <color name="highlightBlue">#2196FF</color>
@@ -50,4 +51,5 @@
     <color name="darkKhaki">#FFBDB76B</color>
     <color name="orangeRed">#FFFF4500</color>
     <color name="crimson">#FFDC143C</color>
+    <color name="darkmodeFrameColor">#FF61E897</color>
 </resources>

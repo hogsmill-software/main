@@ -15,15 +15,14 @@
         android:padding="5dp"
         android:text="@string/back"
         android:textAllCaps="false"
-        android:textColor="@color/plainBlue" />
+        android:theme="@style/plainBlue" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save_as_file"
         android:layout_marginStart="10dp"
         android:layout_marginTop="9dp"
-        android:layout_marginBottom="3dp"
-        android:textColor="@color/black"/>
+        android:layout_marginBottom="3dp" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

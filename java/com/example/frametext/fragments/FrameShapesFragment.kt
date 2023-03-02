@@ -104,6 +104,7 @@ class FrameShapesFragment : Fragment() {
         } else {
             filledShapeButton.setShapeType(ftp.symbolShapeType)
         }
+        filledShapeButton.isMainButton = true
         filledShapeButton.setOnClickListener { openShapePopup() }
 
         activateDeactivateSymbolColorButton(view, !ftp.useEmoji)
@@ -118,6 +119,7 @@ class FrameShapesFragment : Fragment() {
 
         unfilledShapeButton = view.findViewById(R.id.unfilledShapeButton)
         unfilledShapeButton.setShapeType(ftp.mainShapeType)
+        unfilledShapeButton.isMainButton = true
         unfilledShapeButton.setOnClickListener { openMainShapePopup() }
 
         warningMsg = view.findViewById(R.id.warningMsg)
@@ -229,12 +231,13 @@ class FrameShapesFragment : Fragment() {
     }
 
     private fun activateDeactivateSymbolColorButton(view: View, activate: Boolean) {
+        val defaultTextColor: Int = if (context != null) Utilities.getTextColorId(requireContext()) else Color.BLACK
         val emojiText = view.findViewById<TextView>(R.id.emojiText)
-        emojiText.setTextColor(if (activate) Color.GRAY else Color.BLACK)
+        emojiText.setTextColor(if (activate) Color.GRAY else defaultTextColor)
         val edgeShapeText = view.findViewById<TextView>(R.id.edgeShapeText)
-        edgeShapeText.setTextColor(if (activate) Color.BLACK else Color.GRAY)
+        edgeShapeText.setTextColor(if (activate) defaultTextColor else Color.GRAY)
         val shapeColorText = view.findViewById<TextView>(R.id.shapeColorText)
-        shapeColorText.setTextColor(if (activate) Color.BLACK else Color.GRAY)
+        shapeColorText.setTextColor(if (activate) defaultTextColor else Color.GRAY)
         if (context != null && requireContext().resources != null) {
             val emojiButtonFrame = view.findViewById<View>(R.id.emojiButtonFrame)
             emojiButtonFrame.setBackgroundColor(

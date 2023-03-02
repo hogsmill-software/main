@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.example.frametext.R
+import com.example.frametext.helpers.Utilities
 import java.util.*
 
 class ColorPickerPopup private constructor(builder: Builder) {
@@ -86,6 +87,9 @@ class ColorPickerPopup private constructor(builder: Builder) {
             colorHex.text = colorHex(initialColor)
         }
         // my addition
+        val colorPickerViewContainer: androidx.constraintlayout.widget.ConstraintLayout = layout.findViewById(R.id.colorPickerViewContainer)
+        colorPickerViewContainer.setBackgroundColor(ContextCompat.getColor(context, Utilities.getBackgroundColorId(context)))
+
         val colorTableCtrl: ColorTableCtrl = layout.findViewById(R.id.colorTableCtrl)
         colorTableCtrl.colorPickerPopup = this
 
