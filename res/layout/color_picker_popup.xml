@@ -124,7 +124,7 @@
                     android:id="@+id/incrementOpacityButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/pinkMagenta"
+                    style="@style/pinkMagenta"
                     android:padding="2dp"
                     android:src="@drawable/plus"
                     android:contentDescription="@string/plus" />
@@ -166,7 +166,7 @@
                     android:id="@+id/incrementRedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/pinkMagenta"
+                    style="@style/pinkMagenta"
                     android:padding="2dp"
                     android:src="@drawable/plus"
                     android:contentDescription="@string/plus" />
@@ -208,7 +208,7 @@
                     android:id="@+id/incrementGreenButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/pinkMagenta"
+                    style="@style/pinkMagenta"
                     android:padding="2dp"
                     android:src="@drawable/plus"
                     android:contentDescription="@string/plus" />
@@ -251,7 +251,7 @@
                     android:id="@+id/incrementBlueButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/pinkMagenta"
+                    style="@style/pinkMagenta"
                     android:padding="2dp"
                     android:src="@drawable/plus"
                     android:contentDescription="@string/plus" />
@@ -291,8 +291,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             android:padding="5dp"
-            android:background="@color/pinkMagenta"
-            android:backgroundTint="@color/pinkMagenta"
+            style="@style/pinkMagentaButton"
             android:textAllCaps="false"
             android:textColor="@color/white" />
         <View

@@ -93,6 +93,9 @@ class ColorPickerPopup private constructor(builder: Builder) {
         val colorTableCtrl: ColorTableCtrl = layout.findViewById(R.id.colorTableCtrl)
         colorTableCtrl.colorPickerPopup = this
 
+        var customButton = layout.findViewById<AppCompatButton>(R.id.custom)
+        customButton.setBackgroundColor(ContextCompat.getColor(context, Utilities.getPinkMagentaColorId(context)))
+        
         val observer2 = object : ColorObserver {
             override fun onColor(color: Int, fromUser: Boolean, shouldPropagate: Boolean) {
                 if (showIndicator) {
