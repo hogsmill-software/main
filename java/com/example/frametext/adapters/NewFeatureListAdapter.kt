@@ -18,6 +18,7 @@ import com.example.frametext.billing.SKU_MORE_SYMBOLS
 import com.example.frametext.billing.StoreManager
 import com.example.frametext.databinding.ListNewFeatureItemsBinding
 import com.example.frametext.fragments.NewFeaturesFragment
+import com.example.frametext.helpers.Utilities
 import com.example.frametext.userControls.AlertPopupOK
 import com.example.frametext.viewModels.NewFeaturesViewModel
 
@@ -200,7 +201,7 @@ class NewFeatureListAdapter internal constructor(
 
     fun setButtonToBuyStatus(buyPurchasedButton: AppCompatButton) {
         buyPurchasedButton.visibility = View.VISIBLE
-        buyPurchasedButton.setBackgroundColor(ContextCompat.getColor(context, R.color.pinkMagenta))
+        buyPurchasedButton.setBackgroundColor(ContextCompat.getColor(context, Utilities.getPinkMagentaColorId(context)))
         buyPurchasedButton.text = context.resources.getString(R.string.buy)
         buyPurchasedButton.setTypeface(null, Typeface.NORMAL)
     }

@@ -22,4 +22,18 @@
     <style name="popupBackground" parent="Theme.FrameText">
         <item name="android:background">@color/black</item>
     </style>
+
+    <style name="pinkMagenta" parent="Theme.FrameText">
+        <item name="android:background">@color/pinkMagentaDarkMode</item>
+        <item name="android:backgroundTint">@color/pinkMagentaDarkMode</item>
+    </style>
+
+    <style name="pinkMagentaTab" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/pinkMagentaDarkMode</item>
+    </style>
+
+    <style name="pinkMagentaButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/pinkMagentaDarkMode</item>
+        <item name="android:backgroundTint">@color/pinkMagentaDarkMode</item>
+    </style>
 </resources>

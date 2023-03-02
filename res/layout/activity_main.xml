@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:background="@color/navyBlue"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-        app:tabIndicatorColor="@color/pinkMagenta"
         app:tabIndicatorGravity="stretch"
         app:tabTextColor="@color/white"
-        tools:ignore="SpeakableTextPresentCheck">
+        tools:ignore="SpeakableTextPresentCheck"
+        style="@style/pinkMagentaTab">
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

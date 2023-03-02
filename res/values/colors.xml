@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="pinkMagenta">#FF1AE6</color>
+    <color name="pinkMagenta">#FFFF1AE6</color>
+    <color name="pinkMagentaDarkMode">#FFD010DC</color>
     <color name="navyBlue">#001AE6</color>
     <color name="fog">#FF78909C</color>
     <color name="midDayFog">#FFCCCCCC</color>

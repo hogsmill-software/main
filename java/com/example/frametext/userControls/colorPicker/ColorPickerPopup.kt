@@ -353,7 +353,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
         colorPickerView.visibility = View.VISIBLE
         val customBtn = layout.findViewById<AppCompatButton>(R.id.custom)
         customBtn.setTypeface(null, Typeface.BOLD)
-        customBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.pinkMagenta))
+        customBtn.setBackgroundColor(ContextCompat.getColor(context, Utilities.getPinkMagentaColorId(context)))
 
         val standardBtn = layout.findViewById<AppCompatButton>(R.id.standard)
         standardBtn.setTypeface(null, Typeface.NORMAL)
@@ -373,7 +373,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
         customBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.navyBlue))
         val standardBtn = layout.findViewById<AppCompatButton>(R.id.standard)
         standardBtn.setTypeface(null, Typeface.BOLD)
-        standardBtn.setBackgroundColor(ContextCompat.getColor(context, R.color.pinkMagenta))
+        standardBtn.setBackgroundColor(ContextCompat.getColor(context, Utilities.getPinkMagentaColorId(context)))
         val spinnerControls = layout.findViewById<LinearLayout>(R.id.spinnerControls)
         spinnerControls.visibility = View.VISIBLE
         setSpinnerControls(layout, colorPickerView.color)

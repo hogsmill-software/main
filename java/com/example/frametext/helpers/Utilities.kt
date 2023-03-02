@@ -144,6 +144,14 @@ object Utilities {
             else -> R.color.highlightBlue
         }
     }
+    fun getPinkMagentaColorId(context: Context) : Int {
+        return when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> R.color.pinkMagentaDarkMode
+            Configuration.UI_MODE_NIGHT_NO -> R.color.pinkMagenta
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.pinkMagenta
+            else -> R.color.pinkMagenta
+        }
+    }
 }
 // From https://medium.com/android-news/how-to-remove-all-from-your-kotlin-code-87dc2c9767fb see section 4
 fun <T1, T2> ifNotNull(value1: T1?, value2: T2?, bothNotNull: (T1, T2) -> (Unit)) {

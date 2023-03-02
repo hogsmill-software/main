@@ -187,7 +187,7 @@ class HyphenDetailsListAdapter internal constructor(
         hyphenFileNameView: TextView
     ) {
         downloadDeleteButton.setBackgroundColor(
-            ContextCompat.getColor(context, R.color.pinkMagenta)
+            ContextCompat.getColor(context, Utilities.getPinkMagentaColorId(context))
         )
         downloadDeleteButton.text = context.resources.getString(R.string.download)
         hyphenFileNameView.setTextColor(ContextCompat.getColor(context, R.color.fog))
