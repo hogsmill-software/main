@@ -36,4 +36,9 @@
         <item name="android:background">@color/pinkMagentaDarkMode</item>
         <item name="android:backgroundTint">@color/pinkMagentaDarkMode</item>
     </style>
+
+    <style name="yellowInfoButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/yellowDarkMode</item>
+        <item name="android:backgroundTint">@color/yellowDarkMode</item>
+    </style>
 </resources>

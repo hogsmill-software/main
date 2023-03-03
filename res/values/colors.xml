@@ -20,6 +20,7 @@
     <color name="faintHighlightBlue">#FF78f0ff</color>
     <color name="translucide">#88ffffff</color>
     <color name="yellow">#FFFFFF00</color>
+    <color name="yellowDarkMode">#FFB4B404</color>
     <color name="green">#FF00FF00</color>
     <color name="blue">#FF0000FF</color>
     <color name="magenta">#FFFF00FF</color>

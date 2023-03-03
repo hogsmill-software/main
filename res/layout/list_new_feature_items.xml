@@ -20,12 +20,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:padding="5dp"
-            android:background="@color/yellow"
-            android:backgroundTint="@color/yellow"
             android:text="@string/info"
-
-            android:textAllCaps="false"
-            android:textColor="@color/black"/>
+            style="@style/yellowInfoButton"
+            android:textAllCaps="false"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buyPurchasedButton"
