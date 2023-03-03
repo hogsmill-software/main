@@ -120,11 +120,20 @@ object Utilities {
 
     fun getTextColorId(context: Context) : Int {
         return when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
-                Configuration.UI_MODE_NIGHT_YES -> R.color.white
-                Configuration.UI_MODE_NIGHT_NO -> R.color.black
-                Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.black
-                else -> R.color.black
-            }
+            Configuration.UI_MODE_NIGHT_YES -> R.color.white
+            Configuration.UI_MODE_NIGHT_NO -> R.color.black
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.black
+            else -> R.color.black
+        }
+    }
+
+    fun getDisabledTextColorId(context: Context) : Int {
+        return when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> R.color.disabledTextDark
+            Configuration.UI_MODE_NIGHT_NO -> R.color.disabledText
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.disabledText
+            else -> R.color.disabledText
+        }
     }
 
     fun getBackgroundColorId(context: Context) : Int {

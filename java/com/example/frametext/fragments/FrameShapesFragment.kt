@@ -1,5 +1,6 @@
 package com.example.frametext.fragments
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -230,14 +231,18 @@ class FrameShapesFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ResourceType")
     private fun activateDeactivateSymbolColorButton(view: View, activate: Boolean) {
-        val defaultTextColor: Int = if (context != null) Utilities.getTextColorId(requireContext()) else Color.BLACK
+        val defaultTextColorId: Int = if (context != null) Utilities.getTextColorId(requireContext()) else R.color.black
+        val defaultTextColor: Int = ContextCompat.getColor(requireContext(), defaultTextColorId)
+        val disabledTextColorId: Int = if (context != null) Utilities.getDisabledTextColorId(requireContext()) else R.color.disabledText
+        val disabledTextColor: Int = ContextCompat.getColor(requireContext(), disabledTextColorId)
         val emojiText = view.findViewById<TextView>(R.id.emojiText)
-        emojiText.setTextColor(if (activate) Color.GRAY else defaultTextColor)
+        emojiText.setTextColor(if (activate) disabledTextColor else defaultTextColor)
         val edgeShapeText = view.findViewById<TextView>(R.id.edgeShapeText)
-        edgeShapeText.setTextColor(if (activate) defaultTextColor else Color.GRAY)
+        edgeShapeText.setTextColor(if (activate) defaultTextColor else disabledTextColor)
         val shapeColorText = view.findViewById<TextView>(R.id.shapeColorText)
-        shapeColorText.setTextColor(if (activate) defaultTextColor else Color.GRAY)
+        shapeColorText.setTextColor(if (activate) defaultTextColor else disabledTextColor)
         if (context != null && requireContext().resources != null) {
             val emojiButtonFrame = view.findViewById<View>(R.id.emojiButtonFrame)
             emojiButtonFrame.setBackgroundColor(

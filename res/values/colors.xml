@@ -53,4 +53,6 @@
     <color name="orangeRed">#FFFF4500</color>
     <color name="crimson">#FFDC143C</color>
     <color name="darkmodeFrameColor">#FF61E897</color>
+    <color name="disabledText">#FFB0B0B0</color>
+    <color name="disabledTextDark">#FF747474</color>
 </resources>
