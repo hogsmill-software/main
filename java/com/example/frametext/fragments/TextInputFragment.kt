@@ -3,7 +3,6 @@ package com.example.frametext.fragments
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,17 +98,6 @@ class TextInputFragment : Fragment() {
 
                     frameTextImgContainer.computeTextFit(requireContext())
                     frameTextImgContainer.draw()
-
-                    // generate image file in Pictures folder:
-                    if (activity != null) {
-                        val fileName = "FT-" + System.currentTimeMillis()
-                        MediaStore.Images.Media.insertImage(
-                            requireActivity().contentResolver,
-                            frameTextImgContainer.bitmap,
-                            fileName,
-                            "Generated through FrameText."
-                        )
-                    }
                     val frameTextImage: Bitmap = frameTextImgContainer.bitmap
 
                     frameTextBitmapViewModel?.selectItem(frameTextImage)
@@ -120,6 +108,10 @@ class TextInputFragment : Fragment() {
                     val tabLayout: TabLayout? =
                         tabLayoutViewModel?.getSelectedItem()?.value
                     if (tabLayout != null) {
+                        if (tabLayout.tabCount == 2)
+                            tabLayout.newTab().setText(resources.getString(R.string.image))
+                                .let { tabLayout.addTab(it) }
+
                         val tab = tabLayout.getTabAt(2)
                         tab?.select()
                     }

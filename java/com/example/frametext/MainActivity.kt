@@ -84,10 +84,8 @@ class MainActivity : AppCompatActivity() {
             ?.let { tabLayout?.addTab(it) }
         tabSetting = tabLayout?.newTab()?.setText(resources.getString(R.string.settings))
         tabSetting?.let { tabLayout?.addTab(it) }
-        tabLayout?.newTab()?.setText(resources.getString(R.string.image))
-            ?.let { tabLayout?.addTab(it) }
         tabLayout?.tabGravity = TabLayout.GRAVITY_FILL
-        val adapter = FrameTextAdapter(this, this, tabLayout?.tabCount ?: 0)
+        val adapter = FrameTextAdapter(this, this, 3)
         viewPager?.adapter = adapter
 
         viewPager?.registerOnPageChangeCallback(object : OnPageChangeCallback() {

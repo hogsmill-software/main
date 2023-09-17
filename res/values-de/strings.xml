@@ -79,4 +79,7 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="ok">OK</string>
+    <string name="save_image">Bild Speichern</string>
+    <string name="save_image_title">Bild in der Galerie gespeichert</string>
+    <string name="save_image_content">Ihr Bild sollte im Galeriebereich Ihres Mobiltelefons erscheinen.</string>
 </resources>
