@@ -6,8 +6,6 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
-import com.example.frametext.R
 
 class ColorWheelSelector @JvmOverloads constructor(
     context: Context?,

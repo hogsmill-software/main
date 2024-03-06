@@ -23,7 +23,7 @@ class AlphaSliderView : ColorSliderView {
             (w - 2 * selectorSize).toInt(),
             (h - selectorSize).toInt(), Bitmap.Config.ARGB_8888
         )
-        if (backgroundBitmap != null) {
+        backgroundBitmap?.let {
             backgroundCanvas = Canvas(backgroundBitmap!!)
         }
     }
@@ -32,7 +32,7 @@ class AlphaSliderView : ColorSliderView {
         val drawable: Drawable = CheckerboardDrawable.create()
         drawable.setBounds(0, 0, width, height)
         drawable.draw(backgroundCanvas!!)
-        if (backgroundBitmap != null) {
+        backgroundBitmap?.let {
             canvas.drawBitmap(backgroundBitmap!!, selectorSize, selectorSize, null)
         }
         super.onDraw(canvas)
@@ -54,7 +54,7 @@ class AlphaSliderView : ColorSliderView {
         )
 
 
-        if (colorPaint != null) {
+        colorPaint?.let {
             colorPaint.shader = shader
         }
     }

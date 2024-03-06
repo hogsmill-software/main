@@ -77,43 +77,53 @@ class TextInputFragment : Fragment() {
     private fun generateImage() {
         try {
             val ftp: FrameTextParameters? = frameTextParametersViewModel?.getSelectedItem()?.value
-            if (ftp != null && context != null) {
-                val editTextInput = requireView().findViewById<EditText>(R.id.editTextInput)
-                val strTextInput = editTextInput.text.toString()
-                val tfd = TextFormattingDetails(
-                    strTextInput, ftp.optimizeSpacing, ftp.hyphenateText,
-                    ftp.hyphenFileName, 50, 170, ftp.getTxtSymbolsMargin(), ftp.textColor, ftp.fontFamily, ftp.typeface
-                )
-                val edgeShapeDetails: EdgeShapeDetails? = ftp.getShapeDetails()
-                if (edgeShapeDetails != null) {
-                    val frameTextImgContainer = ImageGenerator(
-                        tfd,
-                        ftp.mainShapeType,
-                        edgeShapeDetails,
-                        ftp.backgroundColor,
-                        ftp.outerMargin,
-                        ftp.minDistEdgeShape,
-                        requireContext()
+            ftp?.let {
+                context?.let {
+                    val editTextInput = requireView().findViewById<EditText>(R.id.editTextInput)
+                    val strTextInput = editTextInput.text.toString()
+                    val tfd = TextFormattingDetails(
+                        strTextInput,
+                        ftp.optimizeSpacing,
+                        ftp.hyphenateText,
+                        ftp.hyphenFileName,
+                        50,
+                        170,
+                        ftp.getTxtSymbolsMargin(),
+                        ftp.textColor,
+                        ftp.fontFamily,
+                        ftp.typeface
                     )
+                    val edgeShapeDetails: EdgeShapeDetails? = ftp.getShapeDetails()
+                    if (edgeShapeDetails != null) {
+                        val frameTextImgContainer = ImageGenerator(
+                            tfd,
+                            ftp.mainShapeType,
+                            edgeShapeDetails,
+                            ftp.backgroundColor,
+                            ftp.outerMargin,
+                            ftp.minDistEdgeShape,
+                            requireContext()
+                        )
 
-                    frameTextImgContainer.computeTextFit(requireContext())
-                    frameTextImgContainer.draw()
-                    val frameTextImage: Bitmap = frameTextImgContainer.bitmap
+                        frameTextImgContainer.computeTextFit(requireContext())
+                        frameTextImgContainer.draw()
+                        val frameTextImage: Bitmap = frameTextImgContainer.bitmap
 
-                    frameTextBitmapViewModel?.selectItem(frameTextImage)
+                        frameTextBitmapViewModel?.selectItem(frameTextImage)
 
-                    frameTextBitmapViewModel?.getSelectedImageFragment()?.value
-                        ?.updateImage(frameTextImgContainer.bitmap)
+                        frameTextBitmapViewModel?.getSelectedImageFragment()?.value
+                            ?.updateImage(frameTextImgContainer.bitmap)
 
-                    val tabLayout: TabLayout? =
-                        tabLayoutViewModel?.getSelectedItem()?.value
-                    if (tabLayout != null) {
-                        if (tabLayout.tabCount == 2)
-                            tabLayout.newTab().setText(resources.getString(R.string.image))
-                                .let { tabLayout.addTab(it) }
+                        val tabLayout: TabLayout? =
+                            tabLayoutViewModel?.getSelectedItem()?.value
+                        if (tabLayout != null) {
+                            if (tabLayout.tabCount == 2)
+                                tabLayout.newTab().setText(resources.getString(R.string.image))
+                                    .let { tabLayout.addTab(it) }
 
-                        val tab = tabLayout.getTabAt(2)
-                        tab?.select()
+                            val tab = tabLayout.getTabAt(2)
+                            tab?.select()
+                        }
                     }
                 }
             }

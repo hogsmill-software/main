@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.databinding.ktx.BuildConfig
 import com.example.frametext.R
 import kotlin.math.min
 
@@ -32,18 +31,12 @@ class ColorPickerView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val maxWidth = MeasureSpec.getSize(widthMeasureSpec)
         val maxHeight = MeasureSpec.getSize(heightMeasureSpec)
-        if (BuildConfig.DEBUG) {
-            // Log.d("maxWidth: %d, maxHeight: %d", maxWidth, maxHeight);
-        }
         var desiredWidth = maxHeight - (paddingTop + paddingBottom) + (paddingLeft + paddingRight)
         if (brightnessSliderView != null) {
             desiredWidth -= sliderMargin + sliderHeight
         }
         if (alphaSliderView != null) {
             desiredWidth -= sliderMargin + sliderHeight
-        }
-        if (BuildConfig.DEBUG) {
-            //   Log.d("desiredWidth: %d", desiredWidth);
         }
         val width = min(maxWidth, desiredWidth)
         var height = width - (paddingLeft + paddingRight) + (paddingTop + paddingBottom)
@@ -52,9 +45,6 @@ class ColorPickerView @JvmOverloads constructor(
         }
         if (alphaSliderView != null) {
             height += sliderMargin + sliderHeight
-        }
-        if (BuildConfig.DEBUG) {
-            // Log.d("width: %d, height: %d", width, height);
         }
         super.onMeasure(
             MeasureSpec.makeMeasureSpec(width, MeasureSpec.getMode(widthMeasureSpec)),

@@ -93,7 +93,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
         val colorTableCtrl: ColorTableCtrl = layout.findViewById(R.id.colorTableCtrl)
         colorTableCtrl.colorPickerPopup = this
 
-        var customButton = layout.findViewById<AppCompatButton>(R.id.custom)
+        val customButton = layout.findViewById<AppCompatButton>(R.id.custom)
         customButton.setBackgroundColor(ContextCompat.getColor(context, Utilities.getPinkMagentaColorId(context)))
         
         val observer2 = object : ColorObserver {
@@ -112,8 +112,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
         colorPickerView.subscribe(observer2)
 
         // My code additions
-        val customBtn = layout.findViewById<AppCompatButton>(R.id.custom)
-        customBtn.setOnClickListener {
+        customButton.setOnClickListener {
             setCustomTab(
                 layout
             )

@@ -33,7 +33,8 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
 
     private fun init(context: Context) {
         var colorCount = 0
-        val colorList = arrayOf(R.color.black, R.color.white, R.color.red, R.color.green, R.color.blue, R.color.yellow, R.color.magenta, R.color.cyan,
+        val colorList = arrayOf(
+            R.color.black, R.color.white, R.color.red, R.color.green, R.color.blue, R.color.yellow, R.color.magenta, R.color.cyan,
             R.color.lightGrey, R.color.darkGrey, R.color.darkRed, R.color.dirtyRed, R.color.orange, R.color.beige, R.color.gold, R.color.flameYellow,
             R.color.lime, R.color.lightGreen, R.color.aqua, R.color.turquoise, R.color.indigo, R.color.purplePink, R.color.rose, R.color.brown,
             R.color.purple_200, R.color.purple_500, R.color.purple_700, R.color.teal_200, R.color.teal_700, R.color.pinkMagenta, R.color.navyBlue, R.color.fog,
