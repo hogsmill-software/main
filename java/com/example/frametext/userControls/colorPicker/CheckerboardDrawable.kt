@@ -49,7 +49,7 @@ class CheckerboardDrawable private constructor(builder: Builder) :
     override fun setColorFilter(colorFilter: ColorFilter?) {
         paint.colorFilter = colorFilter
     }
-
+    @Deprecated("getOpacity", ReplaceWith("No longer used"))
     override fun getOpacity(): Int {
         return PixelFormat.OPAQUE
     }
@@ -61,20 +61,6 @@ class CheckerboardDrawable private constructor(builder: Builder) :
         fun size(size: Int): Builder {
             this.size = size
             return this
-        }
-
-        fun colorOdd(color: Int): Builder {
-            colorOdd = color
-            return this
-        }
-
-        fun colorEven(color: Int): Builder {
-            colorEven = color
-            return this
-        }
-
-        fun build(): CheckerboardDrawable {
-            return CheckerboardDrawable(this)
         }
     }
 

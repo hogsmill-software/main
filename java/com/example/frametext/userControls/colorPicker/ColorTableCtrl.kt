@@ -52,13 +52,13 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
 
         canvas.save()
         // Need to subtract frame width or right frames of right cells are not drawn.
-        var drawableWidth = width - ColorCellCtrl.selectFrameWidth
-        for (row in 0..lastRow) {
+        val drawableWidth = width - ColorCellCtrl.selectFrameWidth
+        for (row in 0..LAST_ROW) {
             canvas.save()
-            for (column in 0..lastColumn) {
-                colorCellCtrlList[row*columns + column].draw(canvas)
+            for (column in 0..LAST_COLUMN) {
+                colorCellCtrlList[row*COLUMNS + column].draw(canvas)
                 // Need to add 1 as drawn AFTER width of ColorCellCtrl - otherwise overlay 1 pixel.
-                val horizontalTranslate = ColorCellCtrl.size + (drawableWidth - columns*ColorCellCtrl.size)/columns + 1
+                val horizontalTranslate = ColorCellCtrl.size + (drawableWidth - COLUMNS*ColorCellCtrl.size)/COLUMNS + 1
                 canvas.translate(horizontalTranslate, 0f)
             }
             canvas.restore()
@@ -69,13 +69,13 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
 
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        setMeasuredDimension(widthMeasureSpec, rows*ColorCellCtrl.size.toInt())
+        setMeasuredDimension(widthMeasureSpec, ROWS*ColorCellCtrl.size.toInt())
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         super.onTouchEvent(event) // this super call is important !!!
         var success = false
-        val gapWidth = (width - columns*ColorCellCtrl.size)/columns + 1
+        val gapWidth = (width - COLUMNS*ColorCellCtrl.size)/COLUMNS + 1
         val colPos = event.x/(ColorCellCtrl.size + gapWidth)
         val col: Int = floor(colPos).toInt()
 
@@ -83,7 +83,7 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
         if (colPos - col < ColorCellCtrl.size/(ColorCellCtrl.size + gapWidth)) {
             colorCellCtrlList.forEach {it.isSelected = false}
             val row: Int = (event.y/ColorCellCtrl.size).toInt()
-            val pos = row*columns + col
+            val pos = row*COLUMNS + col
 
             if (pos < colorCellCtrlList.size && pos >= 0) {
                 val activeCellCtrl = colorCellCtrlList[pos]
@@ -120,9 +120,9 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
     }
 
     companion object {
-        private const val columns = 8
-        private const val lastColumn: Int = columns - 1
-        private const val rows = 6
-        private const val lastRow: Int = rows - 1
+        private const val COLUMNS = 8
+        private const val LAST_COLUMN: Int = COLUMNS - 1
+        private const val ROWS = 6
+        private const val LAST_ROW: Int = ROWS - 1
     }
 }
