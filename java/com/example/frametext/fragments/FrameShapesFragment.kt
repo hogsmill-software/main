@@ -50,6 +50,8 @@ class FrameShapesFragment : Fragment() {
     private lateinit var newFeaturesViewModel: NewFeaturesViewModel
     private var purchasedMoreEmojis = false
     private var purchasedMoreSymbols = false
+    private var canPurchasedMoreEmojis = false
+    private var canPurchasedMoreSymbols = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,18 +84,30 @@ class FrameShapesFragment : Fragment() {
                 viewLifecycleOwner
             ) { purchasedMoreEmojis = it }
 
+            newFeaturesViewModel.canBuySku(SKU_MORE_EMOJIS).observe(
+                viewLifecycleOwner
+            ) { canPurchasedMoreEmojis = it }
+
             newFeaturesViewModel.isPurchased(SKU_MORE_SYMBOLS).observe(
                 viewLifecycleOwner
             ) { purchasedMoreSymbols = it }
+
+            newFeaturesViewModel.canBuySku(SKU_MORE_SYMBOLS).observe(
+                viewLifecycleOwner
+            ) { canPurchasedMoreSymbols = it }
         }
 
         val notPurchasedMoreEmojisMessage = view.findViewById<TextView>(R.id.notPurchasedMoreEmojisMessage)
-        //  notPurchasedMoreEmojisMessage.visibility = if (purchasedMoreEmojis) View.GONE else View.VISIBLE
-        notPurchasedMoreEmojisMessage.visibility = View.GONE
+          notPurchasedMoreEmojisMessage.visibility = if (canPurchasedMoreEmojis)
+                                        { if (purchasedMoreEmojis) View.GONE else View.VISIBLE }
+                                        else { View.GONE }
+ //       notPurchasedMoreEmojisMessage.visibility = View.GONE
 
         val notPurchasedMoreSymbolsMessage = view.findViewById<TextView>(R.id.notPurchasedMoreSymbolsMessage)
-        // notPurchasedMoreSymbolsMessage.visibility = if (purchasedMoreSymbols) View.GONE else View.VISIBLE
-        notPurchasedMoreSymbolsMessage.visibility = View.GONE
+         notPurchasedMoreSymbolsMessage.visibility = if (canPurchasedMoreSymbols)
+                                        { if (purchasedMoreSymbols) View.GONE else View.VISIBLE }
+                                        else { View.GONE }
+ //       notPurchasedMoreSymbolsMessage.visibility = View.GONE
 
         emojiButton = view.findViewById(R.id.emojiButton)
         emojiButton.setEmoji(ftp.emoji)
@@ -208,25 +222,22 @@ class FrameShapesFragment : Fragment() {
 
     private fun onClickSymbolsColorButton(heartsColorButton: AppCompatButton) {
         if (!ftp.useEmoji) {
-
-            if (!ftp.useEmoji) {
-                context?.let {
-                    ColorPickerPopup.Builder(it).initialColor(ftp.symbolsColor)
-                        .enableBrightness(true)
-                        .enableAlpha(true)
-                        .okTitle(resources.getString(R.string.select))
-                        .cancelTitle(resources.getString(R.string.cancel))
-                        .showIndicator(true)
-                        .showValue(true)
-                        .build()
-                        .show(
-                            object : ColorPickerPopup.ColorPickerObserver() {
-                                override fun onColorPicked(color: Int) {
-                                    heartsColorButton.setBackgroundColor(color)
-                                    ftp.symbolsColor = color
-                                }
-                            })
-                }
+            context?.let {
+                ColorPickerPopup.Builder(it).initialColor(ftp.symbolsColor)
+                    .enableBrightness(true)
+                    .enableAlpha(true)
+                    .okTitle(resources.getString(R.string.select))
+                    .cancelTitle(resources.getString(R.string.cancel))
+                    .showIndicator(true)
+                    .showValue(true)
+                    .build()
+                    .show(
+                        object : ColorPickerPopup.ColorPickerObserver() {
+                            override fun onColorPicked(color: Int) {
+                                heartsColorButton.setBackgroundColor(color)
+                                ftp.symbolsColor = color
+                            }
+                        })
             }
         }
     }
