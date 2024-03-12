@@ -99,15 +99,13 @@ class FrameShapesFragment : Fragment() {
 
         val notPurchasedMoreEmojisMessage = view.findViewById<TextView>(R.id.notPurchasedMoreEmojisMessage)
           notPurchasedMoreEmojisMessage.visibility = if (canPurchasedMoreEmojis)
-                                        { if (purchasedMoreEmojis) View.GONE else View.VISIBLE }
+                                        {  View.VISIBLE }
                                         else { View.GONE }
- //       notPurchasedMoreEmojisMessage.visibility = View.GONE
 
         val notPurchasedMoreSymbolsMessage = view.findViewById<TextView>(R.id.notPurchasedMoreSymbolsMessage)
          notPurchasedMoreSymbolsMessage.visibility = if (canPurchasedMoreSymbols)
-                                        { if (purchasedMoreSymbols) View.GONE else View.VISIBLE }
+                                        {  View.VISIBLE }
                                         else { View.GONE }
- //       notPurchasedMoreSymbolsMessage.visibility = View.GONE
 
         emojiButton = view.findViewById(R.id.emojiButton)
         emojiButton.setEmoji(ftp.emoji)
