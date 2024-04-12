@@ -10,6 +10,7 @@ class TextFormattingDetails(
     val txtHeartsMargin: Int,
     val txtColor: Int,
     val fontFamily: String,
+    val typeFaceId: Int,
     val typeFace: Int
 ) {
     var hyphenateText = false

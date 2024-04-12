@@ -20,7 +20,9 @@ import com.example.frametext.helpers.Utilities
 import com.example.frametext.userControls.colorPicker.ColorPickerPopup
 import com.example.frametext.viewModels.FontFamilyUserFriendlyFontFamilyMapViewModel
 import com.example.frametext.viewModels.FrameTextParametersViewModel
+import com.example.frametext.viewModels.TypesetIdUserFriendlyFontFamilyMapViewModel
 import com.example.frametext.viewModels.UserFriendlyFontFamilyFontFamilyMapViewModel
+import com.example.frametext.viewModels.UserFriendlyFontFamilyTypesetIdMapViewModel
 import java.util.ArrayList
 
 class FontSettingsFragment : Fragment() {
@@ -30,6 +32,7 @@ class FontSettingsFragment : Fragment() {
     private var userFriendlyFontFamilyList: ArrayList<String> = Utilities.userFriendlyFontFamilyList()
     private var boldSwitch: androidx.appcompat.widget.SwitchCompat? = null
     private var italicSwitch: androidx.appcompat.widget.SwitchCompat? = null
+    private var typefaceIdSet: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +58,7 @@ class FontSettingsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val heartValParametersViewModel = ViewModelProvider(requireActivity()).get(
-            FrameTextParametersViewModel::class.java
-        )
+        val heartValParametersViewModel = ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
         val button = view.findViewById<View>(R.id.backButton)
         button.setOnClickListener { navigateToSettingsFragment() }
 
@@ -83,20 +84,35 @@ class FontSettingsFragment : Fragment() {
             spinnerFontFamilies!!.adapter = arrayAdapter
         }
 
-        val fontFamilyUserFriendlyFontFamilyMapViewModel = ViewModelProvider(requireActivity()).get(
-        FontFamilyUserFriendlyFontFamilyMapViewModel::class.java
-        )
+        var userFriendlySelectedItem : String?
 
-        val fontFamilyUserFriendlyFontFamilyMap = fontFamilyUserFriendlyFontFamilyMapViewModel.getSelectedItem().value
-        val userFriendlySelectedItem = fontFamilyUserFriendlyFontFamilyMap?.get(ftp!!.fontFamily)
+        if (ftp!!.fontFamily != "") {
+            val fontFamilyUserFriendlyFontFamilyMapViewModel =
+                ViewModelProvider(requireActivity())[FontFamilyUserFriendlyFontFamilyMapViewModel::class.java]
+
+            val fontFamilyUserFriendlyFontFamilyMap =
+                fontFamilyUserFriendlyFontFamilyMapViewModel.getSelectedItem().value
+            userFriendlySelectedItem = fontFamilyUserFriendlyFontFamilyMap?.get(ftp!!.fontFamily)
+        }
+        else {
+            val typesetIdUserFriendlyFontFamilyMapViewModel = ViewModelProvider(requireActivity())[TypesetIdUserFriendlyFontFamilyMapViewModel::class.java]
+
+            val typesetIdUserFriendlyFontFamilyMap = typesetIdUserFriendlyFontFamilyMapViewModel.getSelectedItem().value
+            userFriendlySelectedItem = typesetIdUserFriendlyFontFamilyMap?.get(ftp!!.typefaceId)
+        }
 
         val pos = userFriendlyFontFamilyList.indexOf(userFriendlySelectedItem)
+
         spinnerFontFamilies!!.setSelection(pos)
 
-        val userFriendlyFontFamilyFontFamilyMapViewModel = ViewModelProvider(requireActivity()).get(
-        UserFriendlyFontFamilyFontFamilyMapViewModel::class.java
-        )
+        val userFriendlyFontFamilyFontFamilyMapViewModel = ViewModelProvider(requireActivity())[UserFriendlyFontFamilyFontFamilyMapViewModel::class.java]
         val userFriendlyFontFamilyFontFamilyMap = userFriendlyFontFamilyFontFamilyMapViewModel.getSelectedItem().value
+
+        val userFriendlyFontFamilyTypesetIdMapViewModel = ViewModelProvider(requireActivity())[UserFriendlyFontFamilyTypesetIdMapViewModel::class.java]
+        val userFriendlyFontFamilyTypesetIdMap = userFriendlyFontFamilyTypesetIdMapViewModel.getSelectedItem().value
+
+        boldSwitch = view.findViewById(R.id.boldSwitch)
+        italicSwitch = view.findViewById(R.id.italicSwitch)
 
         spinnerFontFamilies?.onItemSelectedListener =
         object : AdapterView.OnItemSelectedListener {
@@ -108,48 +124,65 @@ class FontSettingsFragment : Fragment() {
             ) {
                 val userFriendlyFontFamily = parent.getItemAtPosition(pos)
                 val fontFamily = userFriendlyFontFamilyFontFamilyMap?.get(userFriendlyFontFamily)
+
                 if (fontFamily != null) {
                     ftp?.fontFamily = fontFamily
+                    typefaceIdSet = false
+                    boldSwitch?.isEnabled = true
+                    italicSwitch?.isEnabled = true
+                    boldSwitch?.isChecked = ftp!!.typeface == Typeface.BOLD || ftp!!.typeface == Typeface.BOLD_ITALIC
+                    italicSwitch?.isChecked = ftp!!.typeface == Typeface.ITALIC || ftp!!.typeface == Typeface.BOLD_ITALIC
+                } else {
+                    ftp?.fontFamily = ""
+                    val typefaceId = userFriendlyFontFamilyTypesetIdMap?.get(userFriendlyFontFamily)
+
+                    if (typefaceId != null) {
+                        ftp?.typefaceId = typefaceId
+                        typefaceIdSet = true
+                        boldSwitch?.isChecked = false
+                        italicSwitch?.isChecked = false
+                        boldSwitch?.isEnabled = false
+                        italicSwitch?.isEnabled = false
+                    }
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        boldSwitch = view.findViewById(R.id.boldSwitch)
-        boldSwitch?.isChecked = ftp!!.typeface == Typeface.BOLD || ftp!!.typeface == Typeface.BOLD_ITALIC
+        if (!typefaceIdSet) {
+            boldSwitch?.isChecked = ftp!!.typeface == Typeface.BOLD || ftp!!.typeface == Typeface.BOLD_ITALIC
 
-        boldSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isBoldChecked: Boolean ->
-            if (isBoldChecked) {
-                if (ftp!!.typeface == Typeface.NORMAL) {
-                    ftp!!.typeface = Typeface.BOLD
-                } else if (ftp!!.typeface == Typeface.ITALIC) {
-                    ftp!!.typeface = Typeface.BOLD_ITALIC
-                }
-            } else {
-                if (ftp!!.typeface == Typeface.BOLD) {
-                    ftp!!.typeface = Typeface.NORMAL
-                } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
-                    ftp!!.typeface = Typeface.ITALIC
+            boldSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isBoldChecked: Boolean ->
+                if (isBoldChecked) {
+                    if (ftp!!.typeface == Typeface.NORMAL) {
+                        ftp!!.typeface = Typeface.BOLD
+                    } else if (ftp!!.typeface == Typeface.ITALIC) {
+                        ftp!!.typeface = Typeface.BOLD_ITALIC
+                    }
+                } else {
+                    if (ftp!!.typeface == Typeface.BOLD) {
+                        ftp!!.typeface = Typeface.NORMAL
+                    } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
+                        ftp!!.typeface = Typeface.ITALIC
+                    }
                 }
             }
-        }
 
-        italicSwitch = view.findViewById(R.id.italicSwitch)
-        italicSwitch?.isChecked = ftp!!.typeface == Typeface.ITALIC || ftp!!.typeface == Typeface.BOLD_ITALIC
+            italicSwitch?.isChecked = ftp!!.typeface == Typeface.ITALIC || ftp!!.typeface == Typeface.BOLD_ITALIC
 
-        italicSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isItalicChecked: Boolean ->
-            if (isItalicChecked) {
-                if (ftp!!.typeface == Typeface.NORMAL) {
-                    ftp!!.typeface = Typeface.ITALIC
-                } else if (ftp!!.typeface == Typeface.BOLD) {
-                    ftp!!.typeface = Typeface.BOLD_ITALIC
-                }
-            } else {
-                if (ftp!!.typeface == Typeface.ITALIC) {
-                    ftp!!.typeface = Typeface.NORMAL
-                } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
-                    ftp!!.typeface = Typeface.BOLD
+            italicSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isItalicChecked: Boolean ->
+                if (isItalicChecked) {
+                    if (ftp!!.typeface == Typeface.NORMAL) {
+                        ftp!!.typeface = Typeface.ITALIC
+                    } else if (ftp!!.typeface == Typeface.BOLD) {
+                        ftp!!.typeface = Typeface.BOLD_ITALIC
+                    }
+                } else {
+                    if (ftp!!.typeface == Typeface.ITALIC) {
+                        ftp!!.typeface = Typeface.NORMAL
+                    } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
+                        ftp!!.typeface = Typeface.BOLD
+                    }
                 }
             }
         }

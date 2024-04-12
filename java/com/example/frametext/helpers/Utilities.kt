@@ -17,9 +17,25 @@ import com.example.frametext.helpers.Constants.FF_SANS_SERIF_LIGHT
 import com.example.frametext.helpers.Constants.FF_SANS_SERIF_MEDIUM
 import com.example.frametext.helpers.Constants.FF_SANS_SERIF_THIN
 import com.example.frametext.helpers.Constants.FF_SERIF
+import com.example.frametext.helpers.Constants.UFFF_AKRONIM
+import com.example.frametext.helpers.Constants.UFFF_BUTTERFLY_KIDS
+import com.example.frametext.helpers.Constants.UFFF_DANCING_SCRIPT
+import com.example.frametext.helpers.Constants.UFFF_EUPHORIA_SCRIPT
+import com.example.frametext.helpers.Constants.UFFF_FASTER_ONE
+import com.example.frametext.helpers.Constants.UFFF_FRIJOLE
+import com.example.frametext.helpers.Constants.UFFF_JACQUES_FRANCOIS_SHADOW
+import com.example.frametext.helpers.Constants.UFFF_LOBSTER
+import com.example.frametext.helpers.Constants.UFFF_LOVERS_QUARREL
+import com.example.frametext.helpers.Constants.UFFF_MISS_FAJARDOSE
+import com.example.frametext.helpers.Constants.UFFF_MONOFETT
 import com.example.frametext.helpers.Constants.UFFF_MONOSPACE
+import com.example.frametext.helpers.Constants.UFFF_MONSIEUR_LA_DOULAISE
+import com.example.frametext.helpers.Constants.UFFF_MONTE_CARLO
 import com.example.frametext.helpers.Constants.UFFF_NORMAL
+import com.example.frametext.helpers.Constants.UFFF_NOSIFER
 import com.example.frametext.helpers.Constants.UFFF_NOTOSERIF
+import com.example.frametext.helpers.Constants.UFFF_PUPPIES_PLAY
+import com.example.frametext.helpers.Constants.UFFF_RAMPART_ONE
 import com.example.frametext.helpers.Constants.UFFF_ROBOTO
 import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF
 import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF_CONDENSED
@@ -27,6 +43,10 @@ import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF_LIGHT
 import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF_MEDIUM
 import com.example.frametext.helpers.Constants.UFFF_SANS_SERIF_THIN
 import com.example.frametext.helpers.Constants.UFFF_SERIF
+import com.example.frametext.helpers.Constants.UFFF_SHADOWS_INTO_LIGHT
+import com.example.frametext.helpers.Constants.UFFF_UNIFRAKTUR_COOK
+import com.example.frametext.helpers.Constants.UFFF_UNIFRAKTUR_MAGUNTIA
+import com.example.frametext.helpers.Constants.UFFF_VAST_SHADOW
 import java.util.ArrayList
 
 object Utilities {
@@ -55,6 +75,26 @@ object Utilities {
         userFriendlyFontFamilyList.add(UFFF_SANS_SERIF_CONDENSED)
         userFriendlyFontFamilyList.add(UFFF_SANS_SERIF_MEDIUM)
         userFriendlyFontFamilyList.add(UFFF_SERIF)
+        userFriendlyFontFamilyList.add(UFFF_AKRONIM)
+        userFriendlyFontFamilyList.add(UFFF_BUTTERFLY_KIDS)
+        userFriendlyFontFamilyList.add(UFFF_DANCING_SCRIPT)
+        userFriendlyFontFamilyList.add(UFFF_EUPHORIA_SCRIPT)
+        userFriendlyFontFamilyList.add(UFFF_FASTER_ONE)
+        userFriendlyFontFamilyList.add(UFFF_FRIJOLE)
+        userFriendlyFontFamilyList.add(UFFF_JACQUES_FRANCOIS_SHADOW)
+        userFriendlyFontFamilyList.add(UFFF_LOBSTER)
+        userFriendlyFontFamilyList.add(UFFF_LOVERS_QUARREL)
+        userFriendlyFontFamilyList.add(UFFF_MISS_FAJARDOSE)
+        userFriendlyFontFamilyList.add(UFFF_MONOFETT)
+        userFriendlyFontFamilyList.add(UFFF_MONSIEUR_LA_DOULAISE)
+        userFriendlyFontFamilyList.add(UFFF_MONTE_CARLO)
+        userFriendlyFontFamilyList.add(UFFF_NOSIFER)
+        userFriendlyFontFamilyList.add(UFFF_PUPPIES_PLAY)
+        userFriendlyFontFamilyList.add(UFFF_RAMPART_ONE)
+        userFriendlyFontFamilyList.add(UFFF_SHADOWS_INTO_LIGHT)
+        userFriendlyFontFamilyList.add(UFFF_UNIFRAKTUR_COOK)
+        userFriendlyFontFamilyList.add(UFFF_UNIFRAKTUR_MAGUNTIA)
+        userFriendlyFontFamilyList.add(UFFF_VAST_SHADOW)
         return userFriendlyFontFamilyList
     }
 
@@ -87,12 +127,63 @@ object Utilities {
         fontFamilyToUserFriendlyFontFamilyHashMap[FF_SERIF] = UFFF_SERIF
         return fontFamilyToUserFriendlyFontFamilyHashMap
     }
+
+    fun userFriendlyFontFamilyToTypeFaceId(): HashMap<String, Int> {
+        val userFriendlyFontFamilyToTypeFaceId = HashMap<String, Int>()
+        userFriendlyFontFamilyToTypeFaceId[UFFF_AKRONIM] = R.font.akronim
+        userFriendlyFontFamilyToTypeFaceId[UFFF_BUTTERFLY_KIDS] = R.font.butterfly_kids
+        userFriendlyFontFamilyToTypeFaceId[UFFF_DANCING_SCRIPT] = R.font.dancing_script
+        userFriendlyFontFamilyToTypeFaceId[UFFF_EUPHORIA_SCRIPT] = R.font.euphoria_script
+        userFriendlyFontFamilyToTypeFaceId[UFFF_FASTER_ONE] = R.font.faster_one
+        userFriendlyFontFamilyToTypeFaceId[UFFF_FRIJOLE] = R.font.frijole
+        userFriendlyFontFamilyToTypeFaceId[UFFF_JACQUES_FRANCOIS_SHADOW] = R.font.jacques_francois_shadow
+        userFriendlyFontFamilyToTypeFaceId[UFFF_LOBSTER] = R.font.lobster
+        userFriendlyFontFamilyToTypeFaceId[UFFF_LOVERS_QUARREL] = R.font.lovers_quarrel
+        userFriendlyFontFamilyToTypeFaceId[UFFF_MISS_FAJARDOSE] = R.font.miss_fajardose
+        userFriendlyFontFamilyToTypeFaceId[UFFF_MONOFETT] = R.font.monofett
+        userFriendlyFontFamilyToTypeFaceId[UFFF_MONSIEUR_LA_DOULAISE] = R.font.monsieur_la_doulaise
+        userFriendlyFontFamilyToTypeFaceId[UFFF_MONTE_CARLO] = R.font.monte_carlo
+        userFriendlyFontFamilyToTypeFaceId[UFFF_NOSIFER] = R.font.nosifer
+        userFriendlyFontFamilyToTypeFaceId[UFFF_PUPPIES_PLAY] = R.font.puppies_play
+        userFriendlyFontFamilyToTypeFaceId[UFFF_RAMPART_ONE] = R.font.rampart_one
+        userFriendlyFontFamilyToTypeFaceId[UFFF_SHADOWS_INTO_LIGHT] = R.font.shadows_into_light
+        userFriendlyFontFamilyToTypeFaceId[UFFF_UNIFRAKTUR_COOK] = R.font.unifraktur_cook
+        userFriendlyFontFamilyToTypeFaceId[UFFF_UNIFRAKTUR_MAGUNTIA] = R.font.unifraktur_maguntia
+        userFriendlyFontFamilyToTypeFaceId[UFFF_VAST_SHADOW] = R.font.vast_shadow
+        return userFriendlyFontFamilyToTypeFaceId
+    }
+
+    fun typeFaceIdToUserFriendlyFontFamily(): HashMap<Int, String> {
+        val typeFaceIdToUserFriendlyFontFamily = HashMap<Int, String>()
+        typeFaceIdToUserFriendlyFontFamily[R.font.akronim] = UFFF_AKRONIM
+        typeFaceIdToUserFriendlyFontFamily[R.font.butterfly_kids] = UFFF_BUTTERFLY_KIDS
+        typeFaceIdToUserFriendlyFontFamily[R.font.dancing_script] = UFFF_DANCING_SCRIPT
+        typeFaceIdToUserFriendlyFontFamily[R.font.euphoria_script] = UFFF_EUPHORIA_SCRIPT
+        typeFaceIdToUserFriendlyFontFamily[R.font.faster_one] = UFFF_FASTER_ONE
+        typeFaceIdToUserFriendlyFontFamily[R.font.frijole] = UFFF_FRIJOLE
+        typeFaceIdToUserFriendlyFontFamily[R.font.jacques_francois_shadow] = UFFF_JACQUES_FRANCOIS_SHADOW
+        typeFaceIdToUserFriendlyFontFamily[R.font.lobster] = UFFF_LOBSTER
+        typeFaceIdToUserFriendlyFontFamily[R.font.lovers_quarrel] = UFFF_LOVERS_QUARREL
+        typeFaceIdToUserFriendlyFontFamily[R.font.miss_fajardose] =UFFF_MISS_FAJARDOSE
+        typeFaceIdToUserFriendlyFontFamily[R.font.monofett] =UFFF_MONOFETT
+        typeFaceIdToUserFriendlyFontFamily[R.font.monsieur_la_doulaise] =UFFF_MONSIEUR_LA_DOULAISE
+        typeFaceIdToUserFriendlyFontFamily[R.font.monte_carlo] =UFFF_MONTE_CARLO
+        typeFaceIdToUserFriendlyFontFamily[R.font.nosifer] =UFFF_NOSIFER
+        typeFaceIdToUserFriendlyFontFamily[R.font.puppies_play] =UFFF_PUPPIES_PLAY
+        typeFaceIdToUserFriendlyFontFamily[R.font.rampart_one] =UFFF_RAMPART_ONE
+        typeFaceIdToUserFriendlyFontFamily[R.font.shadows_into_light] = UFFF_SHADOWS_INTO_LIGHT
+        typeFaceIdToUserFriendlyFontFamily[R.font.unifraktur_cook] =UFFF_UNIFRAKTUR_COOK
+        typeFaceIdToUserFriendlyFontFamily[R.font.unifraktur_maguntia] =UFFF_UNIFRAKTUR_MAGUNTIA
+        typeFaceIdToUserFriendlyFontFamily[R.font.vast_shadow] =UFFF_VAST_SHADOW
+        return typeFaceIdToUserFriendlyFontFamily
+    }
+
     @Suppress("UNUSED_PARAMETER")
     fun closestDistance(useEmoji: Boolean, emoji: String, symbol: String?, symbolShapeType: SymbolShapeType): Int {
         // parameter emoji shall almost certainly be used in future
         if (useEmoji)
             return 250
-        else if (symbol == null || symbol.isEmpty()) {
+        else if (symbol.isNullOrEmpty()) {
             val closestDistance = when (symbolShapeType) {
                 SymbolShapeType.Circle -> 150
                 SymbolShapeType.Star -> 150

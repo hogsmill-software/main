@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     private var fileNameHplMap = HashMap<String, String>()
     private var userFriendlyFontFamilyFontFamilyMap = HashMap<String, String>()
     private var fontFamilyUserFriendlyFontFamilyMap = HashMap<String, String>()
+    private var userFriendlyFontFamilyToTypeFaceIdMap = HashMap<String, Int>()
+    private var typeFaceIdToUserFriendlyFontFamilyMap = HashMap<Int, String>()
     private var ftp: FrameTextParameters = FrameTextParameters()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -197,6 +199,22 @@ class MainActivity : AppCompatActivity() {
         fontFamilyUserFriendlyFontFamilyMapViewModel.selectItem(fontFamilyUserFriendlyFontFamilyMap)
         fontFamilyUserFriendlyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
 
+        userFriendlyFontFamilyToTypeFaceIdMap = Utilities.userFriendlyFontFamilyToTypeFaceId()
+        val userFriendlyFontFamilyTypesetIdMapViewModel: UserFriendlyFontFamilyTypesetIdMapViewModel =
+            ViewModelProvider(this).get(
+                UserFriendlyFontFamilyTypesetIdMapViewModel::class.java
+            )
+        userFriendlyFontFamilyTypesetIdMapViewModel.selectItem(userFriendlyFontFamilyToTypeFaceIdMap)
+        userFriendlyFontFamilyTypesetIdMapViewModel.getSelectedItem().observe(this) { }
+
+        typeFaceIdToUserFriendlyFontFamilyMap = Utilities.typeFaceIdToUserFriendlyFontFamily()
+        val typesetIdUserFriendlyFontFamilyMapViewModel: TypesetIdUserFriendlyFontFamilyMapViewModel =
+            ViewModelProvider(this).get(
+                TypesetIdUserFriendlyFontFamilyMapViewModel::class.java
+            )
+        typesetIdUserFriendlyFontFamilyMapViewModel.selectItem(typeFaceIdToUserFriendlyFontFamilyMap)
+        typesetIdUserFriendlyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
+
         // if ftp.minDistEdgeShape is 0, it has never been saved and therefore needs to be recomputed
         // from symbol/emoji set as default.
         if (ftp.minDistEdgeShape == 0) {
@@ -249,10 +267,13 @@ class MainActivity : AppCompatActivity() {
                     ftp.symbolShapeType = SymbolShapeType.valueOf(shapeType)
                     val mainShape = jsonObject[Constants.MAIN_SHAPE_TYPE] as String
                     ftp.mainShapeType = MainShapeType.valueOf(mainShape)
-                    ftp.symbol = jsonObject[Constants.SYMBOL] as String
+                    if (shapeType == "None") {
+                        ftp.symbol = jsonObject[Constants.SYMBOL] as String
+                    }
                     ftp.fontFamily = jsonObject[Constants.FONT_FAMILY] as String
                     ftp.typeface = jsonObject.getInt(Constants.TYPEFACE)
                     ftp.minDistEdgeShape = jsonObject.getInt(Constants.MIN_DIST_EDGE_SHAPE)
+                    ftp.typefaceId = jsonObject.getInt(Constants.TYPEFACE_ID)
                 }
             }
         }
@@ -373,6 +394,7 @@ class MainActivity : AppCompatActivity() {
             jsonObject.put(Constants.FONT_FAMILY, hvp.fontFamily)
             jsonObject.put(Constants.TYPEFACE, hvp.typeface)
             jsonObject.put(Constants.MIN_DIST_EDGE_SHAPE, hvp.minDistEdgeShape)
+            jsonObject.put(Constants.TYPEFACE_ID, hvp.typefaceId)
 
             return jsonObject
         }

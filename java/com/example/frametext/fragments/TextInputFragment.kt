@@ -91,6 +91,7 @@ class TextInputFragment : Fragment() {
                         ftp.getTxtSymbolsMargin(),
                         ftp.textColor,
                         ftp.fontFamily,
+                        ftp.typefaceId,
                         ftp.typeface
                     )
                     val edgeShapeDetails: EdgeShapeDetails? = ftp.getShapeDetails()

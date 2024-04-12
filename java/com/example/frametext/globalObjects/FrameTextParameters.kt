@@ -22,6 +22,7 @@ class FrameTextParameters {
     var mainShapeType: MainShapeType = MainShapeType.Heart
     var symbol: String? = null
     var fontFamily: String = FF_NORMAL
+    var typefaceId: Int = 0
     var typeface = Typeface.NORMAL
     var minDistEdgeShape = 0
 

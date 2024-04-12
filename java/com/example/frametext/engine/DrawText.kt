@@ -2,6 +2,7 @@ package com.example.frametext.engine
 
 import android.content.Context
 import android.graphics.*
+import androidx.core.content.res.ResourcesCompat
 import com.example.frametext.engine.mainSizes.MainSizes
 import com.example.frametext.engine.textBoundaries.TextBoundaries
 import com.example.frametext.enums.MainShapeType
@@ -135,8 +136,8 @@ internal class DrawText(
                             if (data[i + 1] == ' ') {
                                 // Handling of "{ }" below. (non-break space)
                                 if (data[i + 2] == '}') {
-                                    wordInProgress.append(nonBreakSpace)
-                                    wordWidth += getCharWidth(nonBreakSpace).toInt()
+                                    wordInProgress.append(NON_BREAK_SPACE)
+                                    wordWidth += getCharWidth(NON_BREAK_SPACE).toInt()
                                     handlerRet = i + 2
                                 } else if (data[i + 2] == ' ') {
                                     // in order to allow user to enter "{ }", all user has to do is enter "{  }" (2 spaces and one is removed)
@@ -232,7 +233,7 @@ internal class DrawText(
                         if (chr == ' ' || i == data.length - 1 || isEmoji) {
                             // In French, non-breaking space before exclamation, question marks or colon
                             if (chr == ' ' && i != data.length - 1 && (data[i + 1] == '!' || data[i + 1] == '?' || data[i + 1] == ':')) {
-                                wordInProgress.append(nonBreakSpace)
+                                wordInProgress.append(NON_BREAK_SPACE)
                                 wordWidth += charWidth.toInt()
                                 i++
                                 continue
@@ -481,7 +482,7 @@ internal class DrawText(
             for (txtRectDetails in rectLst) {
                 val txtBoundingRect: Rect = txtRectDetails.boundingRect
                 var txt: String? = txtRectDetails.text
-                if (txt != null && txt.isNotEmpty()) {
+                if (!txt.isNullOrEmpty()) {
                     if (tfd.optimizeSpacing) {
                         val availableWidth: Int = txtRectDetails.boundingRect.width()
                         txt = txt.trim { it <= ' ' }
@@ -526,8 +527,8 @@ internal class DrawText(
                         var excessWidth = availableWidth - usedWidth
                         val excessUsedWidthRatio = excessWidth / usedWidth.toDouble()
                         var offset = 0.0
-                        if (excessUsedWidthRatio > maxExcessWidth) {
-                            excessWidth = (usedWidth * maxExcessWidth).toInt()
+                        if (excessUsedWidthRatio > MAX_EXCESS_WIDTH) {
+                            excessWidth = (usedWidth * MAX_EXCESS_WIDTH).toInt()
                         }
                         val chr = CharArray(1)
 
@@ -685,8 +686,8 @@ internal class DrawText(
         private val usrExceptionMap = HashMap<Int, UserExceptionDetails>()
         private val charWidthMap = HashMap<Char, Float>()
         private val textInputDetails = TextInputDetails()
-        private const val nonBreakSpace = 0xA0.toChar()
-        private const val maxExcessWidth = 0.5
+        private const val NON_BREAK_SPACE = 0xA0.toChar()
+        private const val MAX_EXCESS_WIDTH = 0.5
     }
 
     init {
@@ -698,9 +699,17 @@ internal class DrawText(
                 HyphenatorLangMap[tfd.hyphenPatternLan] = hyphenator
             }
         }
-        val tf = Typeface.create(tfd.fontFamily, tfd.typeFace)
+        
         paint = Paint()
-        paint.typeface = tf
+
+        if (tfd.fontFamily != "") {
+            val tf = Typeface.create(tfd.fontFamily, tfd.typeFace)
+            paint.typeface = tf
+        }
+        else { // typeFace should be set to a value
+            context?.let { paint.typeface = ResourcesCompat.getFont(it, tfd.typeFaceId) }
+        }
+
         paint.textSize = 150f
         hyphenWidth = getCharWidth(hyphen)
         tb = ObjectFromShapeType.getTextBoundariesFromShapeType(
