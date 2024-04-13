@@ -202,9 +202,19 @@ class ImageGenerator(
     companion object {
         private const val maxIterations = 300
         private const val stepIncrement = 4
+
+        private var currentFontFontFamily: String = ""
+        private var currentFontTypeFaceId: Int = 0
+        private var currentFontFontStyle: Int = 0
     }
 
     init {
+        if (tfd.fontFamily != currentFontFontFamily || tfd.fontStyle != currentFontFontStyle || tfd.typeFaceId != currentFontTypeFaceId) {
+            currentFontFontFamily = tfd.fontFamily
+            currentFontFontStyle = tfd.fontStyle
+            currentFontTypeFaceId = tfd.typeFaceId
+            DrawText.onFontChanged()
+        }
         mainSizes = ObjectFromShapeType.getMainSizeFromShapeType(mainShapeType, margin)
         this.sd = sd
         this.backgroundColor = backgroundColor

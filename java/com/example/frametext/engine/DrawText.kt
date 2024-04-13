@@ -17,8 +17,7 @@ internal class DrawText(
     sd: EdgeShapeDetails,
     private val tfd: TextFormattingDetails,
     mainShapeType: MainShapeType?,
-    context: Context?
-) {
+    context: Context?) {
     private val paint: Paint
     private val tb: TextBoundaries
     private var hyphenator: Hyphenator? = null
@@ -688,6 +687,11 @@ internal class DrawText(
         private val textInputDetails = TextInputDetails()
         private const val NON_BREAK_SPACE = 0xA0.toChar()
         private const val MAX_EXCESS_WIDTH = 0.5
+
+        fun onFontChanged() {
+            usrExceptionMap.clear()
+            charWidthMap.clear()
+        }
     }
 
     init {
@@ -703,7 +707,7 @@ internal class DrawText(
         paint = Paint()
 
         if (tfd.fontFamily != "") {
-            val tf = Typeface.create(tfd.fontFamily, tfd.typeFace)
+            val tf = Typeface.create(tfd.fontFamily, tfd.fontStyle)
             paint.typeface = tf
         }
         else { // typeFace should be set to a value

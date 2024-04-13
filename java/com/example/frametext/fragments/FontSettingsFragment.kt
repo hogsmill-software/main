@@ -85,20 +85,18 @@ class FontSettingsFragment : Fragment() {
         }
 
         var userFriendlySelectedItem : String?
-
-        if (ftp!!.fontFamily != "") {
+        val userFriendlySelectedItem : String? = if (ftp!!.fontFamily != "") {
             val fontFamilyUserFriendlyFontFamilyMapViewModel =
                 ViewModelProvider(requireActivity())[FontFamilyUserFriendlyFontFamilyMapViewModel::class.java]
 
             val fontFamilyUserFriendlyFontFamilyMap =
                 fontFamilyUserFriendlyFontFamilyMapViewModel.getSelectedItem().value
-            userFriendlySelectedItem = fontFamilyUserFriendlyFontFamilyMap?.get(ftp!!.fontFamily)
-        }
-        else {
+            fontFamilyUserFriendlyFontFamilyMap?.get(ftp!!.fontFamily)
+        } else {
             val typesetIdUserFriendlyFontFamilyMapViewModel = ViewModelProvider(requireActivity())[TypesetIdUserFriendlyFontFamilyMapViewModel::class.java]
 
             val typesetIdUserFriendlyFontFamilyMap = typesetIdUserFriendlyFontFamilyMapViewModel.getSelectedItem().value
-            userFriendlySelectedItem = typesetIdUserFriendlyFontFamilyMap?.get(ftp!!.typefaceId)
+            typesetIdUserFriendlyFontFamilyMap?.get(ftp!!.typefaceId)
         }
 
         val pos = userFriendlyFontFamilyList.indexOf(userFriendlySelectedItem)
@@ -130,14 +128,15 @@ class FontSettingsFragment : Fragment() {
                     typefaceIdSet = false
                     boldSwitch?.isEnabled = true
                     italicSwitch?.isEnabled = true
-                    boldSwitch?.isChecked = ftp!!.typeface == Typeface.BOLD || ftp!!.typeface == Typeface.BOLD_ITALIC
                     italicSwitch?.isChecked = ftp!!.typeface == Typeface.ITALIC || ftp!!.typeface == Typeface.BOLD_ITALIC
+                    boldSwitch?.isChecked = ftp!!.fontStyle == Typeface.BOLD || ftp!!.fontStyle == Typeface.BOLD_ITALIC
+                    italicSwitch?.isChecked = ftp!!.fontStyle == Typeface.ITALIC || ftp!!.fontStyle == Typeface.BOLD_ITALIC
                 } else {
                     ftp?.fontFamily = ""
-                    val typefaceId = userFriendlyFontFamilyTypesetIdMap?.get(userFriendlyFontFamily)
+                    val typeFaceId = userFriendlyFontFamilyTypesetIdMap?.get(userFriendlyFontFamily)
 
-                    if (typefaceId != null) {
-                        ftp?.typefaceId = typefaceId
+                    if (typeFaceId != null) {
+                        ftp?.typefaceId =  typeFaceId
                         typefaceIdSet = true
                         boldSwitch?.isChecked = false
                         italicSwitch?.isChecked = false
@@ -150,38 +149,38 @@ class FontSettingsFragment : Fragment() {
         }
 
         if (!typefaceIdSet) {
-            boldSwitch?.isChecked = ftp!!.typeface == Typeface.BOLD || ftp!!.typeface == Typeface.BOLD_ITALIC
+            boldSwitch?.isChecked = ftp!!.fontStyle == Typeface.BOLD || ftp!!.fontStyle == Typeface.BOLD_ITALIC
 
             boldSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isBoldChecked: Boolean ->
                 if (isBoldChecked) {
-                    if (ftp!!.typeface == Typeface.NORMAL) {
-                        ftp!!.typeface = Typeface.BOLD
-                    } else if (ftp!!.typeface == Typeface.ITALIC) {
-                        ftp!!.typeface = Typeface.BOLD_ITALIC
+                    if (ftp!!.fontStyle == Typeface.NORMAL) {
+                        ftp!!.fontStyle = Typeface.BOLD
+                    } else if (ftp!!.fontStyle == Typeface.ITALIC) {
+                        ftp!!.fontStyle = Typeface.BOLD_ITALIC
                     }
                 } else {
-                    if (ftp!!.typeface == Typeface.BOLD) {
-                        ftp!!.typeface = Typeface.NORMAL
-                    } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
-                        ftp!!.typeface = Typeface.ITALIC
+                    if (ftp!!.fontStyle == Typeface.BOLD) {
+                        ftp!!.fontStyle = Typeface.NORMAL
+                    } else if (ftp!!.fontStyle == Typeface.BOLD_ITALIC) {
+                        ftp!!.fontStyle = Typeface.ITALIC
                     }
                 }
             }
 
-            italicSwitch?.isChecked = ftp!!.typeface == Typeface.ITALIC || ftp!!.typeface == Typeface.BOLD_ITALIC
+            italicSwitch?.isChecked = ftp!!.fontStyle == Typeface.ITALIC || ftp!!.fontStyle == Typeface.BOLD_ITALIC
 
             italicSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isItalicChecked: Boolean ->
                 if (isItalicChecked) {
-                    if (ftp!!.typeface == Typeface.NORMAL) {
-                        ftp!!.typeface = Typeface.ITALIC
-                    } else if (ftp!!.typeface == Typeface.BOLD) {
-                        ftp!!.typeface = Typeface.BOLD_ITALIC
+                    if (ftp!!.fontStyle == Typeface.NORMAL) {
+                        ftp!!.fontStyle = Typeface.ITALIC
+                    } else if (ftp!!.fontStyle == Typeface.BOLD) {
+                        ftp!!.fontStyle = Typeface.BOLD_ITALIC
                     }
                 } else {
-                    if (ftp!!.typeface == Typeface.ITALIC) {
-                        ftp!!.typeface = Typeface.NORMAL
-                    } else if (ftp!!.typeface == Typeface.BOLD_ITALIC) {
-                        ftp!!.typeface = Typeface.BOLD
+                    if (ftp!!.fontStyle == Typeface.ITALIC) {
+                        ftp!!.fontStyle = Typeface.NORMAL
+                    } else if (ftp!!.fontStyle == Typeface.BOLD_ITALIC) {
+                        ftp!!.fontStyle = Typeface.BOLD
                     }
                 }
             }

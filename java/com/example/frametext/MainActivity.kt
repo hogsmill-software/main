@@ -271,7 +271,7 @@ class MainActivity : AppCompatActivity() {
                         ftp.symbol = jsonObject[Constants.SYMBOL] as String
                     }
                     ftp.fontFamily = jsonObject[Constants.FONT_FAMILY] as String
-                    ftp.typeface = jsonObject.getInt(Constants.TYPEFACE)
+                    ftp.fontStyle = jsonObject.getInt(Constants.TYPEFACE)
                     ftp.minDistEdgeShape = jsonObject.getInt(Constants.MIN_DIST_EDGE_SHAPE)
                     ftp.typefaceId = jsonObject.getInt(Constants.TYPEFACE_ID)
                 }
@@ -392,7 +392,7 @@ class MainActivity : AppCompatActivity() {
             jsonObject.put(Constants.MAIN_SHAPE_TYPE, hvp.mainShapeType)
             jsonObject.put(Constants.SYMBOL, hvp.symbol)
             jsonObject.put(Constants.FONT_FAMILY, hvp.fontFamily)
-            jsonObject.put(Constants.TYPEFACE, hvp.typeface)
+            jsonObject.put(Constants.TYPEFACE, hvp.fontStyle)
             jsonObject.put(Constants.MIN_DIST_EDGE_SHAPE, hvp.minDistEdgeShape)
             jsonObject.put(Constants.TYPEFACE_ID, hvp.typefaceId)
 

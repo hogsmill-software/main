@@ -23,7 +23,7 @@ class FrameTextParameters {
     var symbol: String? = null
     var fontFamily: String = FF_NORMAL
     var typefaceId: Int = 0
-    var typeface = Typeface.NORMAL
+    var fontStyle = Typeface.NORMAL
     var minDistEdgeShape = 0
 
     fun setTxtSymbolsMargin(txtSymbolsMargin: Int) {
