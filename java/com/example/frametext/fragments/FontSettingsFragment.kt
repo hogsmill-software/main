@@ -84,7 +84,6 @@ class FontSettingsFragment : Fragment() {
             spinnerFontFamilies!!.adapter = arrayAdapter
         }
 
-        var userFriendlySelectedItem : String?
         val userFriendlySelectedItem : String? = if (ftp!!.fontFamily != "") {
             val fontFamilyUserFriendlyFontFamilyMapViewModel =
                 ViewModelProvider(requireActivity())[FontFamilyUserFriendlyFontFamilyMapViewModel::class.java]
@@ -128,7 +127,6 @@ class FontSettingsFragment : Fragment() {
                     typefaceIdSet = false
                     boldSwitch?.isEnabled = true
                     italicSwitch?.isEnabled = true
-                    italicSwitch?.isChecked = ftp!!.typeface == Typeface.ITALIC || ftp!!.typeface == Typeface.BOLD_ITALIC
                     boldSwitch?.isChecked = ftp!!.fontStyle == Typeface.BOLD || ftp!!.fontStyle == Typeface.BOLD_ITALIC
                     italicSwitch?.isChecked = ftp!!.fontStyle == Typeface.ITALIC || ftp!!.fontStyle == Typeface.BOLD_ITALIC
                 } else {
