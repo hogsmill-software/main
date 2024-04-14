@@ -67,6 +67,7 @@ internal object Constants {
     const val UFFF_MONSIEUR_LA_DOULAISE = "Monsieur La Doulaise"
     const val UFFF_MONTE_CARLO = "Monte Carlo"
     const val UFFF_NOSIFER = "Nosifer"
+    const val UFFF_OLD_LONDON = "Old London"
     const val UFFF_PUPPIES_PLAY = "Puppies Play"
     const val UFFF_RAMPART_ONE = "Rampart One"
     const val UFFF_SHADOWS_INTO_LIGHT = "Shadows Into Light"

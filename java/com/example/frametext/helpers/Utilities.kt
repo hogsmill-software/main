@@ -34,6 +34,7 @@ import com.example.frametext.helpers.Constants.UFFF_MONTE_CARLO
 import com.example.frametext.helpers.Constants.UFFF_NORMAL
 import com.example.frametext.helpers.Constants.UFFF_NOSIFER
 import com.example.frametext.helpers.Constants.UFFF_NOTOSERIF
+import com.example.frametext.helpers.Constants.UFFF_OLD_LONDON
 import com.example.frametext.helpers.Constants.UFFF_PUPPIES_PLAY
 import com.example.frametext.helpers.Constants.UFFF_RAMPART_ONE
 import com.example.frametext.helpers.Constants.UFFF_ROBOTO
@@ -89,6 +90,7 @@ object Utilities {
         userFriendlyFontFamilyList.add(UFFF_MONSIEUR_LA_DOULAISE)
         userFriendlyFontFamilyList.add(UFFF_MONTE_CARLO)
         userFriendlyFontFamilyList.add(UFFF_NOSIFER)
+        userFriendlyFontFamilyList.add(UFFF_OLD_LONDON)
         userFriendlyFontFamilyList.add(UFFF_PUPPIES_PLAY)
         userFriendlyFontFamilyList.add(UFFF_RAMPART_ONE)
         userFriendlyFontFamilyList.add(UFFF_SHADOWS_INTO_LIGHT)
@@ -144,6 +146,7 @@ object Utilities {
         userFriendlyFontFamilyToTypeFaceId[UFFF_MONSIEUR_LA_DOULAISE] = R.font.monsieur_la_doulaise
         userFriendlyFontFamilyToTypeFaceId[UFFF_MONTE_CARLO] = R.font.monte_carlo
         userFriendlyFontFamilyToTypeFaceId[UFFF_NOSIFER] = R.font.nosifer
+        userFriendlyFontFamilyToTypeFaceId[UFFF_OLD_LONDON] = R.font.old_london
         userFriendlyFontFamilyToTypeFaceId[UFFF_PUPPIES_PLAY] = R.font.puppies_play
         userFriendlyFontFamilyToTypeFaceId[UFFF_RAMPART_ONE] = R.font.rampart_one
         userFriendlyFontFamilyToTypeFaceId[UFFF_SHADOWS_INTO_LIGHT] = R.font.shadows_into_light
@@ -169,6 +172,7 @@ object Utilities {
         typeFaceIdToUserFriendlyFontFamily[R.font.monsieur_la_doulaise] =UFFF_MONSIEUR_LA_DOULAISE
         typeFaceIdToUserFriendlyFontFamily[R.font.monte_carlo] =UFFF_MONTE_CARLO
         typeFaceIdToUserFriendlyFontFamily[R.font.nosifer] =UFFF_NOSIFER
+        typeFaceIdToUserFriendlyFontFamily[R.font.old_london] = UFFF_OLD_LONDON
         typeFaceIdToUserFriendlyFontFamily[R.font.puppies_play] =UFFF_PUPPIES_PLAY
         typeFaceIdToUserFriendlyFontFamily[R.font.rampart_one] =UFFF_RAMPART_ONE
         typeFaceIdToUserFriendlyFontFamily[R.font.shadows_into_light] = UFFF_SHADOWS_INTO_LIGHT
