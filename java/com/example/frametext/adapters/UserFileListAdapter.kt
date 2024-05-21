@@ -38,7 +38,7 @@ class UserFileListAdapter internal constructor(
             view.findViewById<View>(R.id.loadButton) as AppCompatButton
 
         val deleteButton: AppCompatButton =
-            view.findViewById(R.id.deleteButton) as AppCompatButton
+            view.findViewById(R.id.deleteButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserFileListAdapter.ViewHolder {
@@ -59,7 +59,10 @@ class UserFileListAdapter internal constructor(
     }
 
     override fun getItemCount(): Int {
-        return  userFileList!!.size
+        userFileList?.let{
+            return it.size
+        }
+        return  0
     }
 
     override fun getItemId(i: Int): Long {
@@ -75,37 +78,38 @@ class UserFileListAdapter internal constructor(
     }
 
     private fun loadFile(i: Int) {
-        val userFileFolder: String? = MainActivity.getUserFileFolder(true, context)
-        if (userFileFolder != null) {
-            val usrFile = File(userFileFolder + userFileList!![i])
-            if (usrFile.exists()) {
-                val fileContentBuilder = StringBuilder()
-                try {
-                    BufferedReader(FileReader(usrFile)).use { br ->
-                        var currentLine: String?
-                        while (br.readLine().also { currentLine = it } != null) {
-                            fileContentBuilder.append(currentLine).append("\n")
+        MainActivity.getUserFileFolder(true, context).let { uffIt ->
+            userFileList?.let { uflIt ->
+                val usrFile = File(uffIt + uflIt[i])
+                if (usrFile.exists()) {
+                    val fileContentBuilder = StringBuilder()
+                    try {
+                        BufferedReader(FileReader(usrFile)).use { br ->
+                            br.forEachLine { currentLine ->
+                                fileContentBuilder.append(currentLine).append("\n")
+                            }
                         }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
                     }
-                } catch (e: IOException) {
-                    e.printStackTrace()
+                    val fileContent = fileContentBuilder.toString()
+                    textInputViewModel.selectItem(fileContent)
+                    userFile.setToTextInputFragment()
                 }
-                val fileContent = fileContentBuilder.toString()
-                textInputViewModel.selectItem(fileContent)
-                userFile.setToTextInputFragment()
             }
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun deleteFile(i: Int) {
-        val userFileFolder: String? = MainActivity.getUserFileFolder(true, context)
-        if (userFileFolder != null) {
-            val usrFile = File(userFileFolder + userFileList!![i])
-            if (usrFile.exists()) {
-                if (usrFile.delete()) {
-                    userFileList!!.removeAt(i)
-                    notifyDataSetChanged()
+        MainActivity.getUserFileFolder(true, context)?.let { uff ->
+            userFileList?.let {
+                val usrFile = File(uff + it[i])
+                if (usrFile.exists()) {
+                    if (usrFile.delete()) {
+                        it.removeAt(i)
+                        notifyDataSetChanged()
+                    }
                 }
             }
         }

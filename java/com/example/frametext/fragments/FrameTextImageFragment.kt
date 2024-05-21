@@ -32,15 +32,13 @@ class FrameTextImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val frameTextBitmapViewModel: FrameTextBitmapViewModel =
-            ViewModelProvider(requireActivity()).get(
-                FrameTextBitmapViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[FrameTextBitmapViewModel::class.java]
         val bm: Bitmap? = frameTextBitmapViewModel.getSelectedItem().value
         frameTextBitmapViewModel.selectImageFragment(this)
 
-        if (bm != null) {
+        bm?.let {
             val imageView = view.findViewById<ImageView>(R.id.imageView)
-            imageView.setImageBitmap(bm)
+            imageView.setImageBitmap(it)
         }
 
         val saveImageButton = view.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.saveImageButton)
@@ -48,9 +46,9 @@ class FrameTextImageFragment : Fragment() {
     }
 
     fun updateImage(bm: Bitmap?) {
-        if (bm != null && view != null) {
+        bm?.let {
             val imageView = requireView().findViewById<ImageView>(R.id.imageView)
-            imageView.setImageBitmap(bm)
+            imageView.setImageBitmap(it)
         }
     }
 
@@ -60,7 +58,7 @@ class FrameTextImageFragment : Fragment() {
             val bitMap = imageView.drawable.toBitmap()
 
             // generate image file in Pictures folder:
-            if (activity != null) {
+            activity?.let {
                 val fileName = "FT-" + System.currentTimeMillis()
                 MediaStore.Images.Media.insertImage(
                 requireActivity().contentResolver,
@@ -77,16 +75,20 @@ class FrameTextImageFragment : Fragment() {
 
     private fun generateImageTitle(): String {
         var generateImageTitle = "Generate image"
-        if (context != null && requireContext().resources != null) {
-            generateImageTitle = requireContext().resources.getString(R.string.generateImage)
+        context?.let{
+            requireContext().resources?.let {
+                generateImageTitle = it.getString(R.string.generateImage)
+            }
         }
         return generateImageTitle
     }
 
     private fun getUnexpectedErrorMessage(): String {
-        val unexpectedError = "An unexpected error occurred."
-        if (context != null && requireContext().resources != null) {
-            requireContext().resources.getString(R.string.error_unexpected)
+        var unexpectedError = "An unexpected error occurred."
+        context?.let{
+            requireContext().resources?.let {
+                unexpectedError = it.getString(R.string.error_unexpected)
+            }
         }
         return unexpectedError
     }

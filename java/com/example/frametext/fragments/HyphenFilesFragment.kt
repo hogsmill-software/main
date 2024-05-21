@@ -62,8 +62,8 @@ class HyphenFilesFragment : Fragment() {
             )
         hyphenFilesList = hyphenFilesListViewModel.selectedItem.value
 
-        if (hyphenDetailsList != null) {
-            val hd: Array<HyphenDetails> = hyphenDetailsList!!.toArray(arrayOfNulls(0))
+        hyphenDetailsList?.let {
+            val hd: Array<HyphenDetails> = it.toArray(arrayOfNulls(0))
 
             hyphenDetailsListAdapter = hyphenFilesList?.let {
                 HyphenDetailsListAdapter(view.context, hd, it)

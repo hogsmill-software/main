@@ -259,7 +259,9 @@ object Utilities {
 }
 // From https://medium.com/android-news/how-to-remove-all-from-your-kotlin-code-87dc2c9767fb see section 4
 fun <T1, T2> ifNotNull(value1: T1?, value2: T2?, bothNotNull: (T1, T2) -> (Unit)) {
-    if (value1 != null && value2 != null) {
-        bothNotNull(value1, value2)
+    value1?.let{ value1It ->
+        value2?.let { value2It ->
+            bothNotNull(value1It, value2It)
+        }
     }
 }

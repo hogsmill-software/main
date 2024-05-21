@@ -142,7 +142,7 @@ class MainShapeTableCtrl : View, View.OnClickListener {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        super.onTouchEvent(event) // this super call is important !!!
+        super.onTouchEvent(event) // this super call is important !
         var success = false
         val x = event.x - (rcFullScreenBounds.width() - rcMainShapesBounds.width()) / 2.0f
         val y = event.y - (rcPopupBounds.top + popupMargin + rcHeaderBounds.height() + headerMainShapesGap)

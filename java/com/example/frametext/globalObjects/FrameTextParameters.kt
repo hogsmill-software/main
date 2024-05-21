@@ -37,9 +37,12 @@ class FrameTextParameters {
     fun getShapeDetails(): EdgeShapeDetails? {
         if (useEmoji) {
             return EmojiEdgeShapeDetails(emoji)
-        } else if (symbol != null && symbolShapeType == SymbolShapeType.None) {
-            return SymbolEdgeShapeDetails(symbol!!, symbolsColor)
+        } else symbol?.let {
+            if (symbolShapeType == SymbolShapeType.None) {
+                return SymbolEdgeShapeDetails(it, symbolsColor)
+            }
         }
+
         return when (symbolShapeType) {
             SymbolShapeType.Heart -> DrawHeartEdgeShape(92, symbolsColor)
             SymbolShapeType.Circle -> DrawCircleEdgeShape(92, symbolsColor)

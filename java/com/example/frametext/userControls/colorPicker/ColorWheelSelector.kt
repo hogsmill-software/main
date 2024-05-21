@@ -39,7 +39,7 @@ class ColorWheelSelector @JvmOverloads constructor(
 
     init {
         // Black not ideal in dark mode but other colours are even worse
-      //  selectorPaint.color = if (context != null) ContextCompat.getColor(context, Utilities.getTextColorId(context)) else android.graphics.Color.BLACK
+        //selectorPaint.color = context?.let{ ContextCompat.getColor(context, Utilities.getTextColorId(context)) } ?: android.graphics.Color.BLACK
         selectorPaint.color = android.graphics.Color.BLACK
         selectorPaint.style = Paint.Style.STROKE
         selectorPaint.strokeWidth = 2f

@@ -162,10 +162,11 @@ internal class DrawText(
                                     if (usrExceptionMap.containsKey(i)) {
                                         val usrExceptionDetails = usrExceptionMap[i]
                                         wordInProgress.setLength(0)
-                                        if (usrExceptionDetails != null) {
-                                            wordInProgress.append(usrExceptionDetails.word)
-                                            wordWidth = usrExceptionDetails.wordWidth
-                                            handlerRet = usrExceptionDetails.handlerRet
+
+                                        usrExceptionDetails?.let {
+                                            wordInProgress.append(it.word)
+                                            wordWidth = it.wordWidth
+                                            handlerRet = it.handlerRet
                                         }
                                     } else {
                                         // Normally, the start of new exception we want for hyphenation is wordInProgress
@@ -465,10 +466,13 @@ internal class DrawText(
     fun drawTextBoundingRectangles() {
         val col = paint.color
         paint.color = Color.BLUE
-        for (txtRectDetails in rectLst!!) {
-            val txtBoundingRect = txtRectDetails.boundingRect
-            canvas.drawRect(txtBoundingRect, paint)
+        rectLst?.let {
+            for (txtRectDetails in it) {
+                val txtBoundingRect = txtRectDetails.boundingRect
+                canvas.drawRect(txtBoundingRect, paint)
+            }
         }
+
         paint.color = col
     }
     */
@@ -588,13 +592,14 @@ internal class DrawText(
         var lastRectWidth = 0
         var previousRectWidth: Int
         var lastWordSegmentWidth = 0f
-        if (tfd.hyphenateText && lastWord != null) {
-            // According to Kotlin documentation the !! should be redundant here.
-            // See https://kotlinlang.org/docs/null-safety.html#checking-for-null-in-conditions
-            val brokenWords: Array<String> = hyphenator?.hyphenateWord(lastWord!!) ?: arrayOf(lastWord!!)
-            val lastWordSegment = "-" + brokenWords[brokenWords.size - 1]
-            //lastWordSegmentWidth = g2d.getFontMetrics().charsWidth(lastWordSegment.toCharArray(), 0, lastWordSegment.length());
-            lastWordSegmentWidth = paint.measureText(lastWordSegment)
+        if (tfd.hyphenateText) {
+            lastWord?.let {
+                val brokenWords: Array<String> =
+                    hyphenator?.hyphenateWord(it) ?: arrayOf(it)
+                val lastWordSegment = "-" + brokenWords[brokenWords.size - 1]
+                //lastWordSegmentWidth = g2d.getFontMetrics().charsWidth(lastWordSegment.toCharArray(), 0, lastWordSegment.length());
+                lastWordSegmentWidth = paint.measureText(lastWordSegment)
+            }
         }
         if (li.hasPrevious()) {
             var trd = li.previous()
@@ -695,12 +700,12 @@ internal class DrawText(
     }
 
     init {
-        if (tfd.hyphenPatternLan != null) {
-            if (HyphenatorLangMap.containsKey(tfd.hyphenPatternLan)) {
-                hyphenator = HyphenatorLangMap[tfd.hyphenPatternLan]
+        tfd.hyphenPatternLan?.let { hyphenPatternLanIt ->
+            if (HyphenatorLangMap.containsKey(hyphenPatternLanIt)) {
+                hyphenator = HyphenatorLangMap[hyphenPatternLanIt]
             } else {
-                hyphenator = context?.let { Hyphenator(tfd.hyphenPatternLan, it) }
-                HyphenatorLangMap[tfd.hyphenPatternLan] = hyphenator
+                hyphenator = context?.let { Hyphenator(hyphenPatternLanIt, it) }
+                HyphenatorLangMap[hyphenPatternLanIt] = hyphenator
             }
         }
         

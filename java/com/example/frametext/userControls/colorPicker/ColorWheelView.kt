@@ -11,11 +11,11 @@ import android.widget.FrameLayout
 import kotlin.math.*
 
 class ColorWheelView @JvmOverloads constructor(
-    context: Context?,
+    context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) :
-    FrameLayout(context!!, attrs, defStyleAttr), ColorObservable, Updatable {
+    FrameLayout(context, attrs, defStyleAttr), ColorObservable, Updatable {
     private var radius = 0f
     private var centerX = 0f
     private var centerY = 0f
@@ -64,10 +64,10 @@ class ColorWheelView @JvmOverloads constructor(
     }
 
     override fun update(event: MotionEvent?) {
-        if (event != null) {
-            val x = event.x
-            val y = event.y
-            val isTouchUpEvent = event.actionMasked == MotionEvent.ACTION_UP
+        event?.let {
+            val x = it.x
+            val y = it.y
+            val isTouchUpEvent = it.actionMasked == MotionEvent.ACTION_UP
             if (!onlyUpdateOnTouchEventUp || isTouchUpEvent) {
                 emitter.onColor(getColorAtPoint(x, y), true, isTouchUpEvent)
             }
@@ -144,9 +144,12 @@ class ColorWheelView @JvmOverloads constructor(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            selector = ColorWheelSelector(context)
-            selector!!.setSelectorRadiusPx(selectorRadiusPx)
-            addView(selector, layoutParams)
+
+            ColorWheelSelector(context).let {
+                selector = it
+                it.setSelectorRadiusPx(selectorRadiusPx)
+                addView(it, layoutParams)
+            }
         }
     }
 }

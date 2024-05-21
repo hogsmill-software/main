@@ -112,7 +112,7 @@ class NewFeatureListAdapter internal constructor(
     }
 
     override fun getItemCount(): Int {
-        return if (sKUList != null) sKUList!!.size else 0
+        return sKUList?.size ?: 0
     }
 
     private fun showInfo(position: Int) {
@@ -135,12 +135,12 @@ class NewFeatureListAdapter internal constructor(
                 SKU_MORE_SYMBOLS -> R.string.description_symbols_and_colours
                 else -> 0
             }
-            if (sku != null) {
+            sku?.let {
                 description.text = context.resources.getString(infoDescription)
 
                 // Hard coded so get a description string even if billing server not connected.
                 // Getting from billing server gives dreadful layout anyway, so commented code below:
-                /*newFeaturesViewModel.getSkuDetails(sku).description?.observe(newFeaturesFragment.viewLifecycleOwner,
+                /*newFeaturesViewModel.getSkuDetails(it).description?.observe(newFeaturesFragment.viewLifecycleOwner,
                     {
                         description.text = it
                     })*/
@@ -151,8 +151,8 @@ class NewFeatureListAdapter internal constructor(
             NewFeaturesViewModel.sKUToResourceIdMap[sku]?.let { it1 -> img.setImageResource(it1) }
 
             // Display price here
-            if (sku != null) {
-                newFeaturesViewModel.getSkuDetails(sku).price.observe(newFeaturesFragment.viewLifecycleOwner) {
+            sku?.let { skuIt ->
+                newFeaturesViewModel.getSkuDetails(skuIt).price.observe(newFeaturesFragment.viewLifecycleOwner) {
                     val price = customView.findViewById<TextView>(R.id.infoPrice)
                     price.text = context.resources.getString(R.string.price, it)
                 }
@@ -165,11 +165,11 @@ class NewFeatureListAdapter internal constructor(
             )
             linearLayoutNewFeatures =
                 newFeaturesFragment.view?.findViewById<View>(R.id.linearLayoutNewFeatures) as LinearLayout
-            popupWindow!!.showAtLocation(linearLayoutNewFeatures, Gravity.CENTER, 0, 0)
+            popupWindow?.showAtLocation(linearLayoutNewFeatures, Gravity.CENTER, 0, 0)
             // Handle close button
             closePopupBtn = customView.findViewById<View>(R.id.closePopupBtn) as Button
-            closePopupBtn!!.setOnClickListener {
-                popupWindow!!.dismiss()
+            closePopupBtn?.setOnClickListener {
+                popupWindow?.dismiss()
                 infoPopupOpen = false
             }
         }
@@ -179,8 +179,8 @@ class NewFeatureListAdapter internal constructor(
         var isPurchased: Boolean
         val sku = sKUList?.get(position)
         var count = 0
-        if (sku != null) {
-            newFeaturesViewModel.isPurchased(sku).observe(newFeaturesFragment.viewLifecycleOwner) {
+        sku?.let { skuIt ->
+            newFeaturesViewModel.isPurchased(skuIt).observe(newFeaturesFragment.viewLifecycleOwner) {
                 if (count > 0) {
                     return@observe // Don't want this loop executed more than once
                 }
@@ -193,7 +193,7 @@ class NewFeatureListAdapter internal constructor(
                             it1, context)
                     }
                 } else {
-                    storeManager.launchBillingFlow(activity, sku)
+                    storeManager.launchBillingFlow(activity, skuIt)
                 }
             }
         }
@@ -219,7 +219,7 @@ class NewFeatureListAdapter internal constructor(
 
     fun closeInfoPopup() {
         if (infoPopupOpen) {
-            popupWindow!!.dismiss()
+            popupWindow?.dismiss()
             infoPopupOpen = false
         }
     }

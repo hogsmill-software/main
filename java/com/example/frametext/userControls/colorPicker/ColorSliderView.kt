@@ -65,10 +65,9 @@ abstract class ColorSliderView @JvmOverloads constructor(
     }
 
     override fun update(event: MotionEvent?) {
-        if (event != null) {
-            updateValue(event.x)
-
-            val isTouchUpEvent = event.actionMasked == MotionEvent.ACTION_UP
+        event?.let {
+            updateValue(it.x)
+            val isTouchUpEvent = it.actionMasked == MotionEvent.ACTION_UP
             if (!onlyUpdateOnTouchEventUp || isTouchUpEvent) {
                 emitter.onColor(assembleColor(), true, isTouchUpEvent)
             }
@@ -133,16 +132,16 @@ abstract class ColorSliderView @JvmOverloads constructor(
         }
     private var boundObservable: ColorObservable? = null
     fun bind(colorObservable: ColorObservable?) {
-        if (colorObservable != null) {
-            colorObservable.subscribe(bindObserver)
-            setBaseColor(colorObservable.color, fromUser = true, shouldPropagate = true)
+        colorObservable?.let {
+            it.subscribe(bindObserver)
+            setBaseColor(it.color, fromUser = true, shouldPropagate = true)
         }
         boundObservable = colorObservable
     }
 
     fun unbind() {
-        if (boundObservable != null) {
-            boundObservable!!.unsubscribe(bindObserver)
+        boundObservable?.let {
+            it.unsubscribe(bindObserver)
             boundObservable = null
         }
     }
@@ -152,7 +151,7 @@ abstract class ColorSliderView @JvmOverloads constructor(
         borderPaint.strokeWidth = 0f
         borderPaint.color = Color.BLACK
         selectorPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        selectorPaint.color = if (context != null) ContextCompat.getColor(context, Utilities.getTextColorId(context)) else Color.BLACK
+        selectorPaint.color = context?.let { ContextCompat.getColor(it, Utilities.getTextColorId(it)) } ?:  Color.BLACK
         selectorPath = Path()
         selectorPath.fillType = Path.FillType.WINDING
     }

@@ -61,7 +61,9 @@ class FrameShapesFragment : Fragment() {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val heartValParametersViewModel = ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
-        ftp = heartValParametersViewModel.getSelectedItem().value!!
+        heartValParametersViewModel.getSelectedItem().value?.let {
+            ftp = it
+        }
 
         val symbolsColorButton = view.findViewById<AppCompatButton>(R.id.symbolsColorButton)
         symbolsColorButton.setBackgroundColor(ftp.symbolsColor)
@@ -78,8 +80,7 @@ class FrameShapesFragment : Fragment() {
             )
         newFeaturesViewModel = ViewModelProvider(this, newFeaturesViewModelFactory)[NewFeaturesViewModel::class.java]
 
-        val act = activity
-        if (act != null) {
+        activity?.let { _ ->
             newFeaturesViewModel.isPurchased(SKU_MORE_EMOJIS).observe(
                 viewLifecycleOwner
             ) { purchasedMoreEmojis = it }
@@ -178,11 +179,8 @@ class FrameShapesFragment : Fragment() {
             mainShapePopupPt = Point()
             val screenSizePt: Point
             val context = context
-            screenSizePt = if (context != null) {
-                Utilities.getRealScreenSize(context)
-            } else {
-                Point()
-            }
+            screenSizePt = context?.let { Utilities.getRealScreenSize(it) } ?: Point()
+
             emojiPopUpPt.x = screenSizePt.x
             emojiPopUpPt.y = screenSizePt.y
 
@@ -242,9 +240,9 @@ class FrameShapesFragment : Fragment() {
 
     @SuppressLint("ResourceType")
     private fun activateDeactivateSymbolColorButton(view: View, activate: Boolean) {
-        val defaultTextColorId: Int = if (context != null) Utilities.getTextColorId(requireContext()) else R.color.black
+        val defaultTextColorId: Int =  Utilities.getTextColorId(requireContext())
         val defaultTextColor: Int = ContextCompat.getColor(requireContext(), defaultTextColorId)
-        val disabledTextColorId: Int = if (context != null) Utilities.getDisabledTextColorId(requireContext()) else R.color.disabledText
+        val disabledTextColorId: Int = Utilities.getDisabledTextColorId(requireContext())
         val disabledTextColor: Int = ContextCompat.getColor(requireContext(), disabledTextColorId)
         val emojiText = view.findViewById<TextView>(R.id.emojiText)
         emojiText.setTextColor(if (activate) disabledTextColor else defaultTextColor)
@@ -252,7 +250,7 @@ class FrameShapesFragment : Fragment() {
         edgeShapeText.setTextColor(if (activate) defaultTextColor else disabledTextColor)
         val shapeColorText = view.findViewById<TextView>(R.id.shapeColorText)
         shapeColorText.setTextColor(if (activate) defaultTextColor else disabledTextColor)
-        if (context != null && requireContext().resources != null) {
+        requireContext().resources.let {
             val emojiButtonFrame = view.findViewById<View>(R.id.emojiButtonFrame)
             emojiButtonFrame.setBackgroundColor(
                 if (!activate) ContextCompat.getColor(requireContext(), R.color.highlightBlue) else
@@ -286,28 +284,27 @@ class FrameShapesFragment : Fragment() {
         }
         initializePopUpPoints()
         val alertDialog = Dialog(this.requireContext())
-        val etc = this.context?.let { EmojiTableCtrl(it, purchasedMoreEmojis) }
-        emojiButton.let { etc?.setSelectedEmojiCtrl(it) }
-        alertDialog.window.let {
-            it?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            it?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            if (etc != null) {
+        this.context?.let { EmojiTableCtrl(it, purchasedMoreEmojis) }?.let { etc ->
+            emojiButton.let { etc.setSelectedEmojiCtrl(it) }
+            alertDialog.window.let {
+                it?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                it?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 alertDialog.setContentView(etc)
+                val layoutParams = WindowManager.LayoutParams()
+                layoutParams.copyFrom(it?.attributes)
+                layoutParams.gravity = Gravity.TOP or Gravity.START
+                layoutParams.x = 0
+                layoutParams.y = 0
+                layoutParams.width = mainShapePopupPt.x
+                layoutParams.height = mainShapePopupPt.y
+                it?.attributes = layoutParams
+                etc.setOnClickListener {
+                    emojiPopupReceivedClick(
+                        alertDialog
+                    )
+                }
+                alertDialog.show()
             }
-            val layoutParams = WindowManager.LayoutParams()
-            layoutParams.copyFrom(it?.attributes)
-            layoutParams.gravity = Gravity.TOP or Gravity.START
-            layoutParams.x = 0
-            layoutParams.y = 0
-            layoutParams.width = mainShapePopupPt.x
-            layoutParams.height = mainShapePopupPt.y
-            it?.attributes = layoutParams
-            etc?.setOnClickListener {
-                emojiPopupReceivedClick(
-                    alertDialog
-                )
-            }
-            alertDialog.show()
         }
     }
 
@@ -323,7 +320,7 @@ class FrameShapesFragment : Fragment() {
         initializePopUpPoints()
         val alertDialog = Dialog(this.requireContext())
         //  ([ShapeType, String])[] shapeTypeArray = {[ShapeType.StraightHeart, 0], ShapeType.Circle, ShapeType.Square, ShapeType.Star, ShapeType.Spade, ShapeType.Club, ShapeType.Diamond};
-        if (this.context != null) {
+        this.context.let { _ ->
             val stc = ShapeTableCtrl(this.requireContext(), purchasedMoreSymbols)
 
             filledShapeButton.let { stc.setSelectedShapeCtrl(it) }
@@ -363,8 +360,8 @@ class FrameShapesFragment : Fragment() {
         alertDialog.window.let {
             it?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             it?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            if (mSTC != null) {
-                alertDialog.setContentView(mSTC)
+            mSTC?.let { mSTCIt ->
+                alertDialog.setContentView(mSTCIt)
             }
             val layoutParams = WindowManager.LayoutParams()
             layoutParams.copyFrom(it?.attributes)

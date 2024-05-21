@@ -2,7 +2,6 @@ package com.example.frametext.adapters
 
 //https://www.techyourchance.com/asynctask-deprecated/
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Typeface
 import android.os.AsyncTask
 import android.view.LayoutInflater
@@ -22,7 +21,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.net.URL
 import java.net.URLConnection
-import java.security.AccessController.getContext
 
 class HyphenDetailsListAdapter internal constructor(
     context: Context,
@@ -85,13 +83,11 @@ class HyphenDetailsListAdapter internal constructor(
                     val hyphenFileFolder = getHyphenFileFolder(
                         hyphenFileNameView.context
                     )
-                    success = if (hyphenFileFolder != null) {
-                        val hyphenFileName = hyphenFileFolder + hyphenDetails[idx].fileName
+                    success = hyphenFileFolder?.let { hyphenFileFolderIt->
+                        val hyphenFileName = hyphenFileFolderIt + hyphenDetails[idx].fileName
                         FileOutputStream(hyphenFileName).use { fos -> fos.write(buffer) }
                         true
-                    } else {
-                        false
-                    }
+                    } ?: false
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -164,8 +160,8 @@ class HyphenDetailsListAdapter internal constructor(
     ) {
         if (hyphenDetails[i].downLoaded) {
             val hyphenFileFolder = getHyphenFileFolder(hyphenFileNameView.context)
-            if (hyphenFileFolder != null) {
-                val hyphenFileName = hyphenFileFolder + hyphenDetails[i].fileName
+            hyphenFileFolder?.let {
+                val hyphenFileName = it + hyphenDetails[i].fileName
                 val hyphenFile = File(hyphenFileName)
                 if (hyphenFile.delete()) {
                     hyphenDetails[i].downLoaded = false

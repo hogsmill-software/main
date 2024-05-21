@@ -73,7 +73,7 @@ class ColorTableCtrl : View, View.OnClickListener, ColorObservable {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        super.onTouchEvent(event) // this super call is important !!!
+        super.onTouchEvent(event) // this super call is important !
         var success = false
         val gapWidth = (width - COLUMNS*ColorCellCtrl.size)/COLUMNS + 1
         val colPos = event.x/(ColorCellCtrl.size + gapWidth)

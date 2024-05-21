@@ -15,13 +15,11 @@ import com.example.frametext.engine.FrameTextException
 import com.example.frametext.engine.ImageGenerator
 import com.example.frametext.engine.TextFormattingDetails
 import com.example.frametext.globalObjects.FrameTextParameters
-import com.example.frametext.shapes.edge.EdgeShapeDetails
 import com.example.frametext.userControls.AlertPopupOK
 import com.example.frametext.viewModels.FrameTextBitmapViewModel
 import com.example.frametext.viewModels.FrameTextParametersViewModel
 import com.example.frametext.viewModels.TabLayoutViewModel
 import com.example.frametext.viewModels.TextInputViewModel
-import com.google.android.material.tabs.TabLayout
 
 class TextInputFragment : Fragment() {
     private var fragmentActivityContext: FragmentActivity? = null
@@ -57,8 +55,10 @@ class TextInputFragment : Fragment() {
         tabLayoutViewModel = ViewModelProvider(requireActivity())[TabLayoutViewModel::class.java]
         frameTextParametersViewModel = ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
 
-        val editTextInput = view.findViewById<EditText>(R.id.editTextInput)
-        editTextInput.setText(textInputViewModel!!.getSelectedItem().value)
+        textInputViewModel?.let {
+            val editTextInput = view.findViewById<EditText>(R.id.editTextInput)
+            editTextInput.setText(it.getSelectedItem().value)
+        }
     }
 
     private fun onExitToUserFilesFragment(view: View) {
@@ -94,8 +94,7 @@ class TextInputFragment : Fragment() {
                         ftp.typefaceId,
                         ftp.fontStyle
                     )
-                    val edgeShapeDetails: EdgeShapeDetails? = ftp.getShapeDetails()
-                    if (edgeShapeDetails != null) {
+                    ftp.getShapeDetails()?.let { edgeShapeDetails ->
                         val frameTextImgContainer = ImageGenerator(
                             tfd,
                             ftp.mainShapeType,
@@ -115,14 +114,13 @@ class TextInputFragment : Fragment() {
                         frameTextBitmapViewModel?.getSelectedImageFragment()?.value
                             ?.updateImage(frameTextImgContainer.bitmap)
 
-                        val tabLayout: TabLayout? =
-                            tabLayoutViewModel?.getSelectedItem()?.value
-                        if (tabLayout != null) {
-                            if (tabLayout.tabCount == 2)
-                                tabLayout.newTab().setText(resources.getString(R.string.image))
-                                    .let { tabLayout.addTab(it) }
+                        tabLayoutViewModel?.getSelectedItem()?.value.let{
+                            tabLayoutIt ->
+                            if (tabLayoutIt?.tabCount == 2)
+                                tabLayoutIt.newTab().setText(resources.getString(R.string.image))
+                                    .let {tabLayoutIt.addTab(it) }
 
-                            val tab = tabLayout.getTabAt(2)
+                            val tab = tabLayoutIt?.getTabAt(2)
                             tab?.select()
                         }
                     }
@@ -136,17 +134,22 @@ class TextInputFragment : Fragment() {
     }
 
     private fun generateImageTitle(): String {
-        var generateImageTitle = "Generate image"
-        if (context != null && requireContext().resources != null) {
-            generateImageTitle = requireContext().resources.getString(R.string.generateImage)
+        var generateImageTitle : String
+        context.let {
+            requireContext().resources.let {
+                generateImageTitle = requireContext().resources.getString(R.string.generateImage)
+            }
         }
+
         return generateImageTitle
     }
 
     private fun getUnexpectedErrorMessage(): String {
-        val unexpectedError = "An unexpected error occurred."
-        if (context != null && requireContext().resources != null) {
-            requireContext().resources.getString(R.string.error_unexpected)
+        var unexpectedError = "An unexpected error occurred."
+        context?.let {
+            requireContext().resources?.let {
+                unexpectedError = requireContext().resources.getString(R.string.error_unexpected)
+            }
         }
         return unexpectedError
     }

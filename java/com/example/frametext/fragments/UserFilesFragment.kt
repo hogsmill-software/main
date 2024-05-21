@@ -69,9 +69,13 @@ class UserFilesFragment : Fragment() {
             ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
         ftp = heartValParametersViewModel.getSelectedItem().value
 
-        userFileListAdapter =
-            UserFileListAdapter(view.context, userFileList, textInputViewModel!!, this)
-        userFileRecyclerView!!.adapter = userFileListAdapter
+        textInputViewModel?.let {
+            userFileListAdapter = UserFileListAdapter(view.context, userFileList, it, this)
+
+            userFileRecyclerView?.let { userFileRecyclerViewIt ->
+                userFileRecyclerViewIt.adapter = userFileListAdapter
+            }
+        }
 
         // Add dividers
         val dividerItemDecoration = DividerItemDecoration(
@@ -96,33 +100,40 @@ class UserFilesFragment : Fragment() {
             if (strFileName.isEmpty()) {
                 throw FrameTextException(enterFileNameErrMsg())
             }
-            val strTextInput = textInputViewModel!!.getSelectedItem().value
+            val strTextInput = textInputViewModel?.getSelectedItem()?.value
                 ?: throw Exception("strTextInput should never be null.")
             if (ftp == null) {
                 throw Exception("ftp should never be null.")
             }
-            val tfd = TextFormattingDetails(
-                strTextInput, ftp!!.optimizeSpacing, ftp!!.hyphenateText,
-                ftp!!.hyphenFileName, 50, 170, ftp!!.getTxtSymbolsMargin(), ftp!!.textColor,  ftp!!.fontFamily, ftp!!.typefaceId, ftp!!.fontStyle
-            )
-            val imageGenerator = ImageGenerator(
-                tfd,
-                ftp!!.mainShapeType,
-                ftp!!.getShapeDetails()!!,
-                ftp!!.backgroundColor,
-                ftp!!.outerMargin,
-                ftp!!.minDistEdgeShape,
-                requireContext()
-            )
-            imageGenerator.computeTextFit(requireContext())
+            ftp?.let{
+                val tfd = TextFormattingDetails(
+                    strTextInput, it.optimizeSpacing, it.hyphenateText,
+                    it.hyphenFileName, 50, 170, it.getTxtSymbolsMargin(), it.textColor,  it.fontFamily, it.typefaceId, it.fontStyle
+                )
+                it.getShapeDetails()?.let { getShapeDetailsIt ->
+                    val imageGenerator = ImageGenerator(
+                        tfd,
+                        it.mainShapeType,
+                        getShapeDetailsIt,
+                        it.backgroundColor,
+                        it.outerMargin,
+                        it.minDistEdgeShape,
+                        requireContext()
+                    )
+                    imageGenerator.computeTextFit(requireContext())
+                }
+            }
+
             val userFile =
                 File(MainActivity.getUserFileFolder(true, requireContext()).toString() + strFileName)
             val writer = FileWriter(userFile)
             writer.append(strTextInput)
             writer.flush()
             writer.close()
-            userFileList!!.add(strFileName)
-            userFileListAdapter!!.notifyItemInserted(userFileListAdapter!!.itemCount)
+            userFileList?.add(strFileName)
+            userFileListAdapter?.let {
+                it.notifyItemInserted(it.itemCount)
+            }
             fileName.setText("")
         } catch (e: FrameTextException) {
             AlertPopupOK(generateImageTitle(), e.message ?: "").show(requireView(), requireContext())
@@ -137,16 +148,20 @@ class UserFilesFragment : Fragment() {
 
     private fun generateImageTitle(): String {
         var generateImageTitle = "Generate image"
-        if (context != null && requireContext().resources != null) {
-            generateImageTitle = requireContext().resources.getString(R.string.generateImage)
+        context?.let {
+            requireContext().resources?.let {
+                generateImageTitle = requireContext().resources.getString(R.string.generateImage)
+            }
         }
         return generateImageTitle
     }
 
     private fun enterFileNameErrMsg(): String {
         var enterFileNameErrMsg = "Enter a file name"
-        if (context != null && requireContext().resources != null) {
-            enterFileNameErrMsg = requireContext().resources.getString(R.string.enter_file_name)
+        context?.let {
+            requireContext().resources?.let {
+                enterFileNameErrMsg = requireContext().resources.getString(R.string.enter_file_name)
+            }
         }
         return enterFileNameErrMsg
     }

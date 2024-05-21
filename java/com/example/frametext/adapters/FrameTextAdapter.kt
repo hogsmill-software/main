@@ -8,8 +8,8 @@ import com.example.frametext.fragments.FrameTextImageFragment
 import com.example.frametext.fragments.SettingsFragment
 import com.example.frametext.fragments.TextInputFragment
 
-class FrameTextAdapter(c: Context, fa: FragmentActivity?, totalTabs: Int) :
-    FragmentStateAdapter(fa!!) {
+class FrameTextAdapter(c: Context, fa: FragmentActivity, totalTabs: Int) :
+    FragmentStateAdapter(fa) {
     private var context: Context
     private var totalTabs: Int
     private var settingsFragment: SettingsFragment? = null

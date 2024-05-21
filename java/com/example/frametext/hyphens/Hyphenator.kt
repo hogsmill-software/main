@@ -85,10 +85,10 @@ class Hyphenator(language: String, context: Context) {
                 val subWord = hyphenableWord.substring(i, j)
                 if (patterns.containsKey(subWord)) {
                     val subLevels = patterns[subWord]
-                    if (subLevels != null) {
-                        for (k in subLevels.indices) {
-                            if (subLevels[k] > levels[i + k]) {
-                                levels[i + k] = subLevels[k]
+                    subLevels?.let { subLevelsIt ->
+                        for (k in subLevelsIt.indices) {
+                            if (subLevelsIt[k] > levels[i + k]) {
+                                levels[i + k] = subLevelsIt[k]
                             }
                         }
                     }

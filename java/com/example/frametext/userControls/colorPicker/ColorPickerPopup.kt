@@ -33,8 +33,8 @@ class ColorPickerPopup private constructor(builder: Builder) {
     private var layout: View? = null
 
     fun show(observer: ColorPickerObserver?) {
-        if (observer != null) {
-            show(null, observer)
+        observer?.let {
+            show(null, it)
         }
     }
 
@@ -48,16 +48,19 @@ class ColorPickerPopup private constructor(builder: Builder) {
             layout, ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        popupWindow!!.isOutsideTouchable = false // so doesn't close if click on outside
+        popupWindow?.let{
+            it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            it.isOutsideTouchable = false // so doesn't close if click on outside
+        }
         val blankLayout: View = inflater.inflate(R.layout.blank_screen_popup, null)
         popupWindowDarkBackground = PopupWindow(
             blankLayout, ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        popupWindowDarkBackground!!.setBackgroundDrawable(ColorDrawable(Constants.DARK_BACKGROUND_OPACITY))
-        popupWindowDarkBackground!!.isOutsideTouchable =
-            false // so doesn't close if click on outside
+        popupWindowDarkBackground?.let {
+            it.setBackgroundDrawable(ColorDrawable(Constants.DARK_BACKGROUND_OPACITY))
+            it.isOutsideTouchable = false // so doesn't close if click on outside
+        }
         colorPickerView.setInitialColor(initialColor)
         colorPickerView.setEnabledBrightness(enableBrightness)
         colorPickerView.setEnabledAlpha(enableAlpha)
@@ -66,14 +69,14 @@ class ColorPickerPopup private constructor(builder: Builder) {
         val cancel = layout.findViewById<TextView>(R.id.cancel)
         cancel.text = cancelTitle
         cancel.setOnClickListener {
-            popupWindowDarkBackground!!.dismiss()
-            popupWindow!!.dismiss()
+            popupWindowDarkBackground?.dismiss()
+            popupWindow?.dismiss()
         }
         val ok = layout.findViewById<TextView>(R.id.ok)
         ok.text = okTitle
         ok.setOnClickListener {
-            popupWindowDarkBackground!!.dismiss()
-            popupWindow!!.dismiss()
+            popupWindowDarkBackground?.dismiss()
+            popupWindow?.dismiss()
             observer.onColorPicked(colorPickerView.color)
         }
         val colorIndicator = layout.findViewById<View>(R.id.colorIndicator)
@@ -125,10 +128,12 @@ class ColorPickerPopup private constructor(builder: Builder) {
         spinnerControls.visibility = View.GONE
         initializeSpinnerControls(layout)
 
-        popupWindow!!.animationStyle = R.style.TopDefaultsViewColorPickerPopupAnimation
-        if (tempParent == null) tempParent = layout
-        popupWindowDarkBackground!!.showAtLocation(tempParent, Gravity.NO_GRAVITY, 0, 0)
-        popupWindow!!.showAtLocation(tempParent, Gravity.CENTER, 0, 0)
+        popupWindow?.let{ popupWindowIt->
+            popupWindowIt.animationStyle = R.style.TopDefaultsViewColorPickerPopupAnimation
+            if (tempParent == null) tempParent = layout
+            popupWindowDarkBackground?.showAtLocation(tempParent, Gravity.NO_GRAVITY, 0, 0)
+            popupWindowIt.showAtLocation(tempParent, Gravity.CENTER, 0, 0)
+        }
     }
 
     class Builder(val context: Context) {
@@ -270,10 +275,10 @@ class ColorPickerPopup private constructor(builder: Builder) {
 
     // Quickfix method
     fun setColorFromColorTableCtrlView(color: Int) {
-        if (layout != null) {
-            val colorPickerView: ColorPickerView = layout!!.findViewById(R.id.colorPickerView)
+        layout?.let {
+            val colorPickerView: ColorPickerView = it.findViewById(R.id.colorPickerView)
             colorPickerView.setInitialColor(color)
-            setSpinnerControls(layout!!, color)
+            setSpinnerControls(it, color)
         }
     }
 
@@ -298,13 +303,13 @@ class ColorPickerPopup private constructor(builder: Builder) {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        if (mHandler != null) return true
+                        mHandler?.let{ return true }
                         mHandler = Handler()
-                        mHandler!!.postDelayed(mAction, 500)
+                        mHandler?.postDelayed(mAction, 500)
                     }
                     MotionEvent.ACTION_UP -> {
                         if (mHandler == null) return true
-                        mHandler!!.removeCallbacks(mAction)
+                        mHandler?.removeCallbacks(mAction)
                         mHandler = null
                     }
                 }
@@ -314,7 +319,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
             val mAction: Runnable = object : Runnable {
                 override fun run() {
                     onAmend(hexNumber, layout, shiftRequired, increment)
-                    mHandler!!.postDelayed(this, 100)
+                    mHandler?.postDelayed(this, 100)
                 }
             }
         })

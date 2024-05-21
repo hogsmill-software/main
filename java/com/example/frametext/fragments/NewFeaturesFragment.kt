@@ -59,32 +59,37 @@ class NewFeaturesFragment : Fragment() {
             )
         ViewModelProvider(this, newFeaturesViewModelFactory)[NewFeaturesViewModel::class.java].also { newFeaturesViewModel = it }
 
-        binding?.nfvm = newFeaturesViewModel
-        binding!!.inAppInventory.layoutManager = LinearLayoutManager(context)
+        binding?.let {
+            it.nfvm = newFeaturesViewModel
+            it.inAppInventory.layoutManager = LinearLayoutManager(context)
+        }
 
-        val app = activity
-
-        if (app != null){
+        activity?.let{
             val storeManager =
-                (app.application as FrameTextApplication).appContainer.storeManager
+                (it.application as FrameTextApplication).appContainer.storeManager
 
-            newFeatureListAdapter = NewFeatureListAdapter(
-                requireContext(),
-                newFeaturesViewModel!!,
-                this,
-                storeManager,
-                app
-            )
-            binding!!.inAppInventory.adapter = newFeatureListAdapter
+            newFeaturesViewModel?.let{ newFeaturesViewModelIt ->
+                newFeatureListAdapter = NewFeatureListAdapter(
+                    requireContext(),
+                    newFeaturesViewModelIt,
+                    this,
+                    storeManager,
+                    it
+                )
+            }
+
+            binding?.let { bindingIt ->
+                bindingIt.inAppInventory.adapter = newFeatureListAdapter
+            }
         }
     }
 
     private fun navigateToSettingsFragment() {
         val fragment: Fragment = SettingsFragment()
 
-        if (fragmentActivityContext != null) {
+        fragmentActivityContext?.let {
             val fragmentManager: FragmentManager =
-                fragmentActivityContext!!.supportFragmentManager
+                it.supportFragmentManager
             fragmentManager.beginTransaction()
                 .replace(R.id.settings_frame, fragment)
                 .setReorderingAllowed(true)

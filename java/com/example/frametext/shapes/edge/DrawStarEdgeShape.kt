@@ -22,16 +22,18 @@ class DrawStarEdgeShape(widthHeight: Int, override var color: Int) : ColoredEdge
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
         var yy = y
         yy += height
-        val pts: ArrayList<PointF> = starSearchGloObj!!.starPtsList
-        if (pts.size > 1) {
-            val path = Path()
-            val firstPt = pts[0]
-            path.moveTo(x + firstPt.x, yy + firstPt.y)
-            for (i in 1 until pts.size) {
-                val pt = pts[i]
-                path.lineTo(x + pt.x, yy + pt.y)
+        starSearchGloObj?.let {
+            val pts: ArrayList<PointF> = it.starPtsList
+            if (pts.size > 1) {
+                val path = Path()
+                val firstPt = pts[0]
+                path.moveTo(x + firstPt.x, yy + firstPt.y)
+                for (i in 1 until pts.size) {
+                    val pt = pts[i]
+                    path.lineTo(x + pt.x, yy + pt.y)
+                }
+                canvas.drawPath(path, paint)
             }
-            canvas.drawPath(path, paint)
         }
     }
 
@@ -52,8 +54,10 @@ class DrawStarEdgeShape(widthHeight: Int, override var color: Int) : ColoredEdge
             starDetailsMap[starSearchDetails] = starSearchGloObj
         }
 
-        centerX = starSearchGloObj!!.centerX
-        centerY = starSearchGloObj!!.centerY
+        starSearchGloObj?.let {
+            centerX = it.centerX
+            centerY = it.centerY
+        }
     }
 }
 

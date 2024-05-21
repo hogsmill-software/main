@@ -93,21 +93,23 @@ class StoreManager private constructor(
     </String> */
 
     private fun addProductFlows(productList: List<String>?) {
-        for (product in productList!!) {
-            val skuState = MutableStateFlow(SkuState.SKU_STATE_UNPURCHASED)
-            val details = MutableStateFlow<ProductDetails?>(null)
-            details.subscriptionCount.map { count -> count > 0 } // map count into active/inactive flag
-                .distinctUntilChanged() // only react to true<->false changes
-                .onEach { isActive -> // configure an action
-                    if (isActive) {// && (SystemClock.elapsedRealtime() - skuDetailsResponseTime > SKU_DETAILS_REQUERY_TIME)) {
-                        //  skuDetailsResponseTime = SystemClock.elapsedRealtime()
-                        //Log.v(TAG, "Skus not fresh, re-querying")
-                        queryProductDetailsAsync()
+        productList?.let {
+            for (product in it) {
+                val skuState = MutableStateFlow(SkuState.SKU_STATE_UNPURCHASED)
+                val details = MutableStateFlow<ProductDetails?>(null)
+                details.subscriptionCount.map { count -> count > 0 } // map count into active/inactive flag
+                    .distinctUntilChanged() // only react to true<->false changes
+                    .onEach { isActive -> // configure an action
+                        if (isActive) {// && (SystemClock.elapsedRealtime() - skuDetailsResponseTime > SKU_DETAILS_REQUERY_TIME)) {
+                            //  skuDetailsResponseTime = SystemClock.elapsedRealtime()
+                            //Log.v(TAG, "Skus not fresh, re-querying")
+                            queryProductDetailsAsync()
+                        }
                     }
-                }
-                .launchIn(defaultScope) // launch it
-            skuStateMap[product] = skuState
-            productDetailsMap[product] = details
+                    .launchIn(defaultScope) // launch it
+                skuStateMap[product] = skuState
+                productDetailsMap[product] = details
+            }
         }
     }
 
@@ -449,13 +451,11 @@ class StoreManager private constructor(
      * @return true if launch is successful
      */
     fun launchBillingFlow(activity: Activity, sku: String) {
-        val productDetails = productDetailsMap[sku]?.value
-
-        if (productDetails != null) {
+        productDetailsMap[sku]?.value?.let {
             val productDetailsParamsList =
                 listOf(
                     BillingFlowParams.ProductDetailsParams.newBuilder()
-                        .setProductDetails(productDetails)
+                        .setProductDetails(it)
                         .build()
                 )
 

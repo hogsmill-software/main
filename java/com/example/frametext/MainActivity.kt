@@ -55,9 +55,8 @@ class MainActivity : AppCompatActivity() {
                     hyphenDetail.getString("fileName"),
                     hyphenDetail.getString("downloadLink")
                 )
-                val hyphenFileFolder = getHyphenFileFolder(applicationContext)
-                if (hyphenFileFolder != null) {
-                    val hyphenFile = File(hyphenFileFolder + hyphenDetail.getString("fileName"))
+                getHyphenFileFolder(applicationContext)?.let {
+                    val hyphenFile = File(it + hyphenDetail.getString("fileName"))
                     if (hyphenFile.exists()) {
                         hd.downLoaded = true
                         hyphenFilesList.add(hyphenDetail.getString("hpl"))
@@ -160,10 +159,8 @@ class MainActivity : AppCompatActivity() {
         // TabLayout. When generate image, 1st tab sets 3rd tab active, so text input fragment needs access to tabs.
         val tabLayoutViewModel = ViewModelProvider(this)[TabLayoutViewModel::class.java]
 
-        val tabLayoutCopy = tabLayout
-
-        if (tabLayoutCopy != null) {
-            tabLayoutViewModel.selectItem(tabLayoutCopy)
+        tabLayout?.let {
+            tabLayoutViewModel.selectItem(it)
         }
         tabLayoutViewModel.getSelectedItem().observe(this) { }
 
@@ -229,12 +226,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadUserFile(): java.util.ArrayList<String> {
         val userFileList = java.util.ArrayList<String>()
-        val usrFilePath = getUserFileFolder(false, applicationContext)
-        if (usrFilePath != null) {
-            val userFilesFolder = File(usrFilePath)
-            val files = userFilesFolder.listFiles()
-            if (files != null) {
-                for (usrFile in files) {
+        getUserFileFolder(false, applicationContext)?.let {
+            val userFilesFolder = File(it)
+            userFilesFolder.listFiles()?.let {
+                for (usrFile in it) {
                     if (usrFile.isFile) {
                         userFileList.add(usrFile.name)
                     }
@@ -246,13 +241,12 @@ class MainActivity : AppCompatActivity() {
 
     @Throws(IOException::class, JSONException::class)
     private fun loadSavedSettings() {
-        val settingsFileName = getSettingsFileName(applicationContext)
-        if (settingsFileName != null) {
-            val settingsFile = File(settingsFileName)
+       // val settingsFileName =
+        getSettingsFileName(applicationContext)?.let {
+            val settingsFile = File(it)
             if (settingsFile.exists()) {
-                val settings: String? = readSavedSettingsFomFile()
-                if (settings != null) {
-                    val jsonObject = JSONObject(settings)
+                readSavedSettingsFomFile()?.let {
+                    val jsonObject = JSONObject(it)
                     ftp.hyphenFileName = jsonObject[Constants.HYPHEN_FILE_NAME] as String
                     ftp.optimizeSpacing = jsonObject.getBoolean(Constants.OPTIMIZE_SPACING)
                     ftp.hyphenateText = jsonObject.getBoolean(Constants.HYPHENATE_TEXT)
@@ -281,16 +275,15 @@ class MainActivity : AppCompatActivity() {
 
     @Throws(IOException::class)
     private fun readSavedSettingsFomFile(): String? {
-        val settingsFilePath: String? = getSettingsFileName(applicationContext)
-        if (settingsFilePath != null) {
-            val file = File(settingsFilePath)
+        getSettingsFileName(applicationContext)?.let {
+            val file = File(it)
             val fileReader = FileReader(file)
             val bufferedReader = BufferedReader(fileReader)
             val stringBuilder = StringBuilder()
             var line = bufferedReader.readLine()
-            while (line != null) {
+            while (true) {
                 stringBuilder.append(line).append("\n")
-                line = bufferedReader.readLine()
+                line = bufferedReader.readLine() ?: break
             }
             bufferedReader.close()
             return stringBuilder.toString()

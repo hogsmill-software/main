@@ -76,7 +76,9 @@ class SettingsFragment : Fragment() {
         needToDownloadText = view.findViewById(R.id.needToDownLoad)
         hyphenateSwitch = view.findViewById(R.id.hyphenateSwitch)
 
-        selectedItem = fileNameHplMap!![ftp?.hyphenFileName]
+        fileNameHplMap?.let{
+            selectedItem = it[ftp?.hyphenFileName]
+        }
 
         updateHyphenDropdown()
 
@@ -89,59 +91,63 @@ class SettingsFragment : Fragment() {
                     id: Long
                 ) {
                     val item = parent.getItemAtPosition(pos)
-                    if (hplFileNameMap!!.containsKey(item.toString())) {
-                        val fileName = hplFileNameMap!![item.toString()]
-                        ftp?.hyphenFileName = fileName
+                    hplFileNameMap?.let {
+                        if (it.containsKey(item.toString())) {
+                            val fileName = it[item.toString()]
+                            ftp?.hyphenFileName = fileName
+                        }
                     }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
-        hyphenateSwitch?.isChecked = ftp!!.hyphenateText
-        hyphenateSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            ftp?.hyphenateText = isChecked
-        }
+        ftp?.let { ftpIt ->
+            hyphenateSwitch?.isChecked = ftpIt.hyphenateText
+            hyphenateSwitch?.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                ftp?.hyphenateText = isChecked
+            }
 
-        val optimizeSpacingSwitch = view.findViewById<SwitchCompat>(R.id.optimizeSpacingSwitch)
-        optimizeSpacingSwitch.isChecked = ftp!!.optimizeSpacing
-        optimizeSpacingSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            ftp!!.optimizeSpacing = isChecked
-        }
+            val optimizeSpacingSwitch = view.findViewById<SwitchCompat>(R.id.optimizeSpacingSwitch)
+            optimizeSpacingSwitch.isChecked = ftpIt.optimizeSpacing
+            optimizeSpacingSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                ftpIt.optimizeSpacing = isChecked
+            }
 
-        val symbolsToTextNumber = view.findViewById<EditText>(R.id.symbolToTextNumber)
-        symbolsToTextNumber.setText(
-            java.lang.String.format(
-                Locale.getDefault(),
-                "%d",
-                ftp!!.getTxtSymbolsMargin()
-            ), TextView.BufferType.EDITABLE
-        )
-        symbolsToTextNumber?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 50, { t ->
-            (ftp!!.setTxtSymbolsMargin(t))
-        }, { ftp!!.setTxtSymbolsMargin(0) }))
-
-        val outerMarginNumber = view.findViewById<EditText>(R.id.outerMarginNumber)
-        outerMarginNumber.setText(
-            java.lang.String.format(
-                Locale.getDefault(),
-                "%d",
-                ftp!!.outerMargin
-            ), TextView.BufferType.EDITABLE
-        )
-        outerMarginNumber?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, { t ->
-            ftp!!.outerMargin = t }, { ftp!!.outerMargin = 0 }))
-
-        val buttonNavToFrmShapeSettings = view.findViewById<View>(R.id.frameShapeSettings)
-        buttonNavToFrmShapeSettings.setOnClickListener { navigateToFrameShapeSettingsFragment() }
-
-        val backgroundColorButton = view.findViewById<AppCompatButton>(R.id.backgroundColorButton)
-        backgroundColorButton.setBackgroundColor(ftp!!.backgroundColor)
-        backgroundColorButton.setOnClickListener { v: View? ->
-            onClickBackgroundColorButton(
-                v,
-                backgroundColorButton
+            val symbolsToTextNumber = view.findViewById<EditText>(R.id.symbolToTextNumber)
+            symbolsToTextNumber.setText(
+                java.lang.String.format(
+                    Locale.getDefault(),
+                    "%d",
+                    ftpIt.getTxtSymbolsMargin()
+                ), TextView.BufferType.EDITABLE
             )
+            symbolsToTextNumber?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 50, { t ->
+                (ftpIt.setTxtSymbolsMargin(t))
+            }, { ftpIt.setTxtSymbolsMargin(0) }))
+
+            val outerMarginNumber = view.findViewById<EditText>(R.id.outerMarginNumber)
+            outerMarginNumber.setText(
+                java.lang.String.format(
+                    Locale.getDefault(),
+                    "%d",
+                    ftpIt.outerMargin
+                ), TextView.BufferType.EDITABLE
+            )
+            outerMarginNumber?.filters = arrayOf<InputFilter>(MinMaxFilter(0, 500, { t ->
+                ftpIt.outerMargin = t }, { ftpIt.outerMargin = 0 }))
+
+            val buttonNavToFrmShapeSettings = view.findViewById<View>(R.id.frameShapeSettings)
+            buttonNavToFrmShapeSettings.setOnClickListener { navigateToFrameShapeSettingsFragment() }
+
+            val backgroundColorButton = view.findViewById<AppCompatButton>(R.id.backgroundColorButton)
+            backgroundColorButton.setBackgroundColor(ftpIt.backgroundColor)
+            backgroundColorButton.setOnClickListener { v: View? ->
+                onClickBackgroundColorButton(
+                    v,
+                    backgroundColorButton
+                )
+            }
         }
 
         val buttonNavToFontSettings = view.findViewById<View>(R.id.font_settings)
@@ -159,48 +165,60 @@ class SettingsFragment : Fragment() {
     }
 
     fun saveSelectedItem() {
-        selectedItem = spinner!!.selectedItem as String
-        neededToDownloadText = hyphenFilesList!!.isEmpty()
+        spinner?.let { spinnerIt->
+            selectedItem = spinnerIt.selectedItem as String
+        }
+        hyphenFilesList?.let{ hyphenFilesListIt ->
+            neededToDownloadText = hyphenFilesListIt.isEmpty()
+        }
     }
 
     private fun navigateToHyphenationFragment() {
         val fragment: Fragment = HyphenFilesFragment()
-        val fragmentManager = fragmentActivityContext!!.supportFragmentManager
-        fragmentManager.beginTransaction()
-            .replace(R.id.settings_frame, fragment)
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+        fragmentActivityContext?.let {fragmentActivityContextIt ->
+            val fragmentManager = fragmentActivityContextIt.supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.settings_frame, fragment)
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun navigateToFrameShapeSettingsFragment() {
         val fragment: Fragment = FrameShapesFragment()
-        val fragmentManager = fragmentActivityContext!!.supportFragmentManager
-        fragmentManager.beginTransaction()
-            .replace(R.id.settings_frame, fragment)
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+        fragmentActivityContext?.let { fragmentActivityContextIt ->
+            val fragmentManager = fragmentActivityContextIt.supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.settings_frame, fragment)
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun navigateToFontSettingsFragment() {
         val fragment: Fragment = FontSettingsFragment()
-        val fragmentManager = fragmentActivityContext!!.supportFragmentManager
-        fragmentManager.beginTransaction()
-            .replace(R.id.settings_frame, fragment)
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+        fragmentActivityContext?.let { fragmentActivityContextIt ->
+            val fragmentManager = fragmentActivityContextIt.supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.settings_frame, fragment)
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun navigateToNewFeaturesFragment() {
         val fragment: Fragment = NewFeaturesFragment()
-        val fragmentManager = fragmentActivityContext!!.supportFragmentManager
-        fragmentManager.beginTransaction()
-            .replace(R.id.settings_frame, fragment)
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+        fragmentActivityContext?.let { fragmentActivityContextIt ->
+            val fragmentManager = fragmentActivityContextIt.supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.settings_frame, fragment)
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun onClickBackgroundColorButton(v: View?, backgroundColorButton: AppCompatButton) {
@@ -218,7 +236,7 @@ class SettingsFragment : Fragment() {
                         object : ColorPickerPopup.ColorPickerObserver() {
                             override fun onColorPicked(color: Int) {
                                 backgroundColorButton.setBackgroundColor(color)
-                                ftp!!.backgroundColor = color
+                                it1.backgroundColor = color
                             }
                         })
             }
@@ -226,36 +244,44 @@ class SettingsFragment : Fragment() {
     }
 
     fun updateHyphenDropdown() {
-        if (hyphenFilesList!!.isEmpty()) {
-            needToDownloadText!!.visibility = View.VISIBLE
-            spinner!!.visibility = View.GONE
-            hyphenateSwitch!!.visibility = View.GONE
+        if (hyphenFilesList?.isEmpty() == true) {
+            needToDownloadText?.visibility = View.VISIBLE
+            spinner?.visibility = View.GONE
+            hyphenateSwitch?.visibility = View.GONE
             wasHyphenFileListEmpty = true
         } else {
-            needToDownloadText!!.visibility = View.GONE
-            spinner!!.visibility = View.VISIBLE
-            hyphenateSwitch!!.visibility = View.VISIBLE
+            needToDownloadText?.visibility = View.GONE
+            spinner?.visibility = View.VISIBLE
+            hyphenateSwitch?.visibility = View.VISIBLE
             val context = this.context
 
             // If the hyphenFile list was empty and has just been filled, we switch hyphenation on.
             if (wasHyphenFileListEmpty) {
-                hyphenateSwitch!!.isChecked = true
+                hyphenateSwitch?.isChecked = true
             }
             wasHyphenFileListEmpty = false
-            if (context != null) {
-                val arrayAdapter = ArrayAdapter(
-                    context,
-                    R.layout.spinner_list, hyphenFilesList!!
-                )
-                arrayAdapter.setDropDownViewResource(R.layout.spinner_list)
-                spinner!!.adapter = arrayAdapter
-            }
-            if (selectedItem != null && hyphenFilesList!!.contains(selectedItem!!)) {
-                val pos = hyphenFilesList!!.indexOf(selectedItem!!)
-                spinner!!.setSelection(pos)
+            context?.let {
+                hyphenFilesList?.let { hyphenFilesListIt ->
+                    val arrayAdapter = ArrayAdapter(
+                        it,
+                        R.layout.spinner_list, hyphenFilesListIt
+                    )
+                    arrayAdapter.setDropDownViewResource(R.layout.spinner_list)
+
+                    spinner?.let { spinnerIt ->
+                        spinnerIt.adapter = arrayAdapter
+
+                        selectedItem?.let { selectedItemIt ->
+                            if (hyphenFilesListIt.contains(selectedItemIt)) {
+                                val pos = hyphenFilesListIt.indexOf(selectedItemIt)
+                                spinnerIt.setSelection(pos)
+                            }
+                        }
+                    }
+                }
             }
             if (neededToDownloadText) {
-                hyphenateSwitch!!.isChecked = true
+                hyphenateSwitch?.isChecked = true
             }
         }
     }
@@ -270,10 +296,9 @@ class SettingsFragment : Fragment() {
             val hvpSettingsString = jsonObj.toString()
             context ?: throw Exception("getContext returned null.")
 
-            val okFuncPtr = {
-                val settingsPathName: String? = context?.let { MainActivity.getSettingsFileName(it) }
-                if (settingsPathName != null) {
-                    val file = File(settingsPathName)
+            val okFuncPtr : () -> Unit = {
+                context?.let { MainActivity.getSettingsFileName(it) }?.let{ settingsPathNameIt ->
+                    val file = File(settingsPathNameIt)
                     val fileWriter = FileWriter(file)
                     val bufferedWriter = BufferedWriter(fileWriter)
                     bufferedWriter.write(hvpSettingsString)
@@ -296,9 +321,8 @@ class SettingsFragment : Fragment() {
     private fun deleteSettings() {
         try {
             val context = context ?: throw Exception("getContext returned null.")
-            val settingsPathName: String? = MainActivity.getSettingsFileName(context)
-            if (settingsPathName != null) {
-                val file = File(settingsPathName)
+            MainActivity.getSettingsFileName(context)?.let {
+                val file = File(it)
                 if (file.exists()) {
                     val okFuncPtr = {
                         file.delete()

@@ -144,37 +144,39 @@ class ShapeCellCtrl : View {
             boundingRect?.let { canvas.drawRect(it, paint) }
         }
         val shapeColor = ContextCompat.getColor(context, if (isActive) (if (isMainButton || _isSelected) R.color.black else (Utilities.getTextColorId(context))) else R.color.fog)
-        if (drawShapeDetails != null) {
-            drawShapeDetails!!.color = shapeColor
+        drawShapeDetails?.let {
+            it.color = shapeColor
             drawShapeType(canvas)
-        } else if (symbol != null) {
-            paint.style = Paint.Style.FILL
-            paint.color = shapeColor
-            val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
-            paint.typeface = tf
-            paint.textSize = txtSize.toFloat()
-            paint.textAlign = Paint.Align.CENTER
-            canvas.drawText(
-                symbol!!,
-                txtStartPos.toFloat(),
-                txtBaseLinePos.toFloat(),
-                paint
-            )
+        } ?: run {
+            symbol?.let {
+                paint.style = Paint.Style.FILL
+                paint.color = shapeColor
+                val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
+                paint.typeface = tf
+                paint.textSize = txtSize.toFloat()
+                paint.textAlign = Paint.Align.CENTER
+                canvas.drawText(
+                    it,
+                    txtStartPos.toFloat(),
+                    txtBaseLinePos.toFloat(),
+                    paint
+                )
+            }
         }
     }
 
     private fun drawShapeType(canvas: Canvas) {
-        if (drawShapeDetails != null) {
-            paint.color = drawShapeDetails!!.color
+        drawShapeDetails?.let {
+            paint.color = it.color
             paint.style = Paint.Style.FILL
             val shapeHeight: Float = if (shapeType === SymbolShapeType.Heart) {
-                -drawShapeDetails!!.height + 1.5f * innerShapeBorder
+                -it.height + 1.5f * innerShapeBorder
             } else if (shapeType === SymbolShapeType.Star) {
-                -drawShapeDetails!!.height + 1.5f * innerShapeBorder
+                -it.height + 1.5f * innerShapeBorder
             } else {
-                -drawShapeDetails!!.height + innerShapeBorder
+                -it.height + innerShapeBorder
             }
-            drawShapeDetails!!.draw(canvas, innerShapeBorder, shapeHeight, paint)
+            it.draw(canvas, innerShapeBorder, shapeHeight, paint)
         }
     }
 

@@ -107,34 +107,34 @@ class MainShapeCellCtrl : View {
             paint.strokeWidth = borderWidth
             canvas.drawRect(rcBounds, paint)
         }
-        if (drawShapeDetails != null) {
+        drawShapeDetails?.let {
             val shapeColor = ContextCompat.getColor(context, if (isMainButton || isMainShapeSelected) R.color.black else (Utilities.getTextColorId(context)))
-            drawShapeDetails!!.setColor(shapeColor)
+            it.setColor(shapeColor)
         }
         drawShapeType(canvas)
     }
 
     private fun drawShapeType(canvas: Canvas) {
-        if (drawShapeDetails != null) {
-            paint.color = drawShapeDetails!!.getColor()
+        drawShapeDetails?.let {
+            paint.color = it.getColor()
             paint.style = Paint.Style.STROKE
             val shapeWidth = Utilities.convertDpToPixel(3f, this.context).toInt()
             paint.strokeWidth = shapeWidth.toFloat()
 
             val shapeHeight: Float = if (shapeType === MainShapeType.Heart) {
-                -drawShapeDetails!!.getHeight() + 1.5f * innerShapeBorder
+                -it.getHeight() + 1.5f * innerShapeBorder
             } else {
-                -drawShapeDetails!!.getHeight() + innerShapeBorder
+                -it.getHeight() + innerShapeBorder
             }
-            drawShapeDetails!!.draw(canvas, innerShapeBorder, shapeHeight, paint)
+            it.draw(canvas, innerShapeBorder, shapeHeight, paint)
 
             paint.color = ContextCompat.getColor(context, R.color.highlightBlue)
             val writingWidth = Utilities.convertDpToPixel(1f, this.context).toInt()
             paint.strokeWidth = writingWidth.toFloat()
-            drawShapeDetails!!.drawWriting(canvas, innerShapeBorder, shapeHeight, paint)
-            paint.color = drawShapeDetails!!.getColor()
+            it.drawWriting(canvas, innerShapeBorder, shapeHeight, paint)
+            paint.color = it.getColor()
             paint.strokeWidth = shapeWidth.toFloat()
-            drawShapeDetails!!.draw(canvas, innerShapeBorder, shapeHeight, paint)
+            it.draw(canvas, innerShapeBorder, shapeHeight, paint)
         }
     }
 

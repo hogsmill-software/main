@@ -32,18 +32,18 @@ class ColorPickerView @JvmOverloads constructor(
         val maxWidth = MeasureSpec.getSize(widthMeasureSpec)
         val maxHeight = MeasureSpec.getSize(heightMeasureSpec)
         var desiredWidth = maxHeight - (paddingTop + paddingBottom) + (paddingLeft + paddingRight)
-        if (brightnessSliderView != null) {
+        brightnessSliderView?.let {
             desiredWidth -= sliderMargin + sliderHeight
         }
-        if (alphaSliderView != null) {
+        alphaSliderView?.let {
             desiredWidth -= sliderMargin + sliderHeight
         }
         val width = min(maxWidth, desiredWidth)
         var height = width - (paddingLeft + paddingRight) + (paddingTop + paddingBottom)
-        if (brightnessSliderView != null) {
+        brightnessSliderView?.let {
             height += sliderMargin + sliderHeight
         }
-        if (alphaSliderView != null) {
+        alphaSliderView?.let {
             height += sliderMargin + sliderHeight
         }
         super.onMeasure(
@@ -65,16 +65,16 @@ class ColorPickerView @JvmOverloads constructor(
                 params.topMargin = sliderMargin
                 addView(brightnessSliderView, 1, params)
             }
-            brightnessSliderView!!.bind(colorWheelView)
+            brightnessSliderView?.let { it.bind(colorWheelView) }
         } else {
-            if (brightnessSliderView != null) {
-                brightnessSliderView!!.unbind()
-                removeView(brightnessSliderView)
+            brightnessSliderView?.let {
+                it.unbind()
+                removeView(it)
                 brightnessSliderView = null
             }
         }
         updateObservableOnDuty()
-        if (alphaSliderView != null) {
+        alphaSliderView?.let {
             setEnabledAlpha(true)
         }
     }
@@ -91,11 +91,11 @@ class ColorPickerView @JvmOverloads constructor(
             if (bindTo == null) {
                 bindTo = colorWheelView
             }
-            alphaSliderView!!.bind(bindTo)
+            alphaSliderView?.let { it.bind(bindTo) }
         } else {
-            if (alphaSliderView != null) {
-                alphaSliderView!!.unbind()
-                removeView(alphaSliderView)
+            alphaSliderView?.let {
+                it.unbind()
+                removeView(it)
                 alphaSliderView = null
             }
         }
@@ -103,38 +103,44 @@ class ColorPickerView @JvmOverloads constructor(
     }
 
     private fun updateObservableOnDuty() {
-        if (observableOnDuty != null) {
-            for (observer in observers!!) {
-                observableOnDuty!!.unsubscribe(observer)
+        observableOnDuty?.let { observableOnDutyIt ->
+            observers?.let { observersIt ->
+                for (observer in observersIt) {
+                    observableOnDutyIt.unsubscribe(observer)
+                }
             }
         }
         colorWheelView.setOnlyUpdateOnTouchEventUp(false)
-        if (brightnessSliderView != null) {
-            brightnessSliderView!!.setOnlyUpdateOnTouchEventUp(false)
+        brightnessSliderView?.let {
+            it.setOnlyUpdateOnTouchEventUp(false)
         }
-        if (alphaSliderView != null) {
-            alphaSliderView!!.setOnlyUpdateOnTouchEventUp(false)
+        alphaSliderView?.let {
+            it.setOnlyUpdateOnTouchEventUp(false)
         }
         if (brightnessSliderView == null && alphaSliderView == null) {
             observableOnDuty = colorWheelView
             colorWheelView.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
         } else {
-            if (alphaSliderView != null) {
+            alphaSliderView?.let {
                 observableOnDuty = alphaSliderView
-                alphaSliderView!!.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
-            } else {
+                it.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
+            } ?: run {
                 observableOnDuty = brightnessSliderView
-                brightnessSliderView!!.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
+                brightnessSliderView?.let {
+                    it.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
+                }
             }
         }
-        if (observers != null) {
-            for (observer in observers!!) {
-                observableOnDuty!!.subscribe(observer as ColorPickerPopup.ColorPickerObserver)
-                observer.onColor(
-                    color = observableOnDuty!!.color,
-                    fromUser = false,
-                    shouldPropagate = true
-                )
+        observers?.let {
+            for (observer in it) {
+                observableOnDuty?.let {
+                    it.subscribe(observer as ColorPickerPopup.ColorPickerObserver)
+                    observer.onColor(
+                        color = it.color,
+                        fromUser = false,
+                        shouldPropagate = true
+                    )
+                }
             }
         }
     }
@@ -145,17 +151,25 @@ class ColorPickerView @JvmOverloads constructor(
 
     private var observers: MutableList<ColorObserver>? = ArrayList()
     override fun subscribe(observer: ColorObserver) {
-        observableOnDuty!!.subscribe(observer)
-        observers!!.add(observer)
+        observableOnDuty?.let {
+            it.subscribe(observer)
+        }
+        observers?.let {
+            it.add(observer)
+        }
     }
 
     override fun unsubscribe(observer: ColorObserver?) {
-        observableOnDuty!!.unsubscribe(observer)
-        observers!!.remove(observer)
+        observableOnDuty?.let {
+            it.unsubscribe(observer)
+        }
+        observers?.let {
+            it.remove(observer)
+        }
     }
 
     override val color: Int
-        get() = observableOnDuty!!.color
+        get() = observableOnDuty?.let { it.color } ?: 0
 
     init {
         orientation = VERTICAL

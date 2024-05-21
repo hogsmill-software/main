@@ -22,14 +22,14 @@ class EmojiCellCtrl : View {
     private var isActive = true
 
     constructor(context: Context?) : super(context) {
-        if (context != null) {
-            initStandardSizes(context)
+        context?.let {
+            initStandardSizes(it)
         }
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
-        if (context != null) {
-            initStandardSizes(context)
+        context?.let {
+            initStandardSizes(it)
         }
     }
 
@@ -38,14 +38,14 @@ class EmojiCellCtrl : View {
         attrs,
         defStyleAttr
     ) {
-        if (context != null) {
-            initStandardSizes(context)
+        context?.let {
+            initStandardSizes(it)
         }
     }
 
     constructor(context: Context?, emoji: String, showBorder: Boolean) : super(context) {
-        if (context != null) {
-            initStandardSizes(context)
+        context?.let {
+            initStandardSizes(it)
         }
         this.emoji = emoji
         this.showBorder = showBorder
