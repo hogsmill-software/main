@@ -18,9 +18,9 @@ class FrameTextParameters {
     var backgroundColor = -0x1
     var useEmoji = false
     var emoji = 0x2665.toChar().toString()
-    var symbolShapeType: SymbolShapeType = SymbolShapeType.Heart
+    var symbolShapeType: SymbolShapeType = SymbolShapeType.None
     var mainShapeType: MainShapeType = MainShapeType.Heart
-    var symbol: String? = null
+    var symbol: String? = "\u2665\uFE0E"
     var fontFamily: String = FF_NORMAL
     var typefaceId: Int = 0
     var fontStyle = Typeface.NORMAL
