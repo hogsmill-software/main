@@ -65,7 +65,7 @@ class ColorPickerView @JvmOverloads constructor(
                 params.topMargin = sliderMargin
                 addView(brightnessSliderView, 1, params)
             }
-            brightnessSliderView?.let { it.bind(colorWheelView) }
+            brightnessSliderView?.bind(colorWheelView)
         } else {
             brightnessSliderView?.let {
                 it.unbind()
@@ -91,7 +91,7 @@ class ColorPickerView @JvmOverloads constructor(
             if (bindTo == null) {
                 bindTo = colorWheelView
             }
-            alphaSliderView?.let { it.bind(bindTo) }
+            alphaSliderView?.bind(bindTo)
         } else {
             alphaSliderView?.let {
                 it.unbind()
@@ -111,12 +111,8 @@ class ColorPickerView @JvmOverloads constructor(
             }
         }
         colorWheelView.setOnlyUpdateOnTouchEventUp(false)
-        brightnessSliderView?.let {
-            it.setOnlyUpdateOnTouchEventUp(false)
-        }
-        alphaSliderView?.let {
-            it.setOnlyUpdateOnTouchEventUp(false)
-        }
+        brightnessSliderView?.setOnlyUpdateOnTouchEventUp(false)
+        alphaSliderView?.setOnlyUpdateOnTouchEventUp(false)
         if (brightnessSliderView == null && alphaSliderView == null) {
             observableOnDuty = colorWheelView
             colorWheelView.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
@@ -126,13 +122,11 @@ class ColorPickerView @JvmOverloads constructor(
                 it.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
             } ?: run {
                 observableOnDuty = brightnessSliderView
-                brightnessSliderView?.let {
-                    it.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
-                }
+                brightnessSliderView?.setOnlyUpdateOnTouchEventUp(onlyUpdateOnTouchEventUp)
             }
         }
-        observers?.let {
-            for (observer in it) {
+        observers?.let { obsIt ->
+            for (observer in obsIt) {
                 observableOnDuty?.let {
                     it.subscribe(observer as ColorPickerPopup.ColorPickerObserver)
                     observer.onColor(
@@ -151,25 +145,17 @@ class ColorPickerView @JvmOverloads constructor(
 
     private var observers: MutableList<ColorObserver>? = ArrayList()
     override fun subscribe(observer: ColorObserver) {
-        observableOnDuty?.let {
-            it.subscribe(observer)
-        }
-        observers?.let {
-            it.add(observer)
-        }
+        observableOnDuty?.subscribe(observer)
+        observers?.add(observer)
     }
 
     override fun unsubscribe(observer: ColorObserver?) {
-        observableOnDuty?.let {
-            it.unsubscribe(observer)
-        }
-        observers?.let {
-            it.remove(observer)
-        }
+        observableOnDuty?.unsubscribe(observer)
+        observers?.remove(observer)
     }
 
     override val color: Int
-        get() = observableOnDuty?.let { it.color } ?: 0
+        get() = observableOnDuty?.color ?: 0
 
     init {
         orientation = VERTICAL

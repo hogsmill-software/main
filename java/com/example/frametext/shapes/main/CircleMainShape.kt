@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 
-class CircleMainShape(private var color_: Int, width: Int) : MainShape {
+class CircleMainShape(private var color: Int, width: Int) : MainShape {
     private val width: Float
     override fun getWidth(): Float {
         return width
@@ -17,11 +17,11 @@ class CircleMainShape(private var color_: Int, width: Int) : MainShape {
     }
 
     override fun getColor(): Int {
-        return color_
+        return color
     }
 
     override fun setColor(color: Int) {
-        color_ = color
+        this.color = color
     }
 
     private fun initialize() {

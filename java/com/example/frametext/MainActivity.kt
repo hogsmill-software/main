@@ -119,41 +119,33 @@ class MainActivity : AppCompatActivity() {
         // Data shared between fragments below
         // Text input
         val textInputViewModel: TextInputViewModel =
-            ViewModelProvider(this).get(TextInputViewModel::class.java)
+            ViewModelProvider(this)[TextInputViewModel::class.java]
         textInputViewModel.getSelectedItem().observe(this) { }
         // User files
         val userFilesViewModel: UserFilesViewModel =
-            ViewModelProvider(this).get(UserFilesViewModel::class.java)
+            ViewModelProvider(this)[UserFilesViewModel::class.java]
         val userFileList: java.util.ArrayList<String> = loadUserFile()
         userFilesViewModel.selectItems(userFileList)
         userFilesViewModel.selectedItem.observe(this) { }
 
         // FrameText parameters
         val frameTextParametersViewModel: FrameTextParametersViewModel =
-            ViewModelProvider(this).get(
-                FrameTextParametersViewModel::class.java
-            )
+            ViewModelProvider(this)[FrameTextParametersViewModel::class.java]
         frameTextParametersViewModel.selectItem(ftp)
         frameTextParametersViewModel.getSelectedItem().observe(this) { }
 
         //  Hyphen Details List
-        val hyphenDetailsListViewModel: HyphenDetailsListViewModel = ViewModelProvider(this).get(
-            HyphenDetailsListViewModel::class.java
-        )
+        val hyphenDetailsListViewModel: HyphenDetailsListViewModel = ViewModelProvider(this)[HyphenDetailsListViewModel::class.java]
         hyphenDetailsListViewModel.selectItem(hyphenDetailsList)
         hyphenDetailsListViewModel.selectedItem.observe(this) { }
 
         // Hyphen file List
-        val hyphenFilesListViewModel: HyphenFilesListViewModel = ViewModelProvider(this).get(
-            HyphenFilesListViewModel::class.java
-        )
+        val hyphenFilesListViewModel: HyphenFilesListViewModel = ViewModelProvider(this)[HyphenFilesListViewModel::class.java]
         hyphenFilesListViewModel.selectItems(hyphenFilesList)
         hyphenFilesListViewModel.selectedItem.observe(this) { }
 
         // FrameText bitmap image
-        val frameTextBitmapViewModel: FrameTextBitmapViewModel = ViewModelProvider(this).get(
-            FrameTextBitmapViewModel::class.java
-        )
+        val frameTextBitmapViewModel: FrameTextBitmapViewModel = ViewModelProvider(this)[FrameTextBitmapViewModel::class.java]
         frameTextBitmapViewModel.getSelectedItem().observe(this) { }
 
         // TabLayout. When generate image, 1st tab sets 3rd tab active, so text input fragment needs access to tabs.
@@ -165,50 +157,38 @@ class MainActivity : AppCompatActivity() {
         tabLayoutViewModel.getSelectedItem().observe(this) { }
 
         // Hyphen pattern language to file name map
-        val hplFileNameMapViewModel: HplFileNameMapViewModel = ViewModelProvider(this).get(
-            HplFileNameMapViewModel::class.java
-        )
+        val hplFileNameMapViewModel: HplFileNameMapViewModel = ViewModelProvider(this)[HplFileNameMapViewModel::class.java]
         hplFileNameMapViewModel.selectItem(hplFileNameMap)
         hplFileNameMapViewModel.getSelectedItem().observe(this) { }
 
         // File name to hyphen pattern language map
-        val fileNameHplMapViewModel: FileNameHplMapViewModel = ViewModelProvider(this).get(
-            FileNameHplMapViewModel::class.java
-        )
+        val fileNameHplMapViewModel: FileNameHplMapViewModel = ViewModelProvider(this)[FileNameHplMapViewModel::class.java]
         fileNameHplMapViewModel.selectItem(fileNameHplMap)
         fileNameHplMapViewModel.getSelectedItem().observe(this) { }
 
         // Font family maps - only need to initialize once...
         userFriendlyFontFamilyFontFamilyMap = Utilities.userFriendlyFontFamilyToFontFamilyHashMap()
         val userFriendlyFontFamilyFontFamilyMapViewModel: UserFriendlyFontFamilyFontFamilyMapViewModel =
-            ViewModelProvider(this).get(
-                UserFriendlyFontFamilyFontFamilyMapViewModel::class.java
-            )
+            ViewModelProvider(this)[UserFriendlyFontFamilyFontFamilyMapViewModel::class.java]
         userFriendlyFontFamilyFontFamilyMapViewModel.selectItem(userFriendlyFontFamilyFontFamilyMap)
         userFriendlyFontFamilyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
 
         fontFamilyUserFriendlyFontFamilyMap = Utilities.fontFamilyToUserFriendlyFontFamilyHashMap()
 
         val fontFamilyUserFriendlyFontFamilyMapViewModel: FontFamilyUserFriendlyFontFamilyMapViewModel =
-            ViewModelProvider(this).get(
-                FontFamilyUserFriendlyFontFamilyMapViewModel::class.java
-            )
+            ViewModelProvider(this)[FontFamilyUserFriendlyFontFamilyMapViewModel::class.java]
         fontFamilyUserFriendlyFontFamilyMapViewModel.selectItem(fontFamilyUserFriendlyFontFamilyMap)
         fontFamilyUserFriendlyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
 
         userFriendlyFontFamilyToTypeFaceIdMap = Utilities.userFriendlyFontFamilyToTypeFaceId()
         val userFriendlyFontFamilyTypesetIdMapViewModel: UserFriendlyFontFamilyTypesetIdMapViewModel =
-            ViewModelProvider(this).get(
-                UserFriendlyFontFamilyTypesetIdMapViewModel::class.java
-            )
+            ViewModelProvider(this)[UserFriendlyFontFamilyTypesetIdMapViewModel::class.java]
         userFriendlyFontFamilyTypesetIdMapViewModel.selectItem(userFriendlyFontFamilyToTypeFaceIdMap)
         userFriendlyFontFamilyTypesetIdMapViewModel.getSelectedItem().observe(this) { }
 
         typeFaceIdToUserFriendlyFontFamilyMap = Utilities.typeFaceIdToUserFriendlyFontFamily()
         val typesetIdUserFriendlyFontFamilyMapViewModel: TypesetIdUserFriendlyFontFamilyMapViewModel =
-            ViewModelProvider(this).get(
-                TypesetIdUserFriendlyFontFamilyMapViewModel::class.java
-            )
+            ViewModelProvider(this)[TypesetIdUserFriendlyFontFamilyMapViewModel::class.java]
         typesetIdUserFriendlyFontFamilyMapViewModel.selectItem(typeFaceIdToUserFriendlyFontFamilyMap)
         typesetIdUserFriendlyFontFamilyMapViewModel.getSelectedItem().observe(this) { }
 
@@ -226,8 +206,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadUserFile(): java.util.ArrayList<String> {
         val userFileList = java.util.ArrayList<String>()
-        getUserFileFolder(false, applicationContext)?.let {
-            val userFilesFolder = File(it)
+        getUserFileFolder(false, applicationContext)?.let { usrFileFolderIt ->
+            val userFilesFolder = File(usrFileFolderIt)
             userFilesFolder.listFiles()?.let {
                 for (usrFile in it) {
                     if (usrFile.isFile) {
@@ -245,8 +225,8 @@ class MainActivity : AppCompatActivity() {
         getSettingsFileName(applicationContext)?.let {
             val settingsFile = File(it)
             if (settingsFile.exists()) {
-                readSavedSettingsFomFile()?.let {
-                    val jsonObject = JSONObject(it)
+                readSavedSettingsFomFile()?.let { settingsFileIt ->
+                    val jsonObject = JSONObject(settingsFileIt)
                     ftp.hyphenFileName = jsonObject[Constants.HYPHEN_FILE_NAME] as String
                     ftp.optimizeSpacing = jsonObject.getBoolean(Constants.OPTIMIZE_SPACING)
                     ftp.hyphenateText = jsonObject.getBoolean(Constants.HYPHENATE_TEXT)

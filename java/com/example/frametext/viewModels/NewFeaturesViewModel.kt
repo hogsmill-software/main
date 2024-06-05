@@ -21,7 +21,7 @@ class NewFeaturesViewModel(private val storeManager: StoreManager) : ViewModel()
     }
 
     class SkuDetails internal constructor(sku: String, storeManager: StoreManager) {
-        val title = storeManager.getSkuTitle(sku).asLiveData()
+        // val title = storeManager.getSkuTitle(sku).asLiveData()
         //  val description = storeManager.getSkuDescription(sku).asLiveData()
         val price = storeManager.getSkuPrice(sku).asLiveData()
     }

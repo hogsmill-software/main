@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.ImageButton
@@ -52,7 +53,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
             it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             it.isOutsideTouchable = false // so doesn't close if click on outside
         }
-        val blankLayout: View = inflater.inflate(R.layout.blank_screen_popup, null)
+        @SuppressLint("InflateParams") val blankLayout: View = inflater.inflate(R.layout.blank_screen_popup, null)
         popupWindowDarkBackground = PopupWindow(
             blankLayout, ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -304,7 +305,7 @@ class ColorPickerPopup private constructor(builder: Builder) {
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         mHandler?.let{ return true }
-                        mHandler = Handler()
+                        mHandler = Handler(Looper.getMainLooper())
                         mHandler?.postDelayed(mAction, 500)
                     }
                     MotionEvent.ACTION_UP -> {

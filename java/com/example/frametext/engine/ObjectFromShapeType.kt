@@ -56,44 +56,11 @@ object ObjectFromShapeType {
         sd: EdgeShapeDetails
     ): MainShape? {
         when (st) {
-            MainShapeType.Heart -> {
-                if (mainSizes is HeartMainSizes) {
-                    return HeartMainShape(canvas, mainSizes, closestDistance, sd)
-                }
-                if (mainSizes is SquareMainSizes) {
-                    return SquareMainShape(
-                        canvas,
-                        mainSizes,
-                        closestDistance,
-                        sd
-                    )
-                }
-                if (mainSizes is SquareMainSizes) {
-                    return CircleMainShape(
-                        canvas,
-                        mainSizes,
-                        closestDistance,
-                        sd
-                    )
-                }
+            MainShapeType.Heart -> if (mainSizes is HeartMainSizes) {
+                return HeartMainShape(canvas, mainSizes, closestDistance, sd)
             }
-            MainShapeType.Square -> {
-                if (mainSizes is SquareMainSizes) {
-                    return SquareMainShape(
-                        canvas,
-                        mainSizes,
-                        closestDistance,
-                        sd
-                    )
-                }
-                if (mainSizes is SquareMainSizes) {
-                    return CircleMainShape(
-                        canvas,
-                        mainSizes,
-                        closestDistance,
-                        sd
-                    )
-                }
+            MainShapeType.Square -> if (mainSizes is SquareMainSizes) {
+                return SquareMainShape(canvas, mainSizes, closestDistance, sd)
             }
             MainShapeType.Circle -> if (mainSizes is SquareMainSizes) {
                 return CircleMainShape(canvas, mainSizes, closestDistance, sd)

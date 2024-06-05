@@ -34,6 +34,7 @@ class ShapeTableCtrl : View, View.OnClickListener {
     private lateinit var popUpHeader: PopupHeader
 
     constructor(context: Context, purchasedMore: Boolean) : super(context) {
+      //  init(context, purchasedMore)
         init(context, purchasedMore)
     }
 
@@ -59,36 +60,41 @@ class ShapeTableCtrl : View, View.OnClickListener {
         shapeCellCtrlList.add(ShapeCellCtrl(context, "♥\uFE0E", false))
         shapeCellCtrlList.add(ShapeCellCtrl(context, "\u2666\uFE0E", false))
 
-  /*  shapeCellCtrlList.add(ShapeCellCtrl(context, SymbolShapeType.Circle, false))
-   val suitArray: Array<SymbolShapeType> = arrayOf(
-        SymbolShapeType.Smiley,
-        SymbolShapeType.Spade,
-        SymbolShapeType.Club,
-        SymbolShapeType.Heart,
-        SymbolShapeType.Diamond,
-        SymbolShapeType.Star
-    ) // star isn't a suit but is next one we want
-    for (suit in suitArray) {
-        val scc = ShapeCellCtrl(context, suit, false)
-        shapeCellCtrlList.add(scc)
-    } */
-    var remainingSymbols = "★✪⍟⎈❉❋✺✹✸✶✷✵✲✱✦⊛"
+        var remainingSymbols = "★✪⍟⎈❉❋✺✹✸✶✷✵✲✱✦⊛"
 
-    if (purchasedMore) {
-        remainingSymbols += "⁕❃❂✼⨳✚❖✜֎֍†‡•▬"
-    }
+        if (purchasedMore) {
+            remainingSymbols += "⁕❃❂✼⨳✚❖✜֎֍†‡•▬"
+        }
 
-     //◙
+        //◙
+        for (element in remainingSymbols) {
+            val scc = ShapeCellCtrl(context, element.toString(), false)
+            shapeCellCtrlList.add(scc)
+        }
+        if (purchasedMore) {
+            //2 characters below used to be converted into emojis
+            shapeCellCtrlList.add(ShapeCellCtrl(context, "♫\uFE0E", false))
+            shapeCellCtrlList.add(ShapeCellCtrl(context, "♪\uFE0E", false))
+        }
+        // Add drawings below - what I put when char converted to emoji
+        if (purchasedMore) {
+            val suitArray: Array<SymbolShapeType> = arrayOf(
+                SymbolShapeType.Square,
+                SymbolShapeType.Star,
+                SymbolShapeType.Circle,
+                SymbolShapeType.Smiley,
+                SymbolShapeType.Spade,
+                SymbolShapeType.Club,
+                SymbolShapeType.Heart,
+                SymbolShapeType.Diamond
+            )
 
-    for (element in remainingSymbols) {
-        val scc = ShapeCellCtrl(context, element.toString(), false)
-        shapeCellCtrlList.add(scc)
-    }
-    if (purchasedMore) {
-        //2 characters below used to be converted into emojiis
-        shapeCellCtrlList.add(ShapeCellCtrl(context, "♫\uFE0E", false))
-        shapeCellCtrlList.add(ShapeCellCtrl(context, "♪\uFE0E", false))
-    }
+            for (suit in suitArray) {
+                val scc = ShapeCellCtrl(context, suit, false)
+                shapeCellCtrlList.add(scc)
+            }
+        }
+
     columns = 8
     val rows =
         shapeCellCtrlList.size / columns + if (shapeCellCtrlList.size % columns != 0) 1 else 0

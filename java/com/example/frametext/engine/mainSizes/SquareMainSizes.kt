@@ -6,8 +6,8 @@ class SquareMainSizes(override val margin: Int) : MainSizes {
     override var height = 0
         private set
 
-    override fun resetSizes(newWidthHeight: Int) {
-        width = newWidthHeight
-        height = newWidthHeight
+    override fun resetSizes(newWidth: Int) {
+        width = newWidth
+        height = newWidth
     }
 }

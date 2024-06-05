@@ -3,7 +3,7 @@ package com.example.frametext.shapes.edge
 import android.graphics.Canvas
 import android.graphics.Paint
 
-class DrawSquareEdgeShape(_size: Int, override var color: Int) :
+class DrawSquareEdgeShape(sizeInt: Int, override var color: Int) :
     ColoredEdgeShapeDetails {
     private var size: Float = 0.0f
 
@@ -26,7 +26,7 @@ class DrawSquareEdgeShape(_size: Int, override var color: Int) :
         get() = -2 * size
 
     init {
-        size = _size.toFloat()
+        size = sizeInt.toFloat()
         centerX = 0.5f * size
         centerY = 0.5f * size
         width = size

@@ -1,6 +1,6 @@
 package com.example.frametext.helpers
 
-import android.graphics.Paint
+//import android.graphics.Paint
 
 object EmojiHelper {
     fun isCharEmojiAtPos(str: String, pos: Int): Boolean {
@@ -12,62 +12,64 @@ object EmojiHelper {
 
     // We already know we have an emoji
     fun emojiLengthAtPos(str: String, pos: Int): Int {
-        val pos_incr =
+        val posIncrement =
             if (str[pos].code == 0x270D) pos + 1 else pos + 2 // Length 2 is min except for hand exception
-        var new_pos = pos_incr
+        var newPos = posIncrement
         var isCountryFlag = false // Used country as in computing flag has a different meaning.
         var activateSkinColorFilters = false
         if (pos + 1 < str.length) {
             val chr = str[pos + 1]
-            if (chr.code > 0xDDE0 && chr.code <= 0xDDFF) {
+            if (chr.code in 0xdde1..0xDDFF) {
                 isCountryFlag = true
             }
         }
         while (true) {
-            if (new_pos >= str.length) {
+            if (newPos >= str.length) {
                 break // Security but should never get here.
             }
-            val chr = str[new_pos]
+            val chr = str[newPos]
             if (chr.code == 0xFE0F) {
-                new_pos++
+                newPos++
             } else if (chr.code == 0x200D) {
-                new_pos += 3
+                newPos += 3
             } else if (isCountryFlag) {
-                if (new_pos == pos + 2) {
+                if (newPos == pos + 2) {
                     if (chr.code == 0xD83C) {
-                        new_pos++
+                        newPos++
                     } else {
                         break
                     }
-                } else if (new_pos == pos + 3) {
-                    if (chr.code > 0xDDE0 && chr.code <= 0xDDFF) {
-                        new_pos++
+                } else if (newPos == pos + 3) {
+                    if (chr.code in 0xdde1..0xDDFF) {
+                        newPos++
                     } else {
-                        new_pos--
+                        newPos--
                     }
                     break
                 }
-            } else if (new_pos == pos_incr && chr.code == 0xD83C) { // colored body parts handled here
-                new_pos++
+            } else if (newPos == posIncrement && chr.code == 0xD83C) { // colored body parts handled here
+                newPos++
                 activateSkinColorFilters = true
             } else if (activateSkinColorFilters) {
-                activateSkinColorFilters = if (chr.code >= 0xDFFB && chr.code <= 0xDFFF) {
-                    new_pos++
+                activateSkinColorFilters = if (chr.code in 0xDFFB..0xDFFF) {
+                    newPos++
                     false
                 } else {
-                    new_pos--
+                    newPos--
                     break
                 }
             } else {
                 break
             }
         }
-        return new_pos - pos
+        return newPos - pos
     }
 
+    /* currently not used, but might be...
     fun getEmojiWidth(str: String, pos: Int, len: Int, paint: Paint): Float {
         return paint.measureText(str.substring(pos, pos + len))
     }
+    */
 }
 
 

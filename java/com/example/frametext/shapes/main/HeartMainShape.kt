@@ -7,7 +7,7 @@ import android.graphics.RectF
 import kotlin.math.*
 
 class HeartMainShape(
-    private var color_: Int, heartWidth: Int
+    private var color: Int, heartWidth: Int
 ) : MainShape {
     private var centerX = 0f
     private var centerY = 0f
@@ -24,11 +24,11 @@ class HeartMainShape(
     }
 
     override fun getColor(): Int {
-        return color_
+        return color
     }
 
     override fun setColor(color: Int) {
-        this.color_ = color
+        this.color = color
     }
 
     private var radius = 0f

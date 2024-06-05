@@ -52,21 +52,17 @@ class HyphenFilesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val hyphenDetailsListViewModel: HyphenDetailsListViewModel =
-            ViewModelProvider(requireActivity()).get(
-                HyphenDetailsListViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[HyphenDetailsListViewModel::class.java]
         hyphenDetailsList = hyphenDetailsListViewModel.selectedItem.value
         val hyphenFilesListViewModel: HyphenFilesListViewModel =
-            ViewModelProvider(requireActivity()).get(
-                HyphenFilesListViewModel::class.java
-            )
+            ViewModelProvider(requireActivity())[HyphenFilesListViewModel::class.java]
         hyphenFilesList = hyphenFilesListViewModel.selectedItem.value
 
         hyphenDetailsList?.let {
             val hd: Array<HyphenDetails> = it.toArray(arrayOfNulls(0))
 
-            hyphenDetailsListAdapter = hyphenFilesList?.let {
-                HyphenDetailsListAdapter(view.context, hd, it)
+            hyphenDetailsListAdapter = hyphenFilesList?.let { hyphenFilesListIt ->
+                HyphenDetailsListAdapter(view.context, hd, hyphenFilesListIt)
             }
             hyphenFilesRecyclerView?.adapter = hyphenDetailsListAdapter
 

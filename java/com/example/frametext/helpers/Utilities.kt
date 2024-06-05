@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.graphics.Point
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import android.view.WindowMetrics
 import com.example.frametext.R
 import com.example.frametext.enums.SymbolShapeType
 import com.example.frametext.helpers.Constants.FF_MONOSPACE
@@ -48,14 +49,27 @@ import com.example.frametext.helpers.Constants.UFFF_SHADOWS_INTO_LIGHT
 import com.example.frametext.helpers.Constants.UFFF_UNIFRAKTUR_COOK
 import com.example.frametext.helpers.Constants.UFFF_UNIFRAKTUR_MAGUNTIA
 import com.example.frametext.helpers.Constants.UFFF_VAST_SHADOW
-import java.util.ArrayList
+
 
 object Utilities {
     fun getRealScreenSize(context: Context): Point {
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
         val size = Point()
-        display.getRealSize(size)
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val windowMetrics: WindowMetrics = windowManager.currentWindowMetrics
+            val bounds = windowMetrics.bounds
+            size.x = bounds.width()
+            size.y = bounds.height()
+        }
+        else {
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            @Suppress("DEPRECATION")
+            val display = windowManager.defaultDisplay
+            @Suppress("DEPRECATION")
+            display.getRealSize(size)
+        }
+
         return size
     }
 
@@ -65,7 +79,7 @@ object Utilities {
     }
 
     fun userFriendlyFontFamilyList(): ArrayList<String>{
-        val userFriendlyFontFamilyList: ArrayList<String> = ArrayList<String>()
+        val userFriendlyFontFamilyList: ArrayList<String> = ArrayList()
         userFriendlyFontFamilyList.add(UFFF_MONOSPACE)
         userFriendlyFontFamilyList.add(UFFF_NORMAL)
         userFriendlyFontFamilyList.add(UFFF_NOTOSERIF)

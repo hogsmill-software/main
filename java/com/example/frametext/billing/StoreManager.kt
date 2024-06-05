@@ -82,7 +82,7 @@ class StoreManager private constructor(
         addProductFlows(knownInappSKUs)
         billingClient = BillingClient.newBuilder(application)
             .setListener(this)
-            .enablePendingPurchases()
+            .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
             .build()
         billingClient.startConnection(this)
     }
@@ -147,8 +147,8 @@ class StoreManager private constructor(
         val debugMessage = billingResult.debugMessage
         when (responseCode) {
             BillingClient.BillingResponseCode.OK -> {
-                Log.i(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-                if (productDetailsList == null || productDetailsList.isEmpty()) {
+                Log.i(TAG, "onSkuDetailsResponse: $debugMessage")
+                if (productDetailsList.isNullOrEmpty()) {
                     Log.e(
                         TAG,
                         "onSkuDetailsResponse: " +

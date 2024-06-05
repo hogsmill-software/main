@@ -69,13 +69,13 @@ class ImageGenerator(
 
     // Retrieves a gross estimate of with from pixel text length
     private fun getWidthEstimateFromTextLen(txtLengthEstimate: Float): Int {
-        var step = stepIncrement
+        var step = STEP_INCREMENT
         while (step < txtLengthEstimate) {
-            step *= stepIncrement
+            step *= STEP_INCREMENT
         }
         val lowerBound = 0
         val upperBound = step
-        step /= stepIncrement
+        step /= STEP_INCREMENT
         return computeWidthEstimateFromTextLen(lowerBound, upperBound, step, txtLengthEstimate)
     }
 
@@ -141,7 +141,7 @@ class ImageGenerator(
                 }
                 increased = true
             }
-        } while (!goodSize && counter < maxIterations)
+        } while (!goodSize && counter < MAX_ITERATIONS)
         bitmap.recycle()
         bitmap = Bitmap.createBitmap(
             mainSizes.width,
@@ -180,13 +180,6 @@ class ImageGenerator(
         paint.color = backgroundColor
         canvas.drawRect(0f, 0f, mainSizes.width.toFloat(), mainSizes.height.toFloat(), paint)
 
-        /* for testing emoji placement
-		if (sd instanceof EmojiShapeDetails) {
-			EmojiShapeDetails esd = (EmojiShapeDetails)sd;
-			esd.drawEmojiWithBoundaries(canvas, paint);
-		}
-		*/
-
         // Draw hearts...
         val ms: MainShape? = ObjectFromShapeType.getMainShape(
             mainShapeType,
@@ -200,8 +193,8 @@ class ImageGenerator(
     }
 
     companion object {
-        private const val maxIterations = 300
-        private const val stepIncrement = 4
+        private const val MAX_ITERATIONS = 300
+        private const val STEP_INCREMENT = 4
 
         private var currentFontFontFamily: String = ""
         private var currentFontTypeFaceId: Int = 0

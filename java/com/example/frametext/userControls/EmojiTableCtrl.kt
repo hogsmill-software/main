@@ -75,7 +75,7 @@ class EmojiTableCtrl : View, View.OnClickListener {
         }
         val emojiCtrl = emojiCellCtrlList[0]
         size = emojiCtrl.size
-        val rows: Int = emojiCount / columns + if (emojiCount % columns != 0) 1 else 0
+        val rows: Int = emojiCount / COLUMNS + if (emojiCount % COLUMNS != 0) 1 else 0
         borderThickness = Utilities.convertDpToPixel(2f, context)
         borderMargin = Utilities.convertDpToPixel(10f, context)
         val halfThickness = borderThickness / 2
@@ -85,7 +85,7 @@ class EmojiTableCtrl : View, View.OnClickListener {
         rcEmojisBounds = RectF(
             halfThickness,
             halfThickness,
-            columns * size + emojisHorizontalGap * (columns - 1) + 2 * borderMargin - halfThickness,
+            COLUMNS * size + emojisHorizontalGap * (COLUMNS - 1) + 2 * borderMargin - halfThickness,
             rows * size + emojisVerticalGap * (rows - 1) + 2 * borderMargin - halfThickness
         )
         val ptMainScreenSize = Utilities.getRealScreenSize(context)
@@ -134,9 +134,9 @@ class EmojiTableCtrl : View, View.OnClickListener {
         canvas.translate(borderMargin, borderMargin)
         for (i in emojiCellCtrlList.indices) {
             emojiCellCtrlList[i].draw(canvas)
-            if (i % columns == lastColumn) {
+            if (i % COLUMNS == LAST_COLUMN) {
                 canvas.translate(
-                    -lastColumn * (size + emojisHorizontalGap),
+                    -LAST_COLUMN * (size + emojisHorizontalGap),
                     size + emojisVerticalGap
                 )
             } else {
@@ -163,11 +163,11 @@ class EmojiTableCtrl : View, View.OnClickListener {
             // Click is only on a button if remainder is less than size/(size + mainShapesHorizontalGap)
             if (xSumSizeHorizontalGapRatio - col < size / (size + emojisHorizontalGap)) {
                 val row = floor(y / (size + emojisVerticalGap)).toInt()
-                val pos = columns * row + col
+                val pos = COLUMNS * row + col
 
                 // Click on bottom border and get crash without if statement as out of range.
-                // Click on right border and leftmost next item selected without columns check.
-                if (pos < emojiCellCtrlList.size && col < columns && pos >= 0) {
+                // Click on right border and leftmost next item selected without COLUMNS check.
+                if (pos < emojiCellCtrlList.size && col < COLUMNS && pos >= 0) {
                     selectedEmojiCtrl.setEmoji(emojiCellCtrlList[pos].emoji)
                     success = performClick()
                 }
@@ -195,7 +195,7 @@ class EmojiTableCtrl : View, View.OnClickListener {
 
     companion object {
         private var size = 0
-        private const val columns = 6
-        private const val lastColumn: Int = columns - 1
+        private const val COLUMNS = 6
+        private const val LAST_COLUMN: Int = COLUMNS - 1
     }
 }

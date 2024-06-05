@@ -73,23 +73,23 @@ class DrawSpadeEdgeShape(var size: Int,  override var color: Int) : ColoredEdgeS
         private var alphaBetaComputed = false
         private var alpha = 0f
         private var beta = 0f
-        fun initializeAlphaBeta(_width: Float, _height: Float, radius: Float) {
+        fun initializeAlphaBeta(width: Float, height: Float, radius: Float) {
             if (!alphaBetaComputed) {
                 alphaBetaComputed = true
                 // Start angle of left heart curve is given by:
-                alpha = (acos((_width / 2.0 - radius) / radius) * 180 / Math.PI).toFloat()
-                val phi = atan((_height - 1.5 * radius) / (_width / 2.0 - radius))
+                alpha = (acos((width / 2.0 - radius) / radius) * 180 / Math.PI).toFloat()
+                val phi = atan((height - 1.5 * radius) / (width / 2.0 - radius))
                 // distance l between centre of heart (Cx, Cy) and bottom point of heart (BPx, BPy) is
                 // SQRT((PBx - Cx)pow2 + (BPy - Cy)pow2)
                 // Cx = x + radius
                 // Cy = y + radius
-                // BPx = x + _width/2.0
-                // PBy = y + _height
+                // BPx = x + width/2.0
+                // PBy = y + height
                 // this is:
-                // l = Math.sqrt(Math.pow(x + _width/2.0 - (x + radius), 2) + Math.pow(y + _height - (y + radius), 2));
+                // l = Math.sqrt(Math.pow(x + _width/2.0 - (x + radius), 2) + Math.pow(y + height - (y + radius), 2));
                 // Which can be simplified into:
                 val l = sqrt(
-                    (_width / 2.0 - radius).pow(2.0) + (_height - 1.5 * radius).pow(2.0)
+                    (width / 2.0 - radius).pow(2.0) + (height - 1.5 * radius).pow(2.0)
                 )
                 val zeta = acos(radius / l)
                 val betaRadian = max(phi + zeta, phi - zeta)

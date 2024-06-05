@@ -155,7 +155,7 @@ class EmojiEdgeShapeDetails(private val emoji: String) : EdgeShapeDetails {
       }
   */
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
-        paint?.let {
+        paint.let {
             canvas.drawText(emoji, x, y, it)
         }
     }

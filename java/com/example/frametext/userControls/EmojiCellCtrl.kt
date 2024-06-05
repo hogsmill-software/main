@@ -122,8 +122,8 @@ class EmojiCellCtrl : View {
                 txtBaseLinePos = Utilities.convertDpToPixel(21.5f, context)
                 borderWidth = Utilities.convertDpToPixel(2f, context)
                 rcBounds = RectF(0f, 0f, size, size)
-                val sel_size = Utilities.convertDpToPixel(32f, context)
-                rcSelBounds = RectF(size-sel_size, size-sel_size, sel_size, sel_size)
+                val selSize = Utilities.convertDpToPixel(32f, context)
+                rcSelBounds = RectF(size-selSize, size-selSize, selSize, selSize)
             }
         }
     }

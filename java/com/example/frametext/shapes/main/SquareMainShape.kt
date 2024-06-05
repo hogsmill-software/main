@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 
-class SquareMainShape(private var _color: Int, _size: Int) :
+class SquareMainShape(private var _color: Int, size: Int) :
     MainShape {
     var size: Float = 0.0f
     private val path = Path()
@@ -58,6 +58,6 @@ class SquareMainShape(private var _color: Int, _size: Int) :
     }
 
     init {
-        size = _size.toFloat()
+        this.size = size.toFloat()
     }
 }

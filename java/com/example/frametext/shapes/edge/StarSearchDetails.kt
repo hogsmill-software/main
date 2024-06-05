@@ -8,12 +8,12 @@ class StarSearchDetails internal constructor(
     val spikes: Int
 ) {
 
-    override fun equals(`object`: Any?): Boolean {
-        if (`object` is StarSearchDetails) {
-            return if (widthHeight == `object`.widthHeight) {
-                if (innerRadius == `object`.innerRadius) {
-                    if (startAngle == `object`.startAngle) {
-                        spikes == `object`.spikes
+    override fun equals(other: Any?): Boolean {
+        if (other is StarSearchDetails) {
+            return if (widthHeight == other.widthHeight) {
+                if (innerRadius == other.innerRadius) {
+                    if (startAngle == other.startAngle) {
+                        spikes == other.spikes
                     } else {
                         false
                     }

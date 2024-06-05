@@ -10,7 +10,7 @@ class FrameTextParametersViewModel : ViewModel() {
         MutableLiveData<FrameTextParameters>()
 
     fun selectItem(item: FrameTextParameters) {
-        selectedItem.setValue(item)
+        selectedItem.value = item
     }
 
     fun getSelectedItem(): LiveData<FrameTextParameters> {
