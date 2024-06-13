@@ -59,7 +59,7 @@
     <string name="title_more_emojis">More emojis</string>
     <string name="title_more_symbols">More symbols</string>
     <string name="description_emojis">Allows you to choose from an extra 12 more emojis. See inside red markings.</string>
-    <string name="description_symbols_and_colours">Allows you to choose between an extra 18 other symbols. See inside red frame.</string>
+    <string name="description_symbols_and_colours">Allows you to choose between an extra 16 other symbols and 8 drawn characters used in previous versions of FrameText. See inside red frame.</string>
     <string name="already_purchased_">Already purchased!</string>
     <string name="font_settings">Font settings &#62;</string>
     <string name="font_family">Font name</string>
