@@ -154,7 +154,10 @@ class ImageGenerator(
         // Let's check if text using all rectangle. If not, we can subtly increase space between characters.
         // A bit rudimentary, but work so far with few samples I have.
         // With optimize spacing turned off, looks worse with this code.
-        if (tfd.optimizeSpacing) {
+
+        // Commented this out. "Supercalifragilisticexpialidocious" causes code below to hang.
+        // I can't remember case where below led to improvement.
+    /*    if (tfd.optimizeSpacing) {
             while (dt.remUnUsedRectangles() > 0 || !dt.doesAllTextFit()) {
                 dt.incrementCharGap()
                 dt.clearTextFromRectangles()
@@ -172,7 +175,7 @@ class ImageGenerator(
                     }
                 }
             }
-        }
+        }*/
     }
 
     fun draw() {

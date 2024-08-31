@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.frametext.FrameTextApplication
 import com.example.frametext.R
 import com.example.frametext.billing.SKU_MORE_EMOJIS
@@ -75,19 +74,6 @@ class FrameShapesFragment : Fragment() {
         }
 
         // Check in app purchase here
-        activity?.let{
-            val storeManager = (it.application as FrameTextApplication).appContainer.storeManager
-
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                storeManager.canPurchase(SKU_MORE_EMOJIS).collect { canPurchaseMoreEmoji ->
-                    canPurchasedMoreEmojis = canPurchaseMoreEmoji
-                }
-                storeManager.canPurchase(SKU_MORE_SYMBOLS).collect { canPurchaseMoreSymbols ->
-                    canPurchasedMoreSymbols = canPurchaseMoreSymbols
-                }
-            }
-        }
-
         val newFeaturesViewModelFactory: NewFeaturesViewModel.NewFeaturesViewModelFactory =
             NewFeaturesViewModel.NewFeaturesViewModelFactory(
                 (requireActivity().application as FrameTextApplication).appContainer.storeManager
@@ -99,17 +85,17 @@ class FrameShapesFragment : Fragment() {
                 viewLifecycleOwner
             ) { purchasedMoreEmojis = it }
 
-      /*      newFeaturesViewModel.canBuySku(SKU_MORE_EMOJIS).observe(
+            newFeaturesViewModel.canBuySku(SKU_MORE_EMOJIS).observe(
                 viewLifecycleOwner
-            ) { canPurchasedMoreEmojis = it } */
+            ) { canPurchasedMoreEmojis = it }
 
             newFeaturesViewModel.isPurchased(SKU_MORE_SYMBOLS).observe(
                 viewLifecycleOwner
             ) { purchasedMoreSymbols = it }
 
-      /*      newFeaturesViewModel.canBuySku(SKU_MORE_SYMBOLS).observe(
+            newFeaturesViewModel.canBuySku(SKU_MORE_SYMBOLS).observe(
                 viewLifecycleOwner
-            ) { canPurchasedMoreSymbols = it } */
+            ) { canPurchasedMoreSymbols = it }
         }
 
         val notPurchasedMoreEmojisMessage = view.findViewById<TextView>(R.id.notPurchasedMoreEmojisMessage)
