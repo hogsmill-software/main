@@ -9,9 +9,11 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.frametext.adapters.FrameTextAdapter
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.enums.SymbolShapeType
+import com.example.frametext.enums.TextAlignment
 import com.example.frametext.globalObjects.FrameTextParameters
 import com.example.frametext.globalObjects.HyphenDetails
 import com.example.frametext.helpers.Constants
+import com.example.frametext.helpers.Constants.MAIN_SHAPE_TYPE
 import com.example.frametext.helpers.Utilities
 import com.example.frametext.viewModels.*
 import com.google.android.material.tabs.TabLayout
@@ -239,7 +241,7 @@ class MainActivity : AppCompatActivity() {
                     ftp.emoji = jsonObject[Constants.EMOJI] as String
                     val shapeType = jsonObject[Constants.SYMBOL_SHAPE_TYPE] as String
                     ftp.symbolShapeType = SymbolShapeType.valueOf(shapeType)
-                    val mainShape = jsonObject[Constants.MAIN_SHAPE_TYPE] as String
+                    val mainShape = jsonObject[MAIN_SHAPE_TYPE] as String
                     ftp.mainShapeType = MainShapeType.valueOf(mainShape)
                     if (shapeType == "None") {
                         ftp.symbol = jsonObject[Constants.SYMBOL] as String
@@ -248,6 +250,8 @@ class MainActivity : AppCompatActivity() {
                     ftp.fontStyle = jsonObject.getInt(Constants.TYPEFACE)
                     ftp.minDistEdgeShape = jsonObject.getInt(Constants.MIN_DIST_EDGE_SHAPE)
                     ftp.typefaceId = jsonObject.getInt(Constants.TYPEFACE_ID)
+                    val textAlignment = jsonObject[Constants.TEXT_ALIGNMENT] as String
+                    ftp.textAlignment = TextAlignment.valueOf(textAlignment)
                 }
             }
         }
@@ -362,12 +366,13 @@ class MainActivity : AppCompatActivity() {
             jsonObject.put(Constants.USE_EMOJI, hvp.useEmoji)
             jsonObject.put(Constants.EMOJI, hvp.emoji)
             jsonObject.put(Constants.SYMBOL_SHAPE_TYPE, hvp.symbolShapeType)
-            jsonObject.put(Constants.MAIN_SHAPE_TYPE, hvp.mainShapeType)
+            jsonObject.put(MAIN_SHAPE_TYPE, hvp.mainShapeType)
             jsonObject.put(Constants.SYMBOL, hvp.symbol)
             jsonObject.put(Constants.FONT_FAMILY, hvp.fontFamily)
             jsonObject.put(Constants.TYPEFACE, hvp.fontStyle)
             jsonObject.put(Constants.MIN_DIST_EDGE_SHAPE, hvp.minDistEdgeShape)
             jsonObject.put(Constants.TYPEFACE_ID, hvp.typefaceId)
+            jsonObject.put(Constants.TEXT_ALIGNMENT, hvp.textAlignment)
 
             return jsonObject
         }

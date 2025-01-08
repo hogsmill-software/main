@@ -1,5 +1,7 @@
 package com.example.frametext.engine
 
+import com.example.frametext.enums.TextAlignment
+
 class TextFormattingDetails(
     val contentText: String,
     val optimizeSpacing: Boolean,
@@ -11,7 +13,8 @@ class TextFormattingDetails(
     val txtColor: Int,
     val fontFamily: String,
     val typeFaceId: Int,
-    val fontStyle: Int
+    val fontStyle: Int,
+    val textAlignmemt: TextAlignment
 ) {
     var hyphenateText = false
         private set

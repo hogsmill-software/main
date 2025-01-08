@@ -2,10 +2,12 @@ package com.example.frametext.engine
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.Paint.Align
 import androidx.core.content.res.ResourcesCompat
 import com.example.frametext.engine.mainSizes.MainSizes
 import com.example.frametext.engine.textBoundaries.TextBoundaries
 import com.example.frametext.enums.MainShapeType
+import com.example.frametext.enums.TextAlignment
 import com.example.frametext.hyphens.Hyphenator
 import com.example.frametext.shapes.edge.EdgeShapeDetails
 import java.util.*
@@ -26,7 +28,7 @@ internal class DrawText(
     private var rectLst: List<TextRectDetails> = ArrayList()
     private var lastWord: String? = null
     private var charGap: Float = 0f
-    private var charGapChange: Float = 1f
+    //private var charGapChange: Float = 1f
     fun computeTextSpaceAvailable(): Int {
         rectLst = tb.computeTextRectangles()
         var retVal = 0
@@ -44,7 +46,7 @@ internal class DrawText(
         if (wordInProgressNoPunctuation.isNotEmpty()) {
             val brokenWords: Array<String> =
                 hyphenator?.hyphenateWord(wordInProgressNoPunctuation.toString()) ?: arrayOf(wordInProgressNoPunctuation.toString())
-            if (brokenWordsList.size == 0) {
+            if (brokenWordsList.isEmpty()) {
                 brokenWords[0] = punctuations.toString() + brokenWords[0]
                 brokenWordsList.addAll(brokenWords)
             } else {
@@ -313,7 +315,7 @@ internal class DrawText(
 
                                     // Case punctuation marks after wordInProgressNoPunctuation: simply append these
                                     if (punctuations.isNotEmpty()) {
-                                        if (brokenWordsList.size > 0) {
+                                        if (brokenWordsList.isNotEmpty()) {
                                             brokenWordsList[brokenWordsList.size - 1] =
                                                 brokenWordsList[brokenWordsList.size - 1] + punctuations
                                         } else {
@@ -486,6 +488,7 @@ internal class DrawText(
                 val txtBoundingRect: Rect = txtRectDetails.boundingRect
                 var txt: String? = txtRectDetails.text
                 if (!txt.isNullOrEmpty()) {
+
                     if (tfd.optimizeSpacing) {
                         val availableWidth: Int = txtRectDetails.boundingRect.width()
                         txt = txt.trim { it <= ' ' }
@@ -567,12 +570,32 @@ internal class DrawText(
                             }
                         }
                     } else {
-                        canvas.drawText(
-                            txt,
-                            txtBoundingRect.left.toFloat(),
-                            txtBoundingRect.top.toFloat(),
-                            paint
-                        )
+                        if (tfd.textAlignmemt == TextAlignment.Left) {
+                            canvas.drawText(
+                                txt,
+                                txtBoundingRect.left.toFloat(),
+                                txtBoundingRect.top.toFloat(),
+                                paint
+                            )
+                        }
+                        else if (tfd.textAlignmemt == TextAlignment.Center) {
+                            paint.textAlign = Align.CENTER
+                            canvas.drawText(
+                                txt,
+                                (txtBoundingRect.left.toFloat() + txtBoundingRect.right.toFloat()) / 2,
+                                txtBoundingRect.top.toFloat(),
+                                paint
+                            )
+                        }
+                        else if (tfd.textAlignmemt == TextAlignment.Right) {
+                            paint.textAlign = Align.RIGHT
+                            canvas.drawText(
+                                txt,
+                                txtBoundingRect.right.toFloat(),
+                                txtBoundingRect.top.toFloat(),
+                                paint
+                            )
+                        }
                     }
                 }
             }
@@ -647,6 +670,7 @@ internal class DrawText(
         textInputDetails.reset()
     }
 
+    /*
     fun remUnUsedRectangles(): Int {
         // Computes remaining unused/empty rectangle.
         var txt = rectLst.last().text
@@ -682,7 +706,7 @@ internal class DrawText(
             it.textWidth = 0
         }
     }
-
+    */
     companion object {
         private val HyphenatorLangMap: HashMap<String, Hyphenator?> = HashMap<String, Hyphenator?>()
 

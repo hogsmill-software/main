@@ -82,4 +82,8 @@
     <string name="save_image">Sauvegarder Image</string>
     <string name="save_image_title">Image enregistrée dans Galerie</string>
     <string name="save_image_content">Votre image devrait apparaître dans la section Galerie de votre téléphone portable.</string>
+    <string name="text_alignment">Alignement texte</string>
+    <string name="left">Gauche</string>
+    <string name="center">Centre</string>
+    <string name="right">Droite</string>
 </resources>

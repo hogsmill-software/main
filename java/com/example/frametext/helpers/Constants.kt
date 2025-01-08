@@ -24,6 +24,7 @@ internal object Constants {
     const val TYPEFACE_ID = "typefaceId"
     const val TYPEFACE = "typeface"
     const val MIN_DIST_EDGE_SHAPE = "minDistEdgeShape"
+    const val TEXT_ALIGNMENT = "textAlignment"
 
     // Font family names.
     // these work

@@ -108,7 +108,7 @@ class UserFilesFragment : Fragment() {
             ftp?.let{
                 val tfd = TextFormattingDetails(
                     strTextInput, it.optimizeSpacing, it.hyphenateText,
-                    it.hyphenFileName, 50, 170, it.getTxtSymbolsMargin(), it.textColor,  it.fontFamily, it.typefaceId, it.fontStyle
+                    it.hyphenFileName, 50, 170, it.getTxtSymbolsMargin(), it.textColor,  it.fontFamily, it.typefaceId, it.fontStyle, it.textAlignment
                 )
                 it.getShapeDetails()?.let { getShapeDetailsIt ->
                     val imageGenerator = ImageGenerator(

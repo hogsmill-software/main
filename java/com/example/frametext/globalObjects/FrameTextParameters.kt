@@ -3,6 +3,7 @@ package com.example.frametext.globalObjects
 import android.graphics.Typeface
 import com.example.frametext.enums.MainShapeType
 import com.example.frametext.enums.SymbolShapeType
+import com.example.frametext.enums.TextAlignment
 import com.example.frametext.helpers.Constants.FF_NORMAL
 import com.example.frametext.shapes.edge.*
 
@@ -25,6 +26,7 @@ class FrameTextParameters {
     var typefaceId: Int = 0
     var fontStyle = Typeface.NORMAL
     var minDistEdgeShape = 0
+    var textAlignment: TextAlignment = TextAlignment.Left
 
     fun setTxtSymbolsMargin(txtSymbolsMargin: Int) {
         if (txtSymbolsMargin <= maxTxtSymbolsMargin) this.txtSymbolsMargin = txtSymbolsMargin

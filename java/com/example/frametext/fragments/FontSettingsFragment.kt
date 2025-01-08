@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.RadioButton
 import android.widget.Spinner
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.frametext.R
+import com.example.frametext.enums.TextAlignment
 import com.example.frametext.globalObjects.FrameTextParameters
 import com.example.frametext.helpers.Utilities
 import com.example.frametext.userControls.colorPicker.ColorPickerPopup
@@ -60,6 +62,7 @@ class FontSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val heartValParametersViewModel = ViewModelProvider(requireActivity())[FrameTextParametersViewModel::class.java]
         val button = view.findViewById<View>(R.id.backButton)
+
         button.setOnClickListener { navigateToSettingsFragment() }
         heartValParametersViewModel.getSelectedItem().value?.let { ftpIt ->
             ftp = ftpIt
@@ -182,6 +185,31 @@ class FontSettingsFragment : Fragment() {
                     }
                 }
             }
+
+            val radioLeft = view.findViewById<RadioButton>(R.id.radio_left)
+            radioLeft.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (radioLeft.isChecked == true)
+                    ftp?.let { ftpIt -> ftpIt.textAlignment = TextAlignment.Left }
+            }
+
+            val radioCentre = view.findViewById<RadioButton>(R.id.radio_center)
+            radioCentre.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (radioCentre.isChecked == true)
+                    ftp?.let { ftpIt -> ftpIt.textAlignment = TextAlignment.Center }
+            }
+
+            val radioRight = view.findViewById<RadioButton>(R.id.radio_right)
+            radioRight.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (radioRight.isChecked == true)
+                    ftp?.let { ftpIt -> ftpIt.textAlignment = TextAlignment.Right }
+            }
+
+            if (ftp?.textAlignment == TextAlignment.Left)
+                radioLeft.isChecked = true
+            else if (ftp?.textAlignment == TextAlignment.Center)
+                radioCentre.isChecked= true
+            else //
+                radioRight.isChecked = true
         }
     }
 

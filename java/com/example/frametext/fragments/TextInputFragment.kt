@@ -92,7 +92,8 @@ class TextInputFragment : Fragment() {
                         ftp.textColor,
                         ftp.fontFamily,
                         ftp.typefaceId,
-                        ftp.fontStyle
+                        ftp.fontStyle,
+                        ftp.textAlignment
                     )
                     ftp.getShapeDetails()?.let { edgeShapeDetails ->
                         val frameTextImgContainer = ImageGenerator(

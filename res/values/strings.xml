@@ -82,4 +82,8 @@
     <string name="save_image">Save Image</string>
     <string name="save_image_title">Image saved in Gallery</string>
     <string name="save_image_content">Your image should appear in Gallery section of your mobile phone.</string>
+    <string name="text_alignment">Text alignment</string>
+    <string name="left">Left</string>
+    <string name="center">Center</string>
+    <string name="right">Right</string>
 </resources>
