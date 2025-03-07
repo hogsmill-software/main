@@ -60,14 +60,14 @@
         "hpl": "British English",
         "downLoaded": false,
         "fileName": "hyph-en-gb.tex",
-        "downloadLink": "https://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-en-gb.tex"
+        "downloadLink": "https://www.hogsmillsoftware.com/hyphenation/hyph-en-gb.tex"
     },
     {
         "id": 10,
         "hpl": "US English",
         "downLoaded": false,
         "fileName": "hyph-en-us.tex",
-        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-en-us.tex"
+        "downloadLink": "https://www.hogsmillsoftware.com/hyphenation/hyph-en-us.tex"
     },
     {
         "id": 11,
@@ -88,7 +88,7 @@
         "hpl": "Français",
         "downLoaded": false,
         "fileName": "hyph-fr.tex",
-        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-fr.tex"
+        "downloadLink": "https://www.hogsmillsoftware.com/hyphenation/hyph-fr.tex"
     },
     {
         "id": 14,
@@ -102,7 +102,7 @@
         "hpl": "Deutsch",
         "downLoaded": false,
         "fileName": "hyph-de-1901.tex",
-        "downloadLink": "http://mirror.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-de-1901.tex"
+        "downloadLink": "https://www.hogsmillsoftware.com/hyphenation/hyph-de-1901.tex"
     },
     {
         "id": 16,

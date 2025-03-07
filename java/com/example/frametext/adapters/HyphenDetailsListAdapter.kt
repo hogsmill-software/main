@@ -3,7 +3,9 @@ package com.example.frametext.adapters
 //https://www.techyourchance.com/asynctask-deprecated/
 import android.content.Context
 import android.graphics.Typeface
-import android.os.AsyncTask
+import android.os.Handler
+import android.os.Looper
+import java.util.concurrent.Executors
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,13 +25,13 @@ import java.net.URL
 import java.net.URLConnection
 
 class HyphenDetailsListAdapter internal constructor(
-    context: Context,
+    private var context: Context,
     hyphenDetails: Array<HyphenDetails>,
     hyphenFilesList: ArrayList<String>
 ) : RecyclerView.Adapter<HyphenDetailsListAdapter.ViewHolder>() {
-    private var context: Context
     private var hyphenDetails: Array<HyphenDetails>
     private var hyphenFilesList: ArrayList<String>
+    private var success: Boolean = false
 
     inner class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
@@ -39,75 +41,65 @@ class HyphenDetailsListAdapter internal constructor(
             view.findViewById<View>(R.id.button) as AppCompatButton
     }
 
-    // https://www.tutorialspoint.com/how-to-fix-android-os-networkonmainthreadexception
-    private inner class DownloadHyphenFileTask(
-        var idx: Int,
-        var downloadDeleteButton: AppCompatButton,
-        var hyphenFileNameView: TextView
-    ) :
-        AsyncTask<Void?, Void?, Void?>() {
-        var success = false
-        @Deprecated("Deprecated in Java")
-        override fun doInBackground(vararg params: Void?): Void? {
-            try {
-                var url = URL(hyphenDetails[idx].downloadLink)
-                var conn: URLConnection = url.openConnection()
-                var contentLength: Int = conn.contentLength
-                var downloaded = false
-                var stream = DataInputStream(url.openStream())
-                var buffer = ByteArray(contentLength)
-                stream.readFully(buffer)
-                stream.close()
-                val content = String(buffer)
-                if (isHTML(content)) {
-                    val hRef = "href=\""
-                    var idx = content.indexOf(hRef)
-                    if (idx != 1) {
-                        idx += hRef.length
-                        val idx2 = content.indexOf("\"", idx)
-                        val newLink = content.substring(idx, idx2)
-                        url = URL(newLink)
-                        conn = url.openConnection()
-                        contentLength = conn.contentLength
-                        //  conn.wait();
-                        stream = DataInputStream(url.openStream())
-                        buffer = ByteArray(contentLength)
-                        stream.readFully(buffer)
-                        stream.close()
-                        downloaded = true
-                    }
-                } else {
-                    downloaded = matches(content, "%")
+    fun doInBackground(idx: Int, hyphenFileNameView: TextView) {
+        try {
+            var url = URL(hyphenDetails[idx].downloadLink)
+            var conn: URLConnection = url.openConnection()
+            var contentLength: Int = conn.contentLength
+            if (contentLength == -1)
+                return
+            var downloaded = false
+            var stream = DataInputStream(url.openStream())
+            var buffer = ByteArray(contentLength)
+            stream.readFully(buffer)
+            stream.close()
+            val content = String(buffer)
+            if (isHTML(content)) {
+                val hRef = "href=\""
+                var idx = content.indexOf(hRef)
+                if (idx != 1) {
+                    idx += hRef.length
+                    val idx2 = content.indexOf("\"", idx)
+                    val newLink = content.substring(idx, idx2)
+                    url = URL(newLink)
+                    conn = url.openConnection()
+                    contentLength = conn.contentLength
+                    //  conn.wait();
+                    stream = DataInputStream(url.openStream())
+                    buffer = ByteArray(contentLength)
+                    stream.readFully(buffer)
+                    stream.close()
+                    downloaded = true
                 }
-                if (downloaded) {
-                    val hyphenFileFolder = getHyphenFileFolder(
-                        hyphenFileNameView.context
-                    )
-                    success = hyphenFileFolder?.let { hyphenFileFolderIt->
-                        val hyphenFileName = hyphenFileFolderIt + hyphenDetails[idx].fileName
-                        FileOutputStream(hyphenFileName).use { fos -> fos.write(buffer) }
-                        true
-                    } ?: false
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                success = false
-            }
-            return null
-        }
-
-        @Deprecated("Deprecated in Java")
-        override fun onPostExecute(aVoid: Void?) {
-            if (success) {
-                hyphenDetails[idx].downLoaded = true
-                setButtonToDeleteStatus(downloadDeleteButton, hyphenFileNameView)
-                hyphenFilesList.add(hyphenDetails[idx].hyphenatePatternLanguage)
             } else {
-                setButtonToDownloadStatus(downloadDeleteButton, hyphenFileNameView)
+                downloaded = matches(content, "%")
             }
-            super.onPostExecute(aVoid)
+            if (downloaded) {
+                val hyphenFileFolder = getHyphenFileFolder(
+                    hyphenFileNameView.context
+                )
+                success = hyphenFileFolder?.let { hyphenFileFolderIt ->
+                    val hyphenFileName = hyphenFileFolderIt + hyphenDetails[idx].fileName
+                    FileOutputStream(hyphenFileName).use { fos -> fos.write(buffer) }
+                    true
+                } == true
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            success = false
         }
     }
+
+    fun updateFrontEnd(idx: Int,  downloadDeleteButton: AppCompatButton, hyphenFileNameView: TextView) {
+        if (success) {
+            hyphenDetails[idx].downLoaded = true
+            setButtonToDeleteStatus(downloadDeleteButton, hyphenFileNameView)
+            hyphenFilesList.add(hyphenDetails[idx].hyphenatePatternLanguage)
+        } else {
+            setButtonToDownloadStatus(downloadDeleteButton, hyphenFileNameView)
+        }
+    }
+    
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View = LayoutInflater.from(parent.context).inflate(R.layout.list_hyphen_items, parent, false)
         // set the view's size, margins, paddings and layout parameters
@@ -115,7 +107,7 @@ class HyphenDetailsListAdapter internal constructor(
     }
 
     override fun onBindViewHolder(
-        holder: HyphenDetailsListAdapter.ViewHolder,
+        holder: ViewHolder,
         position: Int
     ) {
        // holder.bind(hyphenDetails[position], hyphenFilesFragment)
@@ -165,14 +157,22 @@ class HyphenDetailsListAdapter internal constructor(
                 val hyphenFile = File(hyphenFileName)
                 if (hyphenFile.delete()) {
                     hyphenDetails[i].downLoaded = false
-                    setButtonToDownloadStatus(downloadDeleteButton, hyphenFileNameView)
                     hyphenFilesList.remove(hyphenDetails[i].hyphenatePatternLanguage)
                 }
+                setButtonToDownloadStatus(downloadDeleteButton, hyphenFileNameView)
             }
         } else {
-            val dhfTask =
-                DownloadHyphenFileTask(i, downloadDeleteButton, hyphenFileNameView)
-            dhfTask.execute()
+            val frameTextExecutor = Executors.newSingleThreadExecutor()
+            val frameTextHandler = Handler(Looper.getMainLooper())
+
+            frameTextExecutor.execute {
+                doInBackground(i, hyphenFileNameView)
+            }
+
+            frameTextHandler.post {
+                updateFrontEnd(i,  downloadDeleteButton, hyphenFileNameView)
+            }
+
             // so change to button immediately. If it fails, reverses back.
             setButtonToDeleteStatus(downloadDeleteButton, hyphenFileNameView)
         }
@@ -212,7 +212,6 @@ class HyphenDetailsListAdapter internal constructor(
     }
 
     init {
-        this.context = context
         this.hyphenDetails = hyphenDetails
         this.hyphenFilesList = hyphenFilesList
     }
