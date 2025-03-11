@@ -15,14 +15,11 @@ import kotlin.math.sin
 
 class CircleMainShape(
     private val canvas: Canvas,
-    mainSizes: SquareMainSizes,
-    closestDistance: Int,
-    sd: EdgeShapeDetails
+    private var mainSizes: SquareMainSizes,
+    private val closestDistance: Int,
+    private var sd: EdgeShapeDetails
 ) :
     MainShape {
-    private var mainSizes: SquareMainSizes
-    private val closestDistance: Int
-    private var sd: EdgeShapeDetails
     override fun draw() {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
@@ -62,11 +59,5 @@ class CircleMainShape(
                 .toFloat() + sd.bottomAdjustment + sd.height / 2.0f + verticalAdjustment
             sd.draw(canvas, xPt, yPt, paint)
         }
-    }
-
-    init {
-        this.mainSizes = mainSizes
-        this.closestDistance = closestDistance
-        this.sd = sd
     }
 }

@@ -27,6 +27,7 @@ import java.io.FileWriter
 import java.util.*
 
 
+@Suppress("SYNTHETIC_PROPERTY_WITHOUT_JAVA_ORIGIN")
 class SettingsFragment : Fragment() {
     private var spinner: Spinner? = null
     private var needToDownloadText: TextView? = null
@@ -169,7 +170,7 @@ class SettingsFragment : Fragment() {
             selectedItem = spinnerIt.selectedItem as String
         }
         hyphenFilesList?.let{ hyphenFilesListIt ->
-            neededToDownloadText = hyphenFilesListIt.isEmpty()
+            this.neededToDownloadText = hyphenFilesListIt.isEmpty
         }
     }
 
@@ -244,7 +245,7 @@ class SettingsFragment : Fragment() {
     }
 
     fun updateHyphenDropdown() {
-        if (hyphenFilesList?.isEmpty() == true) {
+        if (hyphenFilesList?.isEmpty == true) {
             needToDownloadText?.visibility = View.VISIBLE
             spinner?.visibility = View.GONE
             hyphenateSwitch?.visibility = View.GONE

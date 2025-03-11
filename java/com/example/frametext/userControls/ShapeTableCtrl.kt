@@ -105,7 +105,7 @@ class ShapeTableCtrl : View, View.OnClickListener {
     shapeHorizontalGap = Utilities.convertDpToPixel(5f, context)
     shapeVerticalGap = Utilities.convertDpToPixel(5f, context)
 
-    if (shapeCellCtrlList.size > 0) {
+    if (shapeCellCtrlList.isNotEmpty()) {
         val shapeCellCtrl = shapeCellCtrlList[0]
         size = shapeCellCtrl.size
     }

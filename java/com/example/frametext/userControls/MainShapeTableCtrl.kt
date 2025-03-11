@@ -68,7 +68,7 @@ class MainShapeTableCtrl : View, View.OnClickListener {
             mainShapeCellCtrlList.add(mSCC)
         }
         val rows = shapeTypes.size / columns + if (shapeTypes.size % columns != 0) 1 else 0
-        if (mainShapeCellCtrlList.size > 0) {
+        if (mainShapeCellCtrlList.isNotEmpty()) {
             val mainShapeCellCtrl = mainShapeCellCtrlList[0]
             size = mainShapeCellCtrl.size
         }

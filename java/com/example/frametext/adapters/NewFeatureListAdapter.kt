@@ -97,7 +97,7 @@ class NewFeatureListAdapter internal constructor(
     }
 
     override fun onBindViewHolder(
-        holder: NewFeatureListAdapter.ViewHolder,
+        holder: ViewHolder,
         position: Int
     ) {
         sKUList?.let { holder.bind(it[position], this.newFeaturesViewModel, newFeaturesFragment) }

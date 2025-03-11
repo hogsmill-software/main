@@ -10,15 +10,10 @@ class DrawSpadeEdgeShape(var size: Int,  override var color: Int) : ColoredEdgeS
     // SquareSide is the side of the square that entirely contains spade.
     // It's the same as height but width is narrower.
     override var height: Float = size.toFloat()
-        private set
     override var width: Float = 0.8f * height
-        private set
     override var centerX = width / 2.0f
-        private set
     override var centerY = height / 2.0f
-        private set
     override var bottomAdjustment: Float = -2 * height
-        private set
 
     private val radius: Float = 0.28f * height
     private val path = Path()

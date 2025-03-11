@@ -14,7 +14,7 @@ class TextFormattingDetails(
     val fontFamily: String,
     val typeFaceId: Int,
     val fontStyle: Int,
-    val textAlignmemt: TextAlignment
+    val textAlignment: TextAlignment
 ) {
     var hyphenateText = false
         private set

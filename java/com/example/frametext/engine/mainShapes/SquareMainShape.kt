@@ -11,14 +11,11 @@ import com.example.frametext.shapes.edge.SymbolEdgeShapeDetails
 
 class SquareMainShape(
     private val canvas: Canvas,
-    mainSizes: SquareMainSizes,
-    closestDistance: Int,
-    sd: EdgeShapeDetails
+    private var mainSizes: SquareMainSizes,
+    private val closestDistance: Int,
+    private var sd: EdgeShapeDetails
 ) :
     MainShape {
-    private var mainSizes: SquareMainSizes
-    private val closestDistance: Int
-    private var sd: EdgeShapeDetails
     override fun draw() {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
@@ -69,11 +66,5 @@ class SquareMainShape(
             sd.draw(canvas, leftXCoordinate, yPlotPt, paint)
             sd.draw(canvas, rightXCoordinate, yPlotPt, paint)
         } while (++shapePos < verticalShapeSideCount)
-    }
-
-    init {
-        this.mainSizes = mainSizes
-        this.closestDistance = closestDistance
-        this.sd = sd
     }
 }

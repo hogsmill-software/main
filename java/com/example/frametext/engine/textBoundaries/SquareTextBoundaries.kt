@@ -12,17 +12,14 @@ import kotlin.math.floor
 
 class SquareTextBoundaries(
     paint: Paint,
-    mainSizes: SquareMainSizes,
-    sd: EdgeShapeDetails,
-    tfd: TextFormattingDetails
+    private val mainSizes: SquareMainSizes,
+    private val sd: EdgeShapeDetails,
+    private val tfd: TextFormattingDetails
 ) :
     TextBoundaries {
-    private val tfd: TextFormattingDetails
     private val rectLst: MutableList<TextRectDetails> = ArrayList()
-    private val mainSizes: SquareMainSizes
-    private val sd: EdgeShapeDetails
-    private val textAscent: Float
-    private val textDescent: Float
+    private val textAscent: Float = paint.ascent()
+    private val textDescent: Float = paint.descent()
     override fun computeTextRectangles(): List<TextRectDetails> {
         var verticalAdjustment = 0f
         if (sd is EmojiEdgeShapeDetails) {
@@ -57,13 +54,5 @@ class SquareTextBoundaries(
             rectLst.add(TextRectDetails(rc))
         }
         return rectLst
-    }
-
-    init {
-        this.mainSizes = mainSizes
-        this.sd = sd
-        this.tfd = tfd
-        textAscent = paint.ascent()
-        textDescent = paint.descent()
     }
 }

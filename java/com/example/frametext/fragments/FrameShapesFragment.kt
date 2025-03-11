@@ -151,7 +151,6 @@ class FrameShapesFragment : Fragment() {
         ) {   // If user has neglected to fill this value, reset this to default
             ftp.minDistEdgeShape = Utilities.closestDistance(
                 ftp.useEmoji,
-                ftp.emoji,
                 ftp.symbol,
                 ftp.symbolShapeType
             )
@@ -389,7 +388,6 @@ class FrameShapesFragment : Fragment() {
     private fun resetMinDistEdgeShape() {
         ftp.minDistEdgeShape = Utilities.closestDistance(
             ftp.useEmoji,
-            ftp.emoji,
             ftp.symbol,
             ftp.symbolShapeType
         )

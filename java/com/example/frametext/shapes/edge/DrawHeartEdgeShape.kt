@@ -10,15 +10,10 @@ class DrawHeartEdgeShape(
     heartWidth: Int, override var color: Int
 ) : ColoredEdgeShapeDetails {
     override var width: Float = heartWidth.toFloat()
-        private set
     override var height: Float = 0.96f * width
-        private set
     override var centerX: Float = width / 2.0f
-        private set
     override var centerY: Float = height / 2.0f
-        private set
     override var bottomAdjustment: Float = -2 * height
-        private set
 
     private var radius = 0.28f * width
     private val path = Path()

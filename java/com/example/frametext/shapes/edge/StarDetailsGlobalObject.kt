@@ -5,13 +5,11 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class StarDetailsGlobalObject internal constructor(searchDetails: StarSearchDetails) {
-    val centerX: Float
-    val centerY: Float
+    val centerX: Float = 0.5f * searchDetails.widthHeight
+    val centerY: Float = 0.5f * searchDetails.widthHeight
     val starPtsList = ArrayList<PointF>()
 
     init {
-        centerX = 0.5f * searchDetails.widthHeight
-        centerY = 0.5f * searchDetails.widthHeight
         val innerRadius: Float = searchDetails.innerRadius
         val outerRadius: Float = 0.5f * searchDetails.widthHeight
         val pt = PointF(

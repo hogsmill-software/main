@@ -8,15 +8,10 @@ import android.graphics.Typeface
 
 class SymbolEdgeShapeDetails(private val symbol: String, val color: Int) : EdgeShapeDetails {
     override var width: Float = 0f
-        private set
     override var height: Float = 0f
-        private set
     override var centerX: Float = 0f
-        private set
     override var centerY: Float = 0f
-        private set
     override var bottomAdjustment: Float = 0f
-        private set
 
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
         // draws a blue square behind symbol

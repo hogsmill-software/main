@@ -8,15 +8,12 @@ import kotlin.properties.Delegates
 
 class DrawStarEdgeShape(widthHeight: Int, override var color: Int) : ColoredEdgeShapeDetails {
     override var width: Float = widthHeight.toFloat()
-        private set
     override var height: Float = widthHeight.toFloat()
-        private set
     override var centerX by Delegates.notNull<Float>()
         private set
     override var centerY by Delegates.notNull<Float>()
         private set
     override var bottomAdjustment: Float = -2 * height
-        private set
 
     private var starSearchGloObj: StarDetailsGlobalObject? = null
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {

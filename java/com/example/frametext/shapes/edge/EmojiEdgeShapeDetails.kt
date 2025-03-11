@@ -7,13 +7,9 @@ import android.graphics.Typeface
 
 class EmojiEdgeShapeDetails(private val emoji: String) : EdgeShapeDetails {
     override var centerX = 0f
-        private set
     override var centerY = 0f
-        private set
     override var width = 0f
-        private set
     override var height = 0f
-        private set
 
     private fun initialize() {
         val tf = Typeface.create("TimesRoman", Typeface.NORMAL)

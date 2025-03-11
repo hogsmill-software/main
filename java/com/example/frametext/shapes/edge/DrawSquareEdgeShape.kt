@@ -8,13 +8,9 @@ class DrawSquareEdgeShape(sizeInt: Int, override var color: Int) :
     private var size: Float = 0.0f
 
     override var centerX = 0f
-        private set
     override var centerY = 0f
-        private set
     override var width = 0f
-        private set
     override var height = 0f
-        private set
 
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
         var yy = y

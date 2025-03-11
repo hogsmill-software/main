@@ -9,26 +9,21 @@ import kotlin.math.acos
 class DrawClubEdgeShape(size: Int, override var color: Int) : ColoredEdgeShapeDetails {
     // SquareSide is the side of the square that entirely contains spade.
     // It's the same as height but width is narrower.
-    val size: Float
+    val size: Float = size.toFloat()
 
     // private final float width;
-    private val radius: Float
+    private val radius: Float = 0.24f * size
 
     // stemLen is the distance of the stem joining the 3 leaves
-    private val stemLen: Float
-    private val halfStemThickness: Float
+    private val stemLen: Float = 0.3f * size
+    private val halfStemThickness: Float = 0.02f * size
     private val path = Path()
 
     override var width: Float = size.toFloat()
-        private set
     override var height: Float = size.toFloat()
-        private set
     override var centerX: Float = size / 2.0f
-        private set
     override var centerY: Float = size / 2.0f
-        private set
     override var bottomAdjustment: Float = -2 * size.toFloat()
-        private set
 
     override fun draw(canvas: Canvas, x: Float, y: Float, paint: Paint) {
         var yy = y
@@ -116,10 +111,6 @@ class DrawClubEdgeShape(size: Int, override var color: Int) : ColoredEdgeShapeDe
     }
 
     init {
-        this.size = size.toFloat()
-        radius = 0.24f * size
-        stemLen = 0.3f * size
-        halfStemThickness = 0.02f * size
         initializeAngles(this)
     }
 }

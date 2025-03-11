@@ -3,7 +3,6 @@ package com.example.frametext.userControls.colorPicker
 internal class ColorObservableEmitter : ColorObservable {
     private val observers: MutableList<ColorObserver> = ArrayList()
     override var color = 0
-        private set
 
     override fun subscribe(observer: ColorObserver) {
         observers.add(observer)

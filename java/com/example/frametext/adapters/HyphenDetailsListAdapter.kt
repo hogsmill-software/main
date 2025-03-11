@@ -99,7 +99,7 @@ class HyphenDetailsListAdapter internal constructor(
             setButtonToDownloadStatus(downloadDeleteButton, hyphenFileNameView)
         }
     }
-    
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View = LayoutInflater.from(parent.context).inflate(R.layout.list_hyphen_items, parent, false)
         // set the view's size, margins, paddings and layout parameters

@@ -13,14 +13,11 @@ import kotlin.math.*
 
 class DiamondMainShape(
     private val canvas: Canvas,
-    mainSizes: SquareMainSizes,
-    closestDistance: Int,
-    sd: EdgeShapeDetails
+    private var mainSizes: SquareMainSizes,
+    private val closestDistance: Int,
+    private var sd: EdgeShapeDetails
 ) :
     MainShape {
-    private var mainSizes: SquareMainSizes
-    private val closestDistance: Int
-    private var sd: EdgeShapeDetails
     override fun draw() {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val tf = Typeface.create("TimesRoman", Typeface.NORMAL)
@@ -79,11 +76,5 @@ class DiamondMainShape(
 
         // Draw last rightmost corner, otherwise it is missing.
         sd.draw(canvas, rightCorner.x, rightCorner.y, paint)
-    }
-
-    init {
-        this.mainSizes = mainSizes
-        this.closestDistance = closestDistance
-        this.sd = sd
     }
 }

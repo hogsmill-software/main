@@ -11,7 +11,7 @@ class HeartMainShape(
 ) : MainShape {
     private var centerX = 0f
     private var centerY = 0f
-    private val width: Float
+    private val width: Float = heartWidth.toFloat()
     override fun getWidth(): Float {
         return width
     }
@@ -135,7 +135,6 @@ class HeartMainShape(
     }
 
     init {
-        width = heartWidth.toFloat()
         initialize()
     }
 }

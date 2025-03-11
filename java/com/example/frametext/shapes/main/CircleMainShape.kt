@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.graphics.Path
 
 class CircleMainShape(private var color: Int, width: Int) : MainShape {
-    private val width: Float
+    private val width: Float = width.toFloat()
     override fun getWidth(): Float {
         return width
     }
@@ -62,7 +62,6 @@ class CircleMainShape(private var color: Int, width: Int) : MainShape {
     }
 
     init {
-        this.width = width.toFloat()
         initialize()
     }
 }

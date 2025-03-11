@@ -570,7 +570,7 @@ internal class DrawText(
                             }
                         }
                     } else {
-                        if (tfd.textAlignmemt == TextAlignment.Left) {
+                        if (tfd.textAlignment == TextAlignment.Left) {
                             canvas.drawText(
                                 txt,
                                 txtBoundingRect.left.toFloat(),
@@ -578,7 +578,7 @@ internal class DrawText(
                                 paint
                             )
                         }
-                        else if (tfd.textAlignmemt == TextAlignment.Center) {
+                        else if (tfd.textAlignment == TextAlignment.Center) {
                             paint.textAlign = Align.CENTER
                             canvas.drawText(
                                 txt,
@@ -587,7 +587,7 @@ internal class DrawText(
                                 paint
                             )
                         }
-                        else if (tfd.textAlignmemt == TextAlignment.Right) {
+                        else if (tfd.textAlignment == TextAlignment.Right) {
                             paint.textAlign = Align.RIGHT
                             canvas.drawText(
                                 txt,

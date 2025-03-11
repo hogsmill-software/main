@@ -41,14 +41,14 @@ class UserFileListAdapter internal constructor(
             view.findViewById(R.id.deleteButton)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserFileListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View = LayoutInflater.from(parent.context).inflate(R.layout.list_user_files_items, parent, false)
         // set the view's size, margins, paddings and layout parameters
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(
-        holder: UserFileListAdapter.ViewHolder,
+        holder: ViewHolder,
         position: Int
     ) {
         holder.userFileNameView.text = userFileList?.get(position)

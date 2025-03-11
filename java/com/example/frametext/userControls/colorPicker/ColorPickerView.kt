@@ -3,7 +3,6 @@ package com.example.frametext.userControls.colorPicker
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.example.frametext.R
 import kotlin.math.min
@@ -61,7 +60,7 @@ class ColorPickerView @JvmOverloads constructor(
         if (enable) {
             if (brightnessSliderView == null) {
                 brightnessSliderView = BrightnessSliderView(context)
-                val params = LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, sliderHeight)
+                val params = LayoutParams(LayoutParams.WRAP_CONTENT, sliderHeight)
                 params.topMargin = sliderMargin
                 addView(brightnessSliderView, 1, params)
             }
@@ -83,7 +82,7 @@ class ColorPickerView @JvmOverloads constructor(
         if (enable) {
             if (alphaSliderView == null) {
                 alphaSliderView = AlphaSliderView(context)
-                val params = LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, sliderHeight)
+                val params = LayoutParams(LayoutParams.WRAP_CONTENT, sliderHeight)
                 params.topMargin = sliderMargin
                 addView(alphaSliderView, params)
             }
@@ -172,8 +171,8 @@ class ColorPickerView @JvmOverloads constructor(
         sliderMargin = 2 * margin
         sliderHeight = (24 * density).toInt()
         val params = LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT
         )
         addView(colorWheelView, params)
         setEnabledBrightness(enableBrightness)

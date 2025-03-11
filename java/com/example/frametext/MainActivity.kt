@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         tabSetting = tabLayout?.newTab()?.setText(resources.getString(R.string.settings))
         tabSetting?.let { tabLayout?.addTab(it) }
         tabLayout?.tabGravity = TabLayout.GRAVITY_FILL
-        val adapter = FrameTextAdapter(this, this, 3)
+        val adapter = FrameTextAdapter(this, 3)
         viewPager?.adapter = adapter
 
         viewPager?.registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -199,7 +199,6 @@ class MainActivity : AppCompatActivity() {
         if (ftp.minDistEdgeShape == 0) {
             ftp.minDistEdgeShape = Utilities.closestDistance(
                 ftp.useEmoji,
-                ftp.emoji,
                 ftp.symbol,
                 ftp.symbolShapeType
             )

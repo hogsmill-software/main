@@ -13,16 +13,13 @@ import kotlin.math.*
 
 class HeartTextBoundaries(
     paint: Paint,
-    mainSizes: HeartMainSizes,
-    sd: EdgeShapeDetails,
-    tfd: TextFormattingDetails
+    private val mainSizes: HeartMainSizes,
+    private var sd: EdgeShapeDetails,
+    private val tfd: TextFormattingDetails
 ) :
     TextBoundaries {
-    private val tfd: TextFormattingDetails
     private val rectLst: MutableList<TextRectDetails> = ArrayList()
-    private val mainSizes: HeartMainSizes
-    private var sd: EdgeShapeDetails
-    private val textAscent: Float
+    private val textAscent: Float = paint.ascent()
     private fun getXCircleIntersectionsFromY(y: Int, left: Boolean): IntArray {
         // centre of left circle is x_centre = margin + 2*heartCenterX + (radius - heartCenterX) = margin + heartCenterX + radius
         // 					        y_centre = margin - 2*heartCenterY + (radius + heartCenterY) = margin - heartCenterY + radius
@@ -381,12 +378,5 @@ class HeartTextBoundaries(
             yTop += tfd.lineHeight
         }
         return rectLst
-    }
-
-    init {
-        this.mainSizes = mainSizes
-        this.sd = sd
-        this.tfd = tfd
-        textAscent = paint.ascent()
     }
 }

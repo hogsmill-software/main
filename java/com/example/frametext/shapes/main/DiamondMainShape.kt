@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 
-class DiamondMainShape(private var _color: Int, private val _size: Int) :
+class DiamondMainShape(private var _color: Int, _size: Int) :
     MainShape {
     private val path = Path()
     var size: Float = 0.0f

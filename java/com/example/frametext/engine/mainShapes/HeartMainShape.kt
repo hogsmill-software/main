@@ -12,15 +12,12 @@ import kotlin.math.*
 
 class HeartMainShape(
     private val canvas: Canvas,
-    mainSizes: HeartMainSizes,
-    closestDistance: Int,
-    sd: EdgeShapeDetails
+    private var mainSizes: HeartMainSizes,
+    private val closestDistance: Int,
+    private var sd: EdgeShapeDetails
 ) :
     MainShape {
-    private var mainSizes: HeartMainSizes
-    private val closestDistance: Int
-    private var sd: EdgeShapeDetails
-    private val bottomAdjust: Float
+    private val bottomAdjust: Float = sd.bottomAdjustment
     private fun computeSideHearts(
         totalHeartCount: Int,
         distance: Double,
@@ -197,12 +194,5 @@ class HeartMainShape(
         for (pt2d in heartsLst) {
             sd.draw(canvas, pt2d.x.toFloat(), pt2d.y.toFloat(), paint)
         }
-    }
-
-    init {
-        this.mainSizes = mainSizes
-        this.closestDistance = closestDistance
-        this.sd = sd
-        bottomAdjust = sd.bottomAdjustment
     }
 }

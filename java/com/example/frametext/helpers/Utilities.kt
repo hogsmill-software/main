@@ -197,7 +197,7 @@ object Utilities {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun closestDistance(useEmoji: Boolean, emoji: String, symbol: String?, symbolShapeType: SymbolShapeType): Int {
+    fun closestDistance(useEmoji: Boolean, symbol: String?, symbolShapeType: SymbolShapeType): Int {
         // parameter emoji shall almost certainly be used in future
         if (useEmoji)
             return 250

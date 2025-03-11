@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import kotlin.math.*
 
@@ -131,8 +130,8 @@ class ColorWheelView @JvmOverloads constructor(
     init {
         run {
             val layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT
             )
             val palette = ColorWheelPalette(context)
             val padding = selectorRadiusPx.toInt()
@@ -141,8 +140,8 @@ class ColorWheelView @JvmOverloads constructor(
         }
         run {
             val layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT
             )
 
             ColorWheelSelector(context).let {
