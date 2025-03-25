@@ -41,7 +41,11 @@ class StoreManager private constructor(
     PurchasesUpdatedListener, BillingClientStateListener {
 
     private val billingClient: BillingClient
-    val knownInappSKUs: List<String>?
+    val knownInappSKUs = if (knownInAppSKUs == null) {
+        ArrayList()
+    } else {
+        listOf(*knownInAppSKUs)
+    }
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
     private enum class SkuState {
@@ -74,11 +78,6 @@ class StoreManager private constructor(
     }
 
     init {
-        this.knownInappSKUs = if (knownInAppSKUs == null) {
-            ArrayList()
-        } else {
-            listOf(*knownInAppSKUs)
-        }
         addProductFlows(knownInappSKUs)
         billingClient = BillingClient.newBuilder(application)
             .setListener(this)
@@ -503,12 +502,13 @@ class StoreManager private constructor(
      * @param sku to get the title from
      * @return title of the requested SKU as an observable Flow<String>
     </String> */
+    /*
     fun getSkuTitle(sku: String): Flow<String> {
         val skuDetailsFlow = productDetailsMap[sku]!!
         return skuDetailsFlow.mapNotNull { skuDetails ->
             skuDetails?.title
         }
-    }
+    }*/
 
     fun getSkuPrice(sku: String): Flow<String> {
         val skuDetailsFlow = productDetailsMap[sku]!!

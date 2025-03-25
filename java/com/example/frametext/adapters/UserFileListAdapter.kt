@@ -18,16 +18,13 @@ import java.io.FileReader
 import java.io.IOException
 
 class UserFileListAdapter internal constructor(
-    context: Context,
-    userFileList: ArrayList<String>?,
-    textInputViewModel: TextInputViewModel,
-    userFile: UserFilesFragment
+    var context: Context,
+    private var userFileList: ArrayList<String>?,
+    private val textInputViewModel: TextInputViewModel,
+    private var userFile: UserFilesFragment
 ) :
     RecyclerView.Adapter<UserFileListAdapter.ViewHolder>() {
-    private var userFileList: ArrayList<String>?
-    private val textInputViewModel: TextInputViewModel
-    var context: Context
-    private var userFile: UserFilesFragment
+    // This userFileFragment needed so text input tab is set after loading
 
     inner class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
@@ -113,12 +110,5 @@ class UserFileListAdapter internal constructor(
                 }
             }
         }
-    }
-
-    init {
-        this.context = context
-        this.userFileList = userFileList
-        this.textInputViewModel = textInputViewModel
-        this.userFile = userFile // This userFileFragment needed so text input tab is set after loading
     }
 }

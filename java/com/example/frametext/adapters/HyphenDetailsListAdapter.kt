@@ -26,11 +26,9 @@ import java.net.URLConnection
 
 class HyphenDetailsListAdapter internal constructor(
     private var context: Context,
-    hyphenDetails: Array<HyphenDetails>,
-    hyphenFilesList: ArrayList<String>
-) : RecyclerView.Adapter<HyphenDetailsListAdapter.ViewHolder>() {
-    private var hyphenDetails: Array<HyphenDetails>
+    private var hyphenDetails: Array<HyphenDetails>,
     private var hyphenFilesList: ArrayList<String>
+) : RecyclerView.Adapter<HyphenDetailsListAdapter.ViewHolder>() {
     private var success: Boolean = false
 
     inner class ViewHolder(view: View) :
@@ -209,10 +207,5 @@ class HyphenDetailsListAdapter internal constructor(
         fun matches(str1: String, str2: String): Boolean {
             return str1.regionMatches(0, str2, 0, str2.length)
         }
-    }
-
-    init {
-        this.hyphenDetails = hyphenDetails
-        this.hyphenFilesList = hyphenFilesList
     }
 }

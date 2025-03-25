@@ -23,20 +23,14 @@ import com.example.frametext.userControls.AlertPopupOK
 import com.example.frametext.viewModels.NewFeaturesViewModel
 
 class NewFeatureListAdapter internal constructor(
-    context: Context,
-    newFeaturesViewModel: NewFeaturesViewModel,
-    newFeaturesFragment: NewFeaturesFragment,
-    storeManager: StoreManager,
-    activity: Activity
+    var context: Context,
+    private val newFeaturesViewModel: NewFeaturesViewModel,
+    private val newFeaturesFragment: NewFeaturesFragment,
+    private var storeManager: StoreManager,
+    private var activity: Activity
 ) :
     RecyclerView.Adapter<NewFeatureListAdapter.ViewHolder>() {
-    private var newFeaturesInflater: LayoutInflater
-    var context: Context
-    private val newFeaturesViewModel: NewFeaturesViewModel
-    private val newFeaturesFragment: NewFeaturesFragment
-    private var storeManager: StoreManager
-    private var sKUList: ArrayList<String>?
-    private var activity: Activity
+    private var sKUList: ArrayList<String>? = storeManager.knownInappSKUs.toCollection(ArrayList())
     private var closePopupBtn: Button? = null
     private var popupWindow: PopupWindow? = null
     private var linearLayoutNewFeatures: LinearLayout? = null
@@ -222,15 +216,5 @@ class NewFeatureListAdapter internal constructor(
             popupWindow?.dismiss()
             infoPopupOpen = false
         }
-    }
-
-    init {
-        newFeaturesInflater = LayoutInflater.from(context)
-        this.context = context
-        this.newFeaturesViewModel = newFeaturesViewModel
-        this.newFeaturesFragment = newFeaturesFragment
-        this.storeManager = storeManager
-        this.sKUList = storeManager.knownInappSKUs?.toCollection(ArrayList())
-        this.activity = activity
     }
 }
